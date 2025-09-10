@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeriLand｜我的旅程</title>
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <link rel="stylesheet" href="./css/Trips.css" />
+  
+</head>
+<body>
+
+<div class="container">
+    <header class="hl-header">
+  <button class="back" onclick="history.back()">←</button>
+  <h1>足跡</h1>
+  <a class="home" href="../index.html">HeriLand</a>
+</header>
+
+  <div class="container">
+</div>
+<!-- 排序 -->
+<div role="group" aria-label="排序">
+<button class="pill" data-sort="latest" aria-pressed="true">最新</button>
+<button class="pill" data-sort="city">城市</button>
+</div>
+<!-- 城市篩選 -->
+<label class="pill" style="padding:0">
+<select id="cityFilter">
+<option value="all">全部城市</option>
+<option>Kuching</option>
+<option>Sibu</option>
+<option>Miri</option>
+<option>Bintulu</option>
+<option>Sarikei</option>
+<option>Kapit</option>
+<option>Mukah</option>
+<option>Limbang</option>
+</select>
+</label>
+</div>
+<div></div>
+</div>
+
+
+<section id="grid" class="grid"></section>
+
+
+<section id="empty" class="empty" style="display:none">
+<span class="icon">🐾</span>
+<div>你還沒有任何足跡</div>
+<div class="muted" style="margin:6px 0 12px">快去探索商家吧！</div>
+<a href="../index.html" class="btn">去探索</a>
+</section>
+</div>
+
+
+<template id="tpl-card">
+<article class="card" data-id="">
+<div class="thumb">🏞️</div>
+<div class="meta">
+<h3 class="title">示例商家</h3>
+<div class="sub"><span class="tags">美食</span> · <span class="city">Kuching</span></div>
+</div>
+</article>
+</template>
+  <script src="./js/Trips.js"></script>
+  
+</body>
+</html>

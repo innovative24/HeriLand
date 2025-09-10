@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeriLand｜徽章</title>
+   <link rel="stylesheet" href="./css/Badges.css" />
+</head>
+<body>
+
+<div class="container">
+    <header class="hl-header">
+  <button class="back" onclick="history.back()">←</button>
+ 
+  <a class="home" href="../index.html">HeriLand</a>
+</header>
+
+  <div class="container">
+    <header>
+      <div>
+        <h1>徽章</h1>
+        <div class="sub">遊戲化成就 · 旅行榮譽</div>
+      </div>
+      <div class="actions">
+        <button id="sync" class="btn secondary">重新同步</button>
+        <button id="demoRain" class="btn secondary" title="示範解鎖雨天徽章">模擬雨天</button>
+      </div>
+    </header>
+
+    <div id="recent" class="recent" style="display:none"></div>
+
+    <section id="grid" class="grid"></section>
+  </div>
+
+  <!-- 成就卡 Modal -->
+  <div id="backdrop" class="backdrop"></div>
+  <div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="成就卡">
+    <div class="row">
+      <div class="icon" id="mIcon">🏅</div>
+      <div>
+        <h3 id="mTitle">徽章名稱</h3>
+        <div class="kv" id="mSub">—</div>
+        <div class="kv" id="mCond">解鎖條件：—</div>
+        <div class="kv" id="mDate">解鎖日期：—</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:12px;gap:8px">
+      <button id="close" class="btn secondary">關閉</button>
+    </div>
+  </div>
+  
+  <script src="./js/Badges.js"></script>
+  
+</body>
+</html>

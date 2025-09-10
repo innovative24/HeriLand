@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeriLand｜我的旅程</title>
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <link rel="stylesheet" href="./css/Trips.css" />
+  
+</head>
+<body>
+  <header class="hl-header">
+  <a class="home" href="../heriland.html" title="回首頁" style="font-size:20px;font-weight:30px;">HeriLand</a>
+
+  <h1>我的旅程</h1> <!-- 這行換成：收藏 / 足跡 / 推薦 / 徽章 / 設定 -->
+
+</header>
+
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist" aria-label="我的旅程索引">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-wish" id="tab-wish">想去的地方</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-pack" id="tab-pack">旅行清單</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-done" id="tab-done">已完成旅程</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-share" id="tab-share">分享 / 匯出</button>
+    </nav>
+
+    <!-- Panels -->
+    <section id="panel-wish" class="panel active section" role="tabpanel" aria-labelledby="tab-wish">
+      <div class="wish-controls">
+        <input id="wishTitle" class="input" placeholder="新增商家 / 景點 (例如：瑪貢咖啡)" />
+        <input id="wishCity" class="input" placeholder="城市 (例如：Kuching)" style="max-width:160px" />
+        <input id="wishTag" class="input" placeholder="標籤 (咖啡 / 美食 / 景點)" style="max-width:160px" />
+        <input id="wishNote" class="input" placeholder="備註 (例：Day 2 下午)" style="flex:1" />
+        <button id="btnAddWish" class="btn">＋ 新增</button>
+        <button id="btnClearWish" class="btn secondary" title="清空列表">清空</button>
+      </div>
+      <div class="wish-list" id="wishList"></div>
+      <p class="helper">提示：長按右下角「⋮⋮」可拖曳排序。</p>
+    </section>
+
+    <section id="panel-pack" class="panel section" role="tabpanel" aria-labelledby="tab-pack">
+      <div class="grid" id="packGrid"></div>
+    </section>
+
+    <section id="panel-done" class="panel section" role="tabpanel" aria-labelledby="tab-done">
+      <div class="trips" id="tripList"></div>
+      <div class="empty" id="tripEmpty" style="display:none">尚無完成旅程</div>
+    </section>
+
+    <section id="panel-share" class="panel section" role="tabpanel" aria-labelledby="tab-share">
+      <div class="card" style="padding:16px">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700">分享或匯出你的旅程</div>
+            <div class="muted" style="font-size:13px">鏈接可分享給朋友查看你的行程（未來支援 PDF）</div>
+          </div>
+          <div style="display:flex; gap:8px">
+            <button class="btn" id="openSheet">打開分享面板</button>
+            <button class="btn secondary" id="copyLink">複製分享連結</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Share sheet -->
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet" aria-modal="true" role="dialog" aria-label="分享行程">
+    <div style="display:flex; align-items:center; justify-content:space-between">
+      <strong>分享 / 匯出</strong>
+      <button id="closeSheet" class="btn secondary" style="padding:6px 10px">關閉</button>
+    </div>
+    <div class="share-grid" style="margin-top:12px">
+      <a class="share-btn" data-channel="whatsapp" href="#">
+        <div>🟢</div><span>WhatsApp</span>
+      </a>
+      <a class="share-btn" data-channel="line" href="#">
+        <div>💬</div><span>LINE</span>
+      </a>
+      <a class="share-btn" data-channel="facebook" href="#">
+        <div>🔵</div><span>Facebook</span>
+      </a>
+      <a class="share-btn" data-channel="copy" href="#">
+        <div>🔗</div><span>複製連結</span>
+      </a>
+    </div>
+    <div class="helper">匯出 PDF：預留中（下版加入）</div>
+  </div>
+
+  <template id="tpl-wish-card">
+    <div class="card place-card" draggable="true">
+      <div class="badge"><span class="tag">景點</span> <span class="city">Kuching</span></div>
+      <h3 style="margin:10px 0 0; font-size:18px" class="title">示例商家</h3>
+      <p class="note">備註：Day 2 下午</p>
+      <div class="meta">
+        <span class="muted">加入於 <span class="created">2025/09/08</span></span>
+        <span class="drag-handle" title="拖曳排序">⋮⋮</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn secondary btn-edit">編輯</button>
+        <button class="btn secondary btn-delete">刪除</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-trip-card">
+    <div class="card trip-card">
+      <div class="thumb">🏞️</div>
+      <div>
+        <h3 class="trip-title">古晉三日遊</h3>
+        <div class="trip-sub">完成日期：<span class="date">2025/09/01</span></div>
+        <div class="trip-actions">
+          <button class="btn secondary btn-view">查看規劃</button>
+          <button class="btn secondary btn-copy">複製行程</button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script src="./js/Trips.js"></script>
+  
+</body>
+</html>

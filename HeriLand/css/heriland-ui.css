@@ -1,0 +1,432 @@
+:root {
+  --color-primary: #1B3A2E;     /* 深森林綠 */
+  --color-secondary: #D4AF37;   /* 香檳金 */
+  --color-accent-blue: #1E6F64;
+  --color-accent-orange: #E07B39;
+
+  --color-bg-light: #FAFAF8;    /* 奶油白 */
+  --color-bg-dark: #121212;
+
+  --color-text-light: #111111;
+  --color-text-dark: #FFFFFF;
+
+  --color-text-sec-light: #666666;
+  --color-text-sec-dark: #AAAAAA;
+
+  --color-card-light: #FFFFFF;
+  --color-card-dark: #1E1E1E;
+}
+
+/* 主體跟隨主題切換 */
+html[data-theme="light"] {
+  --bg: var(--color-bg-light);
+  --text: var(--color-text-light);
+  --text-sec: var(--color-text-sec-light);
+  --card-bg: var(--color-card-light);
+}
+html[data-theme="dark"] {
+  --bg: var(--color-bg-dark);
+  --text: var(--color-text-dark);
+  --text-sec: var(--color-text-sec-dark);
+  --card-bg: var(--color-card-dark);
+}
+
+body {
+  font-family: "Noto Sans", "思源黑體", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+p, span {
+  font-size: 14px;
+  font-weight: 400;
+}
+.caption {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-sec);
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 12px 0;
+  transition: transform 0.2s ease;
+}
+
+html[data-theme="light"] .card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+html[data-theme="dark"] .card {
+  border: 1px solid #333;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 12px;
+}
+.card-meta {
+  font-size: 14px;
+  color: var(--text-sec);
+  margin: 0 12px 12px;
+}
+
+.chip {
+  display: inline-block;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px;
+}
+
+.chip-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.chip-outline {
+  border: 1px solid var(--color-primary);
+  background: #fff;
+  color: var(--color-primary);
+}
+.chip-attr {
+  background: #E0E0E0;
+  color: #333;
+}
+
+
+
+html[data-theme="light"] body {
+  background: linear-gradient(#FFFFFF, #FAFAF8);
+}
+html[data-theme="dark"] body {
+  background: linear-gradient(#121212, #1E1E1E);
+}
+
+/* ===== Home：兩欄卡片（4:3 大圖 + 浮出資訊塊） ===== */
+.home-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* 兩欄 */
+  gap: 16px;                              /* 卡片間距 */
+  padding: 12px 16px 24px;
+}
+
+.home-card{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--card-bg, #fff);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+html[data-theme="light"] .home-card{ box-shadow: 0 6px 18px rgba(0,0,0,.08) }
+html[data-theme="dark"]  .home-card{ border:1px solid #333 }
+
+.home-card .media{
+  width: 100%;
+  aspect-ratio: 4/3;                      /* 4:3 圖片比例 */
+  background: #ddd center/cover no-repeat;
+}
+
+.home-card .badge{
+  position:absolute; top:10px; left:10px;
+  padding: 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  color:#fff; z-index:2;
+  background: var(--color-primary, #1B3A2E);
+}
+.home-card .badge.hot{ background: var(--color-secondary, #D4AF37) }
+
+.home-card .fav{
+  position:absolute; top:10px; right:10px; z-index:2;
+  width:36px; height:36px; border-radius:999px;
+  display:grid; place-items:center;
+  background: rgba(255,255,255,.85);
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  border: none; color:#E53935;
+}
+
+.home-card .meta-wrap{
+  position: absolute;
+  left: 10px; right: 10px; bottom: 10px;  /* 浮在圖片上 */
+  border-radius: 14px;
+  background: var(--card-bg, #fff);
+  padding: 10px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+.home-card .title{
+  font-size: 16px; font-weight: 700; line-height: 1.2;
+  color: var(--text, #111);
+  margin-bottom: 6px;
+  max-height: 2.4em; overflow: hidden;
+}
+
+.home-card .sub{
+  display:flex; align-items:center; gap:8px;
+  font-size:12px; color: var(--text-sec, #666);
+}
+
+.home-card .chips{ margin-top: 8px; display:flex; flex-wrap:wrap; gap:6px }
+.home-card .chip{
+  border-radius: 16px; padding:4px 10px; font-size: 12px; font-weight:600;
+  background: #E7EFEA; color: var(--color-primary, #1B3A2E);
+}
+
+/* 點擊微縮放（精品感） */
+.home-card:active{ transform: scale(.98) }
+.home-card:hover{ transform: translateY(-2px) }
+
+/* ========= Palette（照 UI 給的配色） ========= */
+:root{
+  --hl-primary:#1B3A2E;
+  --hl-gold:#D4AF37;
+  --bg:#FAFAF8;
+  --card-bg:#FFFFFF;
+  --card-border:rgba(0,0,0,.08);
+  --text:#111;
+  --text-2:#666;
+  --chip-bg:#EAF2EE;               /* 主題 chip 淺綠 */
+  --shadow:0 6px 18px rgba(17,17,17,.08);
+}
+:root[data-theme="dark"]{
+  --bg:#121212;
+  --card-bg:#1E1E1E;
+  --card-border:#333;
+  --text:#FFF;
+  --text-2:#AAAAAA;
+  --chip-bg:#20352D;
+  --shadow:0 0 0 1px #333;         /* 深色用邊框取代大陰影 */
+}
+
+/* ========= 首頁：兩欄大圖卡（恢復圖片主角感） ========= */
+.homeGrid, .cat-grid { /* 你的容器 class 視情況保留 */
+  gap:12px;
+}
+.card-mag{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  background:transparent;
+}
+.card-mag .media{
+  width:100%;
+  padding-top:66.666%;             /* 4:3 */
+  background-size:cover;
+  background-position:center;
+  border-radius:16px;
+}
+.card-mag .meta-wrap{
+  position:absolute;
+  left:10px; right:10px; bottom:10px;
+}
+.card-mag .meta{
+  border-radius:12px;
+  padding:10px 12px;
+  background:color-mix(in srgb, var(--card-bg) 82%, transparent);
+  backdrop-filter:saturate(160%) blur(10px);
+  border:1px solid var(--card-border);
+  color:var(--text);
+}
+.card-mag .title{
+  font-weight:700;
+  font-size:15px;
+  line-height:1.25;
+  margin-bottom:4px;
+}
+.card-mag .sub{
+  font-size:12px;
+  color:var(--text-2);
+}
+.card-mag .badge.hot{
+  position:absolute; top:10px; left:10px;
+  background:var(--hl-gold);
+  color:#111; font-weight:700;
+  border-radius:999px; padding:4px 10px; font-size:12px;
+}
+
+/* ========= 深色：篩選區外框隱藏、白塊調整 ========= */
+:root[data-theme="dark"] .list-wrap,
+:root[data-theme="dark"] .filters{
+  background:transparent;
+  border-color:transparent;
+}
+:root[data-theme="dark"] .btn.ghost{ border-color:#3a3a3a; }
+
+/* ========= 商家詳情：右上關閉鈕永遠顯示 ========= */
+.sheet-close{
+  position:fixed;
+  top:calc(env(safe-area-inset-top, 0px) + 10px);
+  right:12px;
+  z-index:10020;                   /* 蓋過一切 */
+  width:36px;height:36px;
+  border-radius:999px;
+  border:none;
+  background:rgba(0,0,0,.55);
+  color:#fff; font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+:root[data-theme="light"] .sheet-close{ background:rgba(20,20,20,.55); }
+:root[data-theme="dark"]  .sheet-close{ background:rgba(255,255,255,.12); }
+
+/* ========= VIP 抽屜 + 把手（一體式、霧化） ========= */
+.vip-drawer{
+  position:fixed; inset:0 0 0 auto;
+  width:min(92vw, 420px);
+  transform:translateX(100%);
+  transition:transform .28s ease;
+  z-index:10005;
+  background:linear-gradient(160deg,#121212 0%,#1E1E1E 100%);
+  color:#fff;
+  backdrop-filter:blur(16px) saturate(140%);
+  border-left:1px solid #2e2e2e;
+}
+.vip-drawer.open{ transform:translateX(0%); }
+
+
+:root[data-theme="dark"] .vip-handle{
+  background:rgba(255,255,255,.12); color:#fff; border:1px solid #333;
+}
+
+.vip-drawer.open .vip-handle::after{ content:'‹'; transform:translateX(-1px); }
+
+/* 把手在開啟詳情（bottom sheet）時自動隱藏，避免擋到 */
+.sheet-open .vip-handle{ opacity:0; pointer-events:none; }
+
+/* VIP 抽屜內部標題/區塊建議 */
+.vip-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+}
+.vip-title{ font-weight:700; font-size:16px; letter-spacing:.5px; }
+
+/* ====== 首頁兩欄大圖卡（跟你截圖一致） ====== */
+
+/* 容器：兩欄、16px 間距，左右 16px 邊距 */
+#cardList.cards{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  padding:0 16px 24px;
+}
+
+/* 卡片外框（不搶視覺，突出上層大圖） */
+.card-mag{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;                     /* 讓大圖圓角生效 */
+  background:transparent;
+}
+
+/* 大圖：比例 4:3 */
+.card-mag .media{
+  width:100%;
+  padding-top:66.666%;                 /* 4:3 */
+  background-size:cover;
+  background-position:center;
+  border-radius:16px;
+  filter:brightness(.98);
+}
+
+/* 熱點標籤（左上圓角膠囊） */
+.card-mag .badge.hot{
+  position:absolute; top:10px; left:10px;
+  background:var(--hl-gold, #D4AF37);
+  color:#111;
+  font-weight:700;
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:12px;
+  letter-spacing:.5px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+/* 收藏圓鈕（右上） */
+.card-mag .fav{
+  position:absolute; top:10px; right:10px;
+  width:42px; height:42px;
+  border-radius:999px;
+  border:none;
+  background:rgba(255,255,255,.92);
+  color:#e53935;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; line-height:1;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);
+  backdrop-filter:blur(8px);
+  cursor:pointer;
+}
+.card-mag .fav::before{ content:'♡'; transform:translateY(-1px); }
+.card-mag .fav.on::before{ content:'❤'; }
+
+/* 底部資訊白卡（浮在大圖底部） */
+.card-mag .meta-wrap{
+  position:absolute; left:10px; right:10px; bottom:10px;
+}
+.card-mag .meta{
+  background:color-mix(in srgb, var(--card-bg,#fff) 86%, transparent);
+  border:1px solid var(--card-border, rgba(0,0,0,.08));
+  backdrop-filter:saturate(160%) blur(10px);
+  border-radius:14px;
+  padding:10px 12px 12px;
+  box-shadow:var(--shadow, 0 6px 18px rgba(17,17,17,.08));
+}
+
+/* 文字層次 */
+.card-mag .title{
+  font-weight:800; font-size:15px; line-height:1.25;
+  color:var(--text,#111);
+  margin-bottom:6px;
+}
+.card-mag .sub{
+  font-size:12px; color:var(--text-2,#666);
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:8px;
+}
+.card-mag .sub .star{ font-size:12px; opacity:.9; }
+
+/* Chips（最多兩個，換行自動排） */
+.card-mag .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+.card-mag .chip{
+  font-size:12px; font-weight:600;
+  padding:4px 10px; border-radius:999px;
+  background:var(--chip-bg, #EAF2EE);
+  color:var(--hl-primary,#1B3A2E);
+  border:1px solid color-mix(in srgb, var(--hl-primary,#1B3A2E) 14%, transparent);
+}
+
+/* 深色優化 */
+:root[data-theme="dark"] #cardList.cards{ /* 內距同上即可 */ }
+:root[data-theme="dark"] .card-mag .meta{
+  background:rgba(30,30,30,.9);
+  border:1px solid var(--card-border,#333);
+  box-shadow:0 0 0 1px #333;
+}
+:root[data-theme="dark"] .card-mag .fav{ background:rgba(255,255,255,.12); color:#ff6b6b; border:1px solid #333; }
+:root[data-theme="dark"] .card-mag .chip{
+  background:#20352D;
+  color:#E6F3EF; border-color:#2f4a40;
+}
+

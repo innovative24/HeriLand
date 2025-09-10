@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>Heriland · Sarawak Travel</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link rel="stylesheet" href="./css/heriland-ui.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/auth.css" />
+   <link rel="stylesheet" href="./css/vip-sub.css" />
+<link rel="stylesheet" href="./css/vip.css" />
+<link rel="stylesheet" href="./css/trips.css" />
+</head>
+<body>
+<div id="appRoot" class="hl-app theme-scope" data-theme="light"><!-- ← 主題只作用在這裡 -->
+<div id="debug" style="white-space:pre; font-size:12px; background:#eee; padding:8px;"></div>
+<div class="safe">
+
+  <header class="hdr">
+    <h1>Heriland</h1>
+	
+    <div class="sub">Sarawak · 吃喝玩樂</div>
+  </header>
+  
+
+
+  <!-- 1) 分類卡片（兩欄） -->
+<section id="homeCats">
+  <section id="catGrid" class="cat-grid"></section>
+</section>
+
+<!-- 2) 城市滑動（圓形頭像） -->
+<section id="homeCities" class="cities">
+  <h3 class="sec-title">城市 / 地區</h3>
+  <div id="cityRow" class="city-row"></div>
+</section>
+
+<!-- 3) 商家卡片清單 -->
+<section id="homeList" class="list-wrap">
+  <div class="toolbar">
+    <div id="activeFilters" class="filters"></div>
+    <div class="spacer"></div>
+    <button id="clearFilters" class="btn ghost">清除篩選</button>
+  </div>
+  <main id="cardList" class="cards"></main>
+</section>
+
+  
+ <!-- 城市專屬頁（預設隱藏） -->
+<section id="cityPage" class="city-page hidden" aria-hidden="true">
+  <div class="city-topbar">
+    <button id="cityBack" class="back-btn" aria-label="返回">←</button>
+    <h2 id="cityTitle" class="city-title">City</h2>
+  </div>
+
+  <div id="cityHero" class="city-hero"></div>
+
+  <!-- 城市內的分類 Chips -->
+  <div id="cityCatChips" class="chips" style="padding-top:8px;"></div>
+
+<!-- ① 城市頁：快速篩選列（Chips + 篩選鈕） -->
+<div id="cityQuickFilters" class="city-qf">
+  <div class="chips-row" id="cityQuickChips">
+    <!-- JS 會動態渲染四顆：最新 / 熱門 / 距離最近 / 評分最高 -->
+  </div>
+
+  <!-- 右側「更多篩選」按鈕 -->
+  <button id="openFilterSheet" class="btn icon">
+    <!-- 漏斗 icon -->
+    <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 4h18v2l-7 7v5l-4 2v-7L3 6z"/></svg>
+    <span>篩選</span>
+  </button>
+</div>
+
+<!-- ② 底部抽屜（Bottom Sheet） -->
+<div id="filterBackdrop" class="sheet-backdrop" hidden></div>
+<div id="filterSheet" class="sheet" aria-hidden="true">
+  <div class="sheet-handle"></div>
+  <div class="sheet-body">
+    <!-- 分類群組：排序（單選） -->
+    <div class="sheet-group">
+      <div class="g-title">排序</div>
+      <div class="opt-grid radio" id="fsSort">
+        <!-- JS 會塞入：最新 / 熱門 / 距離最近 / 評分最高 / 營業中 -->
+      </div>
+    </div>
+
+    <!-- 主題（多選） -->
+    <div class="sheet-group">
+      <div class="g-title">主題</div>
+      <div class="opt-grid" id="fsThemes">
+        <!-- JS 會塞入：文化體驗、自然景點、美食推薦、親子友善、夜生活、購物、在地人愛、冷門寶藏 -->
+      </div>
+    </div>
+
+    <!-- 屬性（多選） -->
+    <div class="sheet-group">
+      <div class="g-title">屬性</div>
+      <div class="opt-grid" id="fsAttrs">
+        <!-- JS 會塞入：清真、素食、輪椅友善、寵物友善、英文可、雨天可玩、免費入場 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部操作列 -->
+  <div class="sheet-actions">
+    <button id="fsReset" class="btn ghost">重置</button>
+    <button id="fsApply" class="btn brand">套用</button>
+  </div>
+</div>
+
+  <!-- 城市內的商家清單 -->
+  <main id="cityCardList" class="cards" style="padding:12px 16px 80px;"></main>
+</section>
+
+
+<!-- 商家詳情：Backdrop + Bottom Sheet（手機） -->
+<div id="hlDetailBackdrop" class="hl-sheet-backdrop" hidden></div>
+<div id="hlDetailSheet" class="hl-sheet" aria-hidden="true">
+  <div class="hl-handle"></div>
+  <div class="hl-sheet-body">
+    <!-- 媒體（封面 16:9 / 短影片占位） -->
+    <div class="hl-media">
+      <div id="hlDetailMedia" class="hl-media-16x9" style="background-image:url('');"></div>
+    </div>
+
+    <!-- 標題區 -->
+    <div class="hl-title-row">
+  <h3 id="hlDetailTitle" class="hl-title">商家名稱</h3>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="hlDetailRating" class="hl-rating">★ 4.8</div>
+    <button id="hlExpand" class="hl-expand-btn" title="放大/縮小">⛶</button>
+  </div>
+</div>
+
+    <!-- 標籤 Chips -->
+    <div id="hlDetailChips" class="chips"></div>
+
+    <!-- 動作列：收藏 / 導航 / 分享 -->
+    <div class="hl-actions">
+      <button id="hlActFav" class="hl-action"><span>♥</span><small>收藏</small></button>
+      <button id="hlActMap" class="hl-action"><span>📍</span><small>導航</small></button>
+      <button id="hlActShare" class="hl-action"><span>↗</span><small>分享</small></button>
+    </div>
+
+    <!-- 聯絡資訊 -->
+    <div class="hl-contact">
+      <a id="hlTel" href="#" class="hl-contact-item">📞 電話</a>
+      <a id="hlAddr" href="#" class="hl-contact-item">📍 地址</a>
+    </div>
+
+    <!-- 展開內容（上滑全屏時可看） -->
+    <div class="hl-section">
+      <div id="hlOpenState" class="hl-openstate">營業資訊載入中…</div>
+      <p id="hlDesc" class="hl-desc"></p>
+    </div>
+
+    <!-- 圖片走馬燈 -->
+    <div class="hl-section">
+      <div class="hl-gallery" id="hlGallery"></div>
+    </div>
+
+    <!-- 主題標籤（可與 chips 不同） -->
+    <div class="hl-section">
+      <div class="g-title">主題</div>
+      <div id="hlThemes" class="chips"></div>
+    </div>
+
+    <!-- 鄰近推薦 -->
+    <div class="hl-section">
+      <div class="g-title">附近推薦（步行 5–10 分鐘）</div>
+      <div id="hlNearby" class="hl-nearby"></div>
+    </div>
+
+    <!-- 加入行程 -->
+    <div class="hl-section">
+      <button id="hlAddRoute" class="btn brand wide">加入我的路線</button>
+    </div>
+
+    <!-- 關閉空白區域（拉到最下可下滑關閉） -->
+    <div style="height: 24px;"></div>
+  </div>
+</div>
+
+<!-- 商家詳情（桌面版 Page） -->
+<section id="detailPage" class="page hidden">
+  <header class="page-bar">
+    <button id="hlDetailBack" class="btn ghost sm">← 返回</button>
+    <h2 class="page-title" id="hlDetailPageTitle">商家詳情</h2>
+  </header>
+  <div class="hl-detail-grid">
+    <div class="hl-detail-left">
+      <div id="hlDetailBanner" class="hl-banner"></div>
+      <div class="hl-block">
+        <h3>圖片</h3>
+        <div id="hlDeskGallery" class="hl-gallery"></div>
+      </div>
+      <div class="hl-block" id="hlDeskMapBlock">
+        <h3>地圖定位</h3>
+        <div id="hlDeskMapNote" class="hl-map-note">點擊導航按鈕開啟地圖</div>
+      </div>
+      <div class="hl-block">
+        <h3>附近推薦</h3>
+        <div id="hlDeskNearby" class="hl-nearby"></div>
+      </div>
+      <!-- 可再加：評論區 -->
+    </div>
+    <aside class="hl-detail-right">
+      <div class="hl-block">
+        <h3 id="hlDeskTitle">商家名稱</h3>
+        <div id="hlDeskRating" class="hl-rating">★ 4.8</div>
+        <div id="hlDeskChips" class="chips" style="margin-top:8px;"></div>
+        <div class="hl-actions" style="margin-top:10px;">
+          <button id="hlDeskFav" class="hl-action"><span>♥</span><small>收藏</small></button>
+          <button id="hlDeskMap" class="hl-action"><span>📍</span><small>導航</small></button>
+          <button id="hlDeskShare" class="hl-action"><span>↗</span><small>分享</small></button>
+        </div>
+      </div>
+      <div class="hl-block">
+        <h4>聯絡資訊</h4>
+        <div id="hlDeskTel"></div>
+        <div id="hlDeskAddr"></div>
+      </div>
+      <div class="hl-block">
+        <h4>營業時間</h4>
+        <div id="hlDeskOpen"></div>
+      </div>
+      <div class="hl-block">
+        <h4>描述</h4>
+        <p id="hlDeskDesc" class="hl-desc"></p>
+      </div>
+      <div class="hl-block">
+        <button id="hlDeskAddRoute" class="btn brand wide">加入我的路線</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- VIP Shell（膠囊 + 面板是一體） -->
+<div id="vipShell" class="vip-shell" aria-hidden="true">
+  <!-- 半露出的膠囊把手 -->
+  <button id="vipHandle" class="vip-handle" class="vip-handle" aria-label="打開 VIP">
+   
+  </span>
+    
+  </button>
+
+  <!-- 面板內容（一體式，跟著 shell 一起滑入） -->
+  <div id="vipPanel" class="vip-panel" role="dialog" aria-modal="true">
+    
+
+
+<div class="vip-content">
+
+<!-- 儀表板：上面的會員卡 + 6 顆功能模組 -->
+<section id="vipDashboard" class="vip-view show">
+  <!-- 你的會員卡區（保留現有樣式） -->
+  <!-- VIP 卡片：同一位置放兩個狀態版 → 用 JS 切換 hidden -->
+<!-- VIP 卡片容器 -->
+<section id="vipCard" class="vip-card guest">
+  <!-- 未登入狀態 -->
+  <div class="vip-card-guest">
+    <div class="card-sheen"></div>
+    <h3 class="brand">Heriland</h3>
+    <p class="hint">立即登入／註冊 → 解鎖你的旅遊護照</p>
+    <button id="vipLoginBtn" class="btn gold">立即登入</button>
+  </div>
+  
+  <!-- 已登入狀態 -->
+  <div class="vip-card-member" hidden>
+  <div class="card-sheen"></div>
+
+  <h3 class="brand">Heriland
+    <span id="vipTierPill" class="pill">GOLD</span>
+  </h3>
+
+  <p class="meta"><span class="label">No.</span>
+    <span id="vipNo">HL-2025-00123</span>
+  </p>
+
+  <h2 id="vipPoints" class="points">12,480</h2>
+
+  <p class="meta">
+    等級：<span id="vipTier">Gold</span>
+   　有效：<span id="vipExpire">2026/12/31</span>
+  </p>
+
+  <button id="vipPerkBtn" class="perk-hint">
+    🎁 你有 <b id="vipPerkCount">3</b> 個 Gold 專屬優惠
+  </button>
+  </div>
+  </section>
+
+  <!-- 6 功能按鈕 -->    
+		<div class="vip-grid">
+			<button class="feature-card" data-target="trips"><span class="ico">🧳</span><span>我的旅程</span></button>
+			<button class="feature-card" data-target="favorites"><span class="ico">❤️</span><span>收藏</span></button>
+			<button class="feature-card" data-target="footprints"><span class="ico">📍</span><span>足跡</span></button>
+			<button class="feature-card" data-target="recommend"><span class="ico">✨</span><span>推薦</span></button>
+			<button class="feature-card" data-target="badges"><span class="ico">🏅</span><span>徽章</span></button>
+			<button class="feature-card" data-target="settings"><span class="ico">⚙️</span><span>更多設定</span></button>
+		</div>
+		
+		<!-- 轮播图：就放在这里 -->
+<section id="vipPromo" class="vip-carousel">
+  <div class="vip-carousel-track">
+    <a class="vip-slide" href="#">
+      <img src="img/promo-taipei.jpg" alt="Gold 會員專屬 – 台北古蹟 10% OFF">
+      <div class="vip-slide-caption">
+        <h4>Gold 會員專屬</h4><p>台北古蹟 10% OFF</p>
+      </div>
+    </a>
+    <a class="vip-slide" href="#">
+      <img src="img/promo-hk.jpg" alt="香港 City Pass 限時 88 折">
+      <div class="vip-slide-caption">
+        <h4>限時優惠</h4><p>香港 City Pass 88 折</p>
+      </div>
+    </a>
+    <a class="vip-slide" href="#">
+      <img src="img/promo-okinawa.jpg" alt="沖繩自駕 優惠租車">
+      <div class="vip-slide-caption">
+        <h4>沖繩自駕</h4><p>優惠租車</p>
+      </div>
+    </a>
+  </div>
+
+  <button class="vip-ctrl prev" aria-label="上一張">‹</button>
+  <button class="vip-ctrl next" aria-label="下一張">›</button>
+  <div class="vip-dots" role="tablist" aria-label="carousel indicators"></div>
+</section>
+		
+ </section>
+		
+		<section id="trips" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>我的旅程</h3></header>
+			<div class="content">
+
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist" aria-label="我的旅程索引">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-wish" id="tab-wish">想去的地方</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-pack" id="tab-pack">旅行清單</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-done" id="tab-done">已完成旅程</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-share" id="tab-share">分享 / 匯出</button>
+    </nav>
+
+    <!-- Panels -->
+    <section id="panel-wish" class="panel active section" role="tabpanel" aria-labelledby="tab-wish">
+      <div class="wish-controls">
+        <input id="wishTitle" class="input" placeholder="新增商家 / 景點 (例如：瑪貢咖啡)" />
+        <input id="wishCity" class="input" placeholder="城市 (例如：Kuching)" style="max-width:160px" />
+        <input id="wishTag" class="input" placeholder="標籤 (咖啡 / 美食 / 景點)" style="max-width:160px" />
+        <input id="wishNote" class="input" placeholder="備註 (例：Day 2 下午)" style="flex:1" />
+        <button id="btnAddWish" class="btn">＋ 新增</button>
+        <button id="btnClearWish" class="btn secondary" title="清空列表">清空</button>
+      </div>
+      <div class="wish-list" id="wishList"></div>
+      <p class="helper">提示：長按右下角「⋮⋮」可拖曳排序。</p>
+    </section>
+
+    <section id="panel-pack" class="panel section" role="tabpanel" aria-labelledby="tab-pack">
+      <div class="grid" id="packGrid"></div>
+    </section>
+
+    <section id="panel-done" class="panel section" role="tabpanel" aria-labelledby="tab-done">
+      <div class="trips" id="tripList"></div>
+      <div class="empty" id="tripEmpty" style="display:none">尚無完成旅程</div>
+    </section>
+
+    <section id="panel-share" class="panel section" role="tabpanel" aria-labelledby="tab-share">
+      <div class="card" style="padding:16px">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700">分享或匯出你的旅程</div>
+            <div class="muted" style="font-size:13px">鏈接可分享給朋友查看你的行程（未來支援 PDF）</div>
+          </div>
+          <div style="display:flex; gap:8px">
+            <button class="btn" id="openSheet">打開分享面板</button>
+            <button class="btn secondary" id="copyLink">複製分享連結</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Share sheet -->
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet" aria-modal="true" role="dialog" aria-label="分享行程">
+    <div style="display:flex; align-items:center; justify-content:space-between">
+      <strong>分享 / 匯出</strong>
+      <button id="closeSheet" class="btn secondary" style="padding:6px 10px">關閉</button>
+    </div>
+    <div class="share-grid" style="margin-top:12px">
+      <a class="share-btn" data-channel="whatsapp" href="#">
+        <div>🟢</div><span>WhatsApp</span>
+      </a>
+      <a class="share-btn" data-channel="line" href="#">
+        <div>💬</div><span>LINE</span>
+      </a>
+      <a class="share-btn" data-channel="facebook" href="#">
+        <div>🔵</div><span>Facebook</span>
+      </a>
+      <a class="share-btn" data-channel="copy" href="#">
+        <div>🔗</div><span>複製連結</span>
+      </a>
+    </div>
+    <div class="helper">匯出 PDF：預留中（下版加入）</div>
+  </div>
+
+  <template id="tpl-wish-card">
+    <div class="card place-card" draggable="true">
+      <div class="badge"><span class="tag">景點</span> <span class="city">Kuching</span></div>
+      <h3 style="margin:10px 0 0; font-size:18px" class="title">示例商家</h3>
+      <p class="note">備註：Day 2 下午</p>
+      <div class="meta">
+        <span class="muted">加入於 <span class="created">2025/09/08</span></span>
+        <span class="drag-handle" title="拖曳排序">⋮⋮</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn secondary btn-edit">編輯</button>
+        <button class="btn secondary btn-delete">刪除</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-trip-card">
+    <div class="card trip-card">
+      <div class="thumb">🏞️</div>
+      <div>
+        <h3 class="trip-title">古晉三日遊</h3>
+        <div class="trip-sub">完成日期：<span class="date">2025/09/01</span></div>
+        <div class="trip-actions">
+          <button class="btn secondary btn-view">查看規劃</button>
+          <button class="btn secondary btn-copy">複製行程</button>
+        </div>
+      </div>
+    </div>
+  </template>
+			
+			</div>
+		</section>
+
+		<section id="favorites" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>收藏</h3></header>
+			<div class="content">
+			
+			
+			
+			</div>
+		</section>
+		
+		<section id="footprints" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>足跡</h3></header>
+			<div class="content">
+			
+			
+			
+			</div>
+		</section>
+		
+		<section id="recommend" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>推薦</h3></header>
+			<div class="content">…你的旅程內容…</div>
+		</section>
+		
+		<section id="badges" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>徽章</h3></header>
+			<div class="content">…你的旅程內容…</div>
+		</section>
+		
+		<section id="settings" class="vip-view" hidden>
+			<header class="sub-header"><button data-back>返回</button><h3>設定</h3></header>
+			<div class="content">…你的旅程內容…</div>
+		</section>
+
+<!-- Heriland Auth Modal -->
+<div id="hlAuthModal" class="hl-auth-backdrop" aria-hidden="true">
+  <div class="hl-auth-panel">
+    <button id="hlAuthClose" class="hl-auth-close">×</button>
+
+    <!-- Login -->
+    <section id="hlLoginView" class="hl-auth-view">
+      <h3 id="hlAuthTitle">登入 Heriland</h3>
+
+      <div class="hl-field">
+        <label for="hlLoginAccount">帳號（電話 / Email）</label>
+        <input id="hlLoginAccount" type="text" inputmode="email" autocomplete="username" placeholder="phone or email" />
+        <p class="hl-err" id="hlLoginAccountErr"></p>
+      </div>
+
+      <div class="hl-field">
+        <label for="hlLoginPassword">密碼</label>
+        <input id="hlLoginPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
+        <p class="hl-err" id="hlLoginPasswordErr"></p>
+      </div>
+
+      <button id="hlDoLogin" class="hl-btn-primary hl-full">登入</button>
+
+      <div class="hl-quick">
+        <span class="hl-quick-label">快速登入</span>
+        <button class="hl-quick-btn" data-provider="google" aria-label="Google login">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" />Google
+        </button>
+        <button class="hl-quick-btn" data-provider="apple" aria-label="Apple login">🍎 Apple</button>
+        <button class="hl-quick-btn" data-provider="facebook" aria-label="Facebook login">f Facebook</button>
+      </div>
+
+      <div class="hl-auth-links">
+        <button class="hl-link" id="hlForgot">忘記密碼</button>
+        <span class="hl-sep">·</span>
+        <button class="hl-link" id="hlGoRegister">還不是會員？立即註冊</button>
+      </div>
+    </section>
+
+    <!-- Register -->
+    <section id="hlRegisterView" class="hl-auth-view" hidden>
+      <h3>建立新帳號</h3>
+
+      <div class="hl-field">
+        <label for="hlRegName">姓名</label>
+        <input id="hlRegName" type="text" placeholder="您的姓名" />
+        <p class="hl-err" id="hlRegNameErr"></p>
+      </div>
+
+      <div class="hl-field">
+        <label for="hlRegAccount">電話 / Email</label>
+        <input id="hlRegAccount" type="text" inputmode="email" autocomplete="username" />
+        <p class="hl-err" id="hlRegAccountErr"></p>
+      </div>
+
+      <div class="hl-field">
+        <label for="hlRegPwd">密碼</label>
+        <input id="hlRegPwd" type="password" autocomplete="new-password" />
+        <p class="hl-err" id="hlRegPwdErr"></p>
+      </div>
+
+      <div class="hl-field">
+        <label for="hlRegPwd2">確認密碼</label>
+        <input id="hlRegPwd2" type="password" autocomplete="new-password" />
+        <p class="hl-err" id="hlRegPwd2Err"></p>
+      </div>
+	  
+	  <div class="social-login">
+  <button class="social-btn google">
+    <img src="img/google.svg" alt="Google" />
+    Google
+  </button>
+  <button class="social-btn apple">
+    <img src="img/apple.svg" alt="Apple" />
+    Apple
+  </button>
+  <button class="social-btn facebook">
+    <img src="img/facebook.svg" alt="Facebook" />
+    Facebook
+  </button>
+</div>
+
+
+      <button id="hlDoRegister" class="hl-btn-primary hl-full">註冊</button>
+
+      <div class="hl-auth-links">
+        <button class="hl-link" id="hlBackToLogin">返回登入</button>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div id="hlToast" class="hl-toast" role="status" aria-live="polite"></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 霧化背景 -->
+<div id="vipBackdrop" class="vip-backdrop" hidden></div>
+
+
+  <footer class="ft">
+    <div class="hint">Tip：點分類或城市可篩選 · 卡片上的「最新 / 熱點」為動態標籤</div>
+  </footer>
+</div>
+
+<!-- 先載標籤與城市，最後載商家；然後才是你的 app.js -->
+
+<script src="./js/tags.js"></script>
+<script src="./js/cities.js"></script>
+<script src="./js/merchants.js" ></script>
+<script src="./js/app.js"></script>
+<script src="./js/vip.js"></script>
+<script src="./js/vip-gate.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/vip-sub.js"></script>
+<script src="./js/vip-slider.js"></script>
+
+</div>
+</body>
+</html>

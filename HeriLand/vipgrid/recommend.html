@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeriLand｜我的旅程</title>
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <link rel="stylesheet" href="./css/recommend.css" />
+  
+</head>
+<body>
+<header class="hl-header">
+  <button class="back" onclick="history.back()">←</button>
+  <h1>推薦</h1>
+  <a class="home" href="../index.html">HeriLand</a>
+</header>
+<div class="container">
+    
+
+  <div class="container">
+<header>
+<div>
+<h1>推薦</h1>
+<div class="sub">為你挑選最適合的旅程與體驗</div>
+</div>
+</header>
+
+
+<section id="empty" class="empty" style="display:none">
+<span class="ico">✨</span>
+<div>我們需要更多線索才能為你推薦！</div>
+<div style="margin:6px 0 12px">請先收藏或探索一些商家吧～</div>
+<a href="../index.html" class="btn">去探索</a>
+</section>
+
+
+<!-- Rows 容器 -->
+<div id="rows"></div>
+</div>
+
+
+<template id="tpl-row">
+<div class="row">
+<div class="row-head">
+<h3 class="row-title">為你推薦城市</h3>
+<button class="more">查看更多</button>
+</div>
+<div class="rail"></div>
+</div>
+</template>
+
+
+<template id="tpl-card">
+<article class="card" data-id="">
+<div class="reason">因為你收藏了 XX</div>
+<div class="act">
+<button class="icon-btn heart" title="收藏" data-liked="false">❤</button>
+<button class="icon-btn dislike" title="不感興趣">🚫</button>
+</div>
+<div class="thumb">🏞️</div>
+<div class="meta">
+<h3 class="title">示例商家</h3>
+<div class="sub"><span class="city">Kuching</span> · <span class="tags">美食</span></div>
+</div>
+</article>
+</template>
+  <script src="./js/recommend.js"></script>
+  
+</body>
+</html>

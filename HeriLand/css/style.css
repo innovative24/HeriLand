@@ -1,0 +1,1777 @@
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#f5f6f8,rgba(245,246,248,.92));
+  backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid #e5e7eb;padding:14px 16px}
+.hdr h1{margin:0;font-size:22px;font-weight:800}
+.sub{color:var(--muted);margin-top:2px;font-size:13px}
+
+/* 1) 分類卡片（兩欄） */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px 6px}
+.cat{position:relative;border-radius:16px;overflow:hidden;background:#dbeafe}
+.cat .cover{height:96px;background-size:cover;background-position:center}
+.cat .txt{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.55);color:#fff;
+  padding:6px 10px;border-radius:999px;font-weight:700;font-size:14px}
+.cat .txt small{opacity:.9;font-weight:600;margin-left:6px}
+
+/* 2) 城市滑動（圓形） */
+.cities{padding:8px 0 0}
+.sec-title{font-size:14px;color:var(--muted);margin:0 16px 8px}
+.city-row{display:flex;gap:12px;padding:0 16px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.city{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px}
+.city .avatar{width:64px;height:64px;border-radius:999px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08);
+  background-size:cover;background-position:center;border:2px solid transparent}
+.city.active .avatar{border-color:var(--brand)}
+.city .name{font-size:12px;color:#374151;max-width:70px;text-align:center}
+
+/* 工具列 / 篩選顯示 */
+.toolbar{display:flex;align-items:center;gap:8px;padding:0 16px 8px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;border-radius:999px;padding:4px 8px;background:var(--chip);color:#374151}
+.btn{appearance:none;border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:8px 12px;font-size:13px}
+.btn.ghost{background:transparent}
+
+/* 3) 商家卡片清單 */
+.list-wrap{padding:6px 16px 80px}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:560px){ .cards{grid-template-columns:1fr 1fr;} }
+.card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.card .cov{width:100%;height:0;padding-bottom:56%;background-size:cover;background-position:center;position:relative}
+.badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:12px;color:#fff;padding:4px 8px;border-radius:10px}
+.badge.hot{background:var(--hot)}
+.badge.new{background:var(--new)}
+.content{padding:12px}
+.title{font-size:16px;font-weight:800}
+.meta{margin-top:4px;color:var(--muted);font-size:13px}
+.actions{display:flex;gap:16px;margin-top:8px}
+.a{font-size:14px}
+.a[data-active="true"]{font-weight:700}
+
+/* ===== Member Icon Button ===== */
+.icon-btn{
+  position:absolute; top:14px; right:16px;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border-radius:999px;
+  border:1px solid #d1d5db; background:#fff; color:#111827;
+}
+.icon-btn:active{ transform:scale(0.98); }
+
+/* ===== Member Panel (slide-down) ===== */
+.member-panel{
+  position:fixed; left:0; right:0; top:0; z-index:20;
+  transform:translateY(-110%); transition:transform .28s ease;
+  padding-top:calc(env(safe-area-inset-top) + 8px);
+  /* 可選陰影背景（若要半透明蒙層，可再加一層 overlay） */
+}
+.member-panel.open{ transform:translateY(0); }
+
+.mp-inner{
+  margin:0 12px; background:#fff; border-radius:16px;
+  box-shadow:0 12px 28px rgba(0,0,0,.15);
+  padding:14px;
+  border:1px solid #e5e7eb;
+}
+.mp-title{ margin:4px 2px 10px; font-size:16px; font-weight:800; }
+.mp-actions{ display:flex; flex-direction:column; gap:8px; }
+
+.btn.wide{ width:100%; text-align:center; }
+
+
+
+
+/* Footer */
+.ft{position:fixed;left:0;right:0;bottom:0;padding:8px 16px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg, rgba(245,246,248,0) 0%, rgba(245,246,248,1) 35%, rgba(245,246,248,1) 100%)}
+.hint{text-align:center;color:var(--muted);font-size:12px}
+
+/* 顯示/隱藏輔助 */
+.hidden { display: none !important; }
+
+
+/* ===== City page ===== */
+.city-page { padding: 10px 0 0; }
+.city-topbar {
+  display:flex; align-items:center; gap:8px; padding:0 16px;
+}
+.back-btn {
+  appearance:none; border:1px solid #d1d5db; background:#fff; color:#111827;
+  border-radius:10px; padding:8px 12px; font-size:16px;
+}
+.city-title { margin:0; font-size:18px; font-weight:800; }
+
+.city-hero{
+  margin:10px 16px 6px; height:140px; border-radius:16px;
+  background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.08);
+  background-size:cover; background-position:center; position:relative;
+}
+.city-hero::after{
+  content:""; position:absolute; inset:0; border-radius:16px;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.35));
+}
+.city-hero .badge-wrap{
+  position:absolute; left:12px; bottom:10px; display:flex; gap:6px; z-index:1;
+}
+.city-hero .badge{
+  font-size:12px; color:#fff; padding:4px 8px; border-radius:10px; background:rgba(0,0,0,.5);
+}
+
+/* ===== Backdrop（會員中心蒙層） ===== */
+.member-backdrop{
+  position:fixed; inset:0; z-index:19;
+  background:rgba(17,24,39,.28); /* #111827 28% */
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+.member-backdrop.show{
+  opacity:1; pointer-events:auto;
+}
+
+/* ===== Member Panel（強化動畫） ===== */
+@keyframes panelDrop {
+  0%   { transform:translateY(-110%); }
+  70%  { transform:translateY(6%); }
+  100% { transform:translateY(0); }
+}
+.member-panel{
+  position:fixed; left:0; right:0; top:0; z-index:20;
+  transform:translateY(-110%);
+  padding-top:calc(env(safe-area-inset-top) + 8px);
+  /* 備用過渡（關閉時用），開啟用 keyframes 更有彈性 */
+  transition:transform .28s cubic-bezier(.2,.9,.2,1);
+}
+.member-panel.open{
+  animation: panelDrop .34s cubic-bezier(.2,.9,.2,1) both;
+}
+
+/* ===== 膠囊收起按鈕（設計感） ===== */
+.mp-close{
+  display:inline-flex; align-items:center; gap:8px;
+  margin:2px auto 10px; padding:8px 12px;
+  border-radius:999px; border:1px solid #e5e7eb;
+  background:#fff; color:#111827; font-size:14px; font-weight:700;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.mp-close .chev{ transition: transform .2s ease; }
+.mp-close:active .chev{ transform: translateY(-2px); }
+
+/* ===== 會員面板內按鈕風格擴充 ===== */
+.btn.wide{ width:100%; text-align:center; }
+.btn.accent{
+  border-color:transparent; background:linear-gradient(135deg,#10b981,#34d399);
+  color:#fff; font-weight:700;
+}
+
+/* ===== 通用 Page 容器 ===== */
+.page.hidden{ display:none !important; }
+.page .page-bar{
+  display:flex; align-items:center; gap:8px; padding:10px 16px;
+  position:sticky; top:0; background:#f5f6f8; border-bottom:1px solid #e5e7eb;
+}
+.page .page-title{ margin:0; font-size:18px; font-weight:800; }
+.page .page-body{ padding:12px 16px 80px; }
+.lead{ color:#374151; line-height:1.5; }
+.bullets{ color:#4b5563; line-height:1.6; }
+
+/* ===== Auth 內部滑動（panel track） ===== */
+.viewport{ overflow:hidden; }
+.track{ display:flex; width:300%; transform:translateX(0); transition: transform .28s cubic-bezier(.2,.9,.2,1); }
+.panel{ width:100%; padding:12px 16px 80px; }
+.p-title{ margin:6px 2px 12px; font-size:16px; font-weight:800; }
+.divline{ display:flex; align-items:center; gap:10px; color:#6b7280; font-size:12px; margin:14px 0; }
+.divline::before, .divline::after{ content:""; flex:1; height:1px; background:#e5e7eb; }
+.socials{ display:flex; flex-direction:column; gap:8px; }
+.tiny{ color:#6b7280; font-size:12px; display:block; margin-top:8px; }
+
+/* 欄位沿用你現有的 .field 樣式即可；這裡補充寬度 */
+.page .field input, .page .field select{ width:100%; }
+
+/* 隱藏頁面不吃任何點擊/觸控事件 */
+.page.hidden { display: none !important; }
+.page[aria-hidden="true"] { pointer-events: none; }
+
+
+/* ===== Auth 美化：整體背景與容器 ===== */
+#authPage .page-bar { backdrop-filter:saturate(140%) blur(8px); }
+#authPage .page-title { letter-spacing:.5px; }
+
+#authPage .viewport{
+  padding:12px 16px 24px;
+  background:linear-gradient(180deg,#f7fafc 0%, #f5f6f8 60%, #eef2ff 100%);
+}
+
+#authPage .panel{
+  max-width:720px; margin:0 auto;
+}
+
+#authPage .panel .card{
+  background:#fff; border:1px solid #e5e7eb; border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  padding:16px; overflow:hidden;
+}
+
+/* ===== 標題、副標 ===== */
+#authPage .p-title{
+  margin:0 0 8px; font-size:18px; font-weight:800;
+}
+#authPage .p-sub{
+  margin:0 0 14px; color:#6b7280; font-size:13px;
+}
+
+/* ===== 表單欄位：浮動風格 ===== */
+#authPage .field{ position:relative; margin:12px 0; }
+#authPage .field label{
+  position:absolute; left:12px; top:10px; font-size:12px; color:#6b7280;
+  background:#fff; padding:0 6px; pointer-events:none; transition:all .15s ease;
+}
+#authPage .field input{
+  width:100%; border:1px solid #d1d5db; border-radius:12px; padding:16px 12px 12px;
+  font-size:16px; outline:none; background:#fff; transition:border-color .15s ease, box-shadow .15s ease;
+}
+#authPage .field input:focus{
+  border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+#authPage .field input::placeholder{ color:#9ca3af; }
+#authPage .field input:not(:placeholder-shown) + label,
+#authPage .field input:focus + label{
+  top:-8px; color:#2563eb; font-weight:700;
+}
+
+/* ===== 主動作按鈕 ===== */
+#authPage .btn.brand.wide{
+  height:44px; font-weight:800; letter-spacing:.3px;
+  border-radius:12px;
+}
+
+/* ===== 分隔線 ===== */
+#authPage .divline{ margin:18px 0 10px; }
+
+/* ===== SSO 按鈕（加品牌感） ===== */
+#authPage .sso{ position:relative; height:42px; border-radius:12px; }
+#authPage .sso::before{
+  content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  width:20px; height:20px; background-size:cover; background-position:center;
+}
+#authPage .sso[data-provider="google"]::before{ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%234285F4' d='M24 9.5c3.54 0 6.71 1.23 9.21 3.64l6.9-6.9C35.9 2.09 30.42 0 24 0 14.62 0 6.4 5.38 2.56 13.22l8.5 6.59C12.74 13.53 17.9 9.5 24 9.5z'/%3E%3C/svg%3E"); }
+#authPage .sso[data-provider="apple"]::before{ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23111' d='M16.365 1.43c0 1.14-.46 2.237-1.19 3.05-.76.85-2.01 1.51-3.075 1.435-.137-1.086.525-2.238 1.255-2.99.816-.86 2.234-1.49 3.01-1.495zM21.6 17.09c-.62 1.4-.904 2.024-1.692 3.27-1.1 1.74-2.655 3.91-4.59 3.93-1.71.02-2.27-1.12-4.227-1.12-1.96 0-2.57 1.1-4.26 1.14-1.855.04-3.27-1.88-4.37-3.61-2.39-3.72-4.22-10.52-1.76-15.12.99-1.9 2.76-3.1 4.67-3.13 1.83-.03 3.56 1.17 4.23 1.17.67 0 2.96-1.45 5-1.23.85.04 3.22.34 4.75 2.6-3.9 2.3-3.28 8.05.95 9.2-.2.6-.42 1.15-.71 1.77z'/%3E%3C/svg%3E"); }
+#authPage .sso[data-provider="facebook"]::before{ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%231877F2' d='M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.2 3-3.2.9 0 1.8.16 1.8.16v2h-1c-1 0-1.3.62-1.3 1.26V12h2.2l-.35 3h-1.85v7A10 10 0 0 0 22 12z'/%3E%3C/svg%3E"); }
+
+/* ===== 進度 dots（可選） ===== */
+#authPage .dots{ display:flex; justify-content:center; gap:6px; margin-top:10px; }
+#authPage .dot{ width:6px; height:6px; border-radius:999px; background:#d1d5db; }
+#authPage .dot.active{ background:#2563eb; }
+
+/* ===== 密碼顯示切換（可選：有加才會生效） ===== */
+#authPage .pwd-toggle{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  border:none; background:transparent; font-size:13px; color:#2563eb;
+}
+
+
+/* ===== Settings 美化：列表磚 ===== */
+#settingsPage .page-body{
+  max-width:760px; margin:0 auto; padding:12px 12px 80px;
+}
+
+#settingsPage .field{
+  display:flex; align-items:center; gap:12px;
+  background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+  padding:10px 12px; margin:10px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.04);
+}
+#settingsPage .field label{
+  min-width:76px; color:#374151; font-weight:700;
+}
+
+/* 按鈕型條目（條款） */
+#settingsPage .field .btn{
+  margin-left:auto; border-radius:10px; height:36px; padding:0 12px;
+}
+
+/* Select 美化：去除原生箭頭，加自訂箭頭 */
+#settingsPage select{
+  flex:1; height:38px; border:1px solid #d1d5db; border-radius:10px; padding:0 36px 0 10px;
+  appearance:none; background:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:calc(100% - 10px) 50%;
+}
+
+/* 版本欄位 */
+#settingsPage input[disabled]{
+  flex:1; height:38px; border:1px dashed #d1d5db; border-radius:10px; padding:0 10px; background:#fafafa;
+}
+
+/* 區塊標題（可選） */
+#settingsPage .group-title{
+  margin:14px 6px 6px; color:#6b7280; font-size:12px; letter-spacing:.3px;
+}
+
+/* ===== Auth: 登入/註冊 美化 ===== */
+#authPage .card {
+  border-radius: 20px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(0,0,0,.08);
+}
+
+/* 標題與副標 */
+#authPage .p-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+#authPage .p-sub {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* 輸入框：浮動標籤 */
+#authPage .field {
+  position: relative;
+  margin: 16px 0;
+}
+#authPage .field input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 18px 12px 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+#authPage .field label {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  font-size: 14px;
+  color: #9ca3af;
+  transition: all .2s ease;
+  pointer-events: none;
+}
+#authPage .field input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+#authPage .field input:focus + label,
+#authPage .field input:not(:placeholder-shown) + label {
+  top: -6px;
+  left: 10px;
+  background: #fff;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* 主要按鈕 */
+#authPage .btn.brand.wide {
+  background: linear-gradient(135deg,#2563eb,#3b82f6);
+  color:#fff;
+  border:none;
+  border-radius: 12px;
+  height: 46px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing:.5px;
+  transition: transform .1s ease, box-shadow .1s ease;
+}
+#authPage .btn.brand.wide:hover {
+  transform: translateY(-1px);
+  box-shadow:0 4px 12px rgba(37,99,235,.25);
+}
+
+/* 分隔線 */
+#authPage .divline {
+  display:flex; align-items:center; gap:8px;
+  color:#9ca3af; font-size:13px; margin:20px 0 12px;
+}
+#authPage .divline::before, #authPage .divline::after {
+  content:""; flex:1; height:1px; background:#e5e7eb;
+}
+
+/* SSO 按鈕 */
+#authPage .sso {
+  position: relative;
+  display: flex; align-items:center; justify-content:center;
+  gap:8px;
+  height: 44px; border-radius: 12px;
+  font-weight: 600; font-size: 15px;
+  background:#fff; border:1px solid #e5e7eb;
+  transition: all .15s ease;
+}
+#authPage .sso:hover {
+  background:#f9fafb;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+#authPage .sso::before {
+  content:""; position:absolute; left:14px;
+  width:20px; height:20px; background-size:contain; background-repeat:no-repeat;
+}
+#authPage .sso[data-provider="google"]::before { background-image:url('https://www.svgrepo.com/show/355037/google.svg'); }
+#authPage .sso[data-provider="apple"]::before { background-image:url('https://www.svgrepo.com/show/303128/apple-logo.svg'); }
+#authPage .sso[data-provider="facebook"]::before { background-image:url('https://www.svgrepo.com/show/349576/facebook.svg'); }
+
+/* ===== Settings 美化 ===== */
+#settingsPage .page-body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px 12px 80px;
+}
+
+#settingsPage .field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  box-shadow: 0 6px 18px rgba(0,0,0,.05);
+  border:1px solid #e5e7eb;
+  transition: transform .1s ease, box-shadow .1s ease;
+}
+#settingsPage .field:hover {
+  transform: translateY(-1px);
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+#settingsPage .field label {
+  font-weight:600;
+  color:#374151;
+}
+
+#settingsPage select, #settingsPage input[disabled] {
+  border:none;
+  background:transparent;
+  font-size:15px;
+  color:#111;
+  outline:none;
+}
+
+#settingsPage select {
+  padding-right: 20px;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 6px center;
+  background-size:16px;
+}
+
+#settingsPage .btn {
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight:600;
+}
+
+/* ===== Theme variables ===== */
+:root{
+  --bg:        #f5f6f8;
+  --surface:   #ffffff;
+  --text:      #111827;
+  --muted:     #6b7280;
+  --border:    #e5e7eb;
+  --brand:     #2563eb;
+  --brand-2:   #3b82f6;
+  --shadow:    0 8px 28px rgba(0,0,0,.08);
+}
+.theme-dark{
+  --bg:        #0b0f15;
+  --surface:   #0f1621;
+  --text:      #e5e7eb;
+  --muted:     #9ca3af;
+  --border:    #1f2937;
+  --brand:     #60a5fa;
+  --brand-2:   #93c5fd;
+  --shadow:    0 10px 28px rgba(0,0,0,.35);
+}
+
+/* 全域底色/文字色（保留你原有的，不衝突） */
+body{ background:var(--bg); color:var(--text); transition: background .2s ease, color .2s ease; }
+
+/* ===== Auth（套用變數） ===== */
+#authPage .page-bar{ backdrop-filter:saturate(140%) blur(8px); }
+#authPage .page-title{ letter-spacing:.5px; color:var(--text); }
+
+#authPage .viewport{
+  padding:12px 16px 24px;
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg) 65%, rgba(99,102,241,.08) 100%);
+}
+.theme-dark #authPage .viewport{
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg) 65%, rgba(99,102,241,.14) 100%);
+}
+
+#authPage .panel{ max-width:720px; margin:0 auto; }
+#authPage .panel .card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  box-shadow:var(--shadow); padding:16px; overflow:hidden;
+}
+#authPage .p-title{ margin:0 0 8px; font-size:18px; font-weight:800; color:var(--text); }
+#authPage .p-sub{ margin:0 0 14px; color:var(--muted); font-size:13px; }
+
+#authPage .field{ position:relative; margin:12px 0; }
+#authPage .field input{
+  width:100%; border:1px solid var(--border); border-radius:12px; padding:16px 12px 12px;
+  font-size:16px; outline:none; background:var(--surface); color:var(--text);
+  transition:border-color .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
+}
+#authPage .field label{
+  position:absolute; left:12px; top:10px; font-size:12px; color:var(--muted);
+  background:var(--surface); padding:0 6px; pointer-events:none; transition:all .15s ease;
+}
+#authPage .field input:focus{ border-color:var(--brand); box-shadow:0 0 0 3px color-mix(in oklab, var(--brand) 20%, transparent); }
+#authPage .field input:not(:placeholder-shown)+label,
+#authPage .field input:focus+label{ top:-8px; color:var(--brand); font-weight:700; }
+
+#authPage .btn.brand.wide{
+  height:44px; font-weight:800; letter-spacing:.3px; border-radius:12px; color:#fff; border:none;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  transition: transform .1s ease, box-shadow .1s ease, background .2s ease;
+}
+#authPage .btn.brand.wide:hover{
+  transform: translateY(-1px);
+  box-shadow:0 4px 12px color-mix(in oklab, var(--brand) 35%, transparent);
+}
+
+#authPage .divline{ display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; margin:14px 0; }
+#authPage .divline::before, #authPage .divline::after{ content:""; flex:1; height:1px; background:var(--border); }
+
+#authPage .sso{
+  position:relative; height:42px; border-radius:12px;
+  background:var(--surface); border:1px solid var(--border); color:var(--text);
+  transition: all .15s ease;
+}
+#authPage .sso:hover{ box-shadow:0 2px 8px rgba(0,0,0,.08); }
+#authPage .sso::before{ content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%); width:20px; height:20px; background-size:cover; background-position:center; }
+
+/* ===== Settings（套用變數） ===== */
+#settingsPage .page-body{ max-width:760px; margin:0 auto; padding:12px 12px 80px; }
+#settingsPage .field{
+  display:flex; align-items:center; gap:12px;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:10px 12px; margin:10px 0; box-shadow:var(--shadow);
+  transition: transform .1s ease, box-shadow .1s ease, background .2s ease, border-color .2s ease;
+}
+#settingsPage .field:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+#settingsPage .field label{ min-width:76px; color:var(--text); font-weight:700; }
+#settingsPage select, #settingsPage input[disabled]{ flex:1; background:transparent; color:var(--text); }
+#settingsPage select{
+  border:1px solid var(--border); border-radius:10px; height:38px; padding:0 36px 0 10px; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:calc(100% - 10px) 50%;
+}
+#settingsPage input[disabled]{ border:1px dashed var(--border); border-radius:10px; height:38px; padding:0 10px; background:color-mix(in oklab, var(--surface) 80%, #ffffff 20%); }
+#settingsPage .btn{ border-radius:10px; }
+
+
+/* 輸入框內文字 */
+#authPage .field input {
+  color: var(--text); /* 使用主文字色 */
+}
+
+/* placeholder 顏色 */
+#authPage .field input::placeholder {
+  color: var(--muted);
+}
+
+/* label 初始顏色 */
+#authPage .field label {
+  color: var(--muted);
+  background: var(--surface);
+}
+
+/* 聚焦 / 有值時 label 上浮顏色 */
+#authPage .field input:focus + label,
+#authPage .field input:not(:placeholder-shown) + label {
+  color: var(--brand);
+}
+
+/* ===== Settings 下拉式選單（淺色模式） ===== */
+#settingsPage select {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  height: 38px;
+  padding: 0 36px 0 10px;
+  appearance: none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  background-size:16px;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+/* ===== 深色模式覆蓋 ===== */
+.theme-dark #settingsPage select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  /* 下拉箭頭顏色換淺灰 */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* ===== Settings 下拉式選單（統一樣式，避免被覆蓋重置） ===== */
+#settingsPage select {
+  color: var(--text);
+  background-color: var(--surface); /* 用 background-color，避免重置其它屬性 */
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  height: 38px;
+  padding: 0 36px 0 10px;
+  appearance: none;
+  -webkit-appearance: none; /* iOS/Safari */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;              /* ← 重要 */
+  background-position: right 10px center;    /* ← 重要 */
+  background-size: 16px;                     /* ← 重要 */
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+
+/* ===== 深色模式覆蓋：不要用 background: 縮寫 ===== */
+.theme-dark #settingsPage select {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;              /* ← 再指定一次 */
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+#settingsPage select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 18%, transparent);
+  border-color: var(--brand);
+}
+
+/* 頁面標題 */
+.page-bar .page-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .5px;
+}
+
+/* 深色模式下，標題亮一點 */
+.theme-dark .page-bar .page-title {
+  color: #f9fafb;
+}
+
+#settingsPage .group-title {
+  margin: 20px 6px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: .8px;
+}
+
+/* ===== 共通：字體/色彩 ===== */
+:root{
+  --brand:#16a34a;       /* 森林綠 */
+  --brand-2:#22c55e;
+  --heart:#ef4444;       /* 收藏紅 */
+  --card-shadow:0 6px 16px rgba(0,0,0,.07);
+  --card-shadow-hover:0 10px 26px rgba(0,0,0,.12);
+}
+body{ font-family: "Noto Sans","Source Han Sans", system-ui, -apple-system, "Segoe UI", Roboto, "PingFang TC","Microsoft JhengHei",sans-serif; }
+
+/* ===== Chip 樣式 ===== */
+.chips{ display:flex; flex-wrap:wrap; gap:6px; }
+.chip{
+  display:inline-flex; align-items:center;
+  padding:4px 8px; border-radius:999px; font-size:12px;
+  background:#eef6f0; color:#0f5132; border:1px solid #d7f1df;
+}
+.theme-dark .chip{ background:rgba(34,197,94,.16); color:#bff3cf; border-color:rgba(34,197,94,.22); }
+.chip.brand{ background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#fff; border-color:transparent; }
+
+/* ===== Badge（最新/熱點） ===== */
+.badge{ display:inline-flex; align-items:center; gap:4px;
+  height:22px; padding:0 8px; border-radius:999px; font-size:12px; font-weight:700;
+  backdrop-filter:saturate(140%) blur(6px);
+  background:rgba(0,0,0,.36); color:#fff; border:1px solid rgba(255,255,255,.25);
+}
+.badge.new{ background:rgba(59,130,246,.55); }
+.badge.hot{ background:rgba(244,63,94,.60); }
+
+/* ===== 收藏（心形） ===== */
+.heart{
+  width:34px; height:34px; border-radius:999px; display:grid; place-items:center;
+  background:rgba(255,255,255,.86); border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 4px 12px rgba(0,0,0,.12); cursor:pointer;
+  transition:transform .12s ease;
+}
+.theme-dark .heart{ background:rgba(15,22,33,.86); border-color:rgba(255,255,255,.12); }
+.heart svg{ width:18px; height:18px; fill:none; stroke:#111827; stroke-width:2; }
+.heart.active svg{ fill:var(--heart); stroke:var(--heart); }
+.heart:active{ transform:scale(.92); }
+@keyframes pop { 0%{ transform:scale(.9);} 60%{transform:scale(1.08);} 100%{transform:scale(1);} }
+.heart.pop{ animation:pop .22s ease; }
+
+/* ========== ① 首頁卡片（2 欄 4:3 大圖） ========== */
+.grid-2{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; padding:0 16px;
+}
+.card-mag{
+  position:relative; overflow:hidden; border-radius:16px; background:var(--surface);
+  box-shadow:var(--card-shadow); transition:box-shadow .18s ease, transform .18s ease;
+}
+.card-mag:hover{ box-shadow:var(--card-shadow-hover); transform:translateY(-2px); }
+.card-mag .media{
+  aspect-ratio:4/3; background:#e5e7eb; background-size:cover; background-position:center;
+  position:relative;
+}
+.card-mag .media .badges{
+  position:absolute; left:8px; top:8px; display:flex; gap:6px; z-index:2;
+}
+.card-mag .media .heart{ position:absolute; right:8px; top:8px; z-index:2; }
+
+.card-mag .info{
+  position:relative; margin-top:-14px; /* 浮在圖像下方 */
+  background:#fff; border-radius:14px; padding:10px 12px 12px; margin-inline:8px; z-index:3;
+  box-shadow:0 6px 14px rgba(0,0,0,.06); border:1px solid #eef2f7;
+}
+.theme-dark .card-mag .info{ background:#0f1621; border-color:#1f2937; }
+.card-mag .title{ font-weight:800; font-size:15px; line-height:1.24; margin-bottom:6px; color:var(--text); }
+.card-mag .meta{ display:flex; gap:8px; align-items:center; color:#6b7280; font-size:12px; margin-bottom:6px; }
+.card-mag .chips{ margin-top:2px; }
+
+/* ========== ② 城市頁卡片（一欄 100px） ========== */
+.list-1{ display:flex; flex-direction:column; gap:12px; padding:0 16px; }
+.card-dir{
+  display:grid; grid-template-columns:84px 1fr 56px; gap:10px; align-items:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px;
+  box-shadow:var(--card-shadow); transition:box-shadow .18s ease, transform .18s ease;
+}
+.card-dir:hover{ box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
+.card-dir .thumb{
+  width:72px; height:72px; border-radius:12px; background:#e5e7eb; background-size:cover; background-position:center; position:relative;
+}
+.card-dir .thumb .corner{
+  position:absolute; left:-6px; top:-6px; background:linear-gradient(135deg,#059669,#34d399);
+  color:#fff; font-size:11px; padding:2px 6px; border-radius:8px;
+}
+.card-dir .content .title{ font-weight:800; font-size:15px; color:var(--text); margin-bottom:6px; }
+.card-dir .content .sub{ font-size:12px; color:#6b7280; margin-bottom:6px; }
+.card-dir .content .chips{ gap:6px; }
+
+.card-dir .actions{ display:flex; flex-direction:column; gap:8px; align-items:center; }
+.icon-btn{
+  width:36px; height:36px; display:grid; place-items:center; border-radius:12px;
+  background:#fff; border:1px solid #e5e7eb; box-shadow:0 4px 10px rgba(0,0,0,.06); cursor:pointer;
+  transition:transform .12s ease;
+}
+.theme-dark .icon-btn{ background:#0f1621; border-color:#1f2937; }
+.icon-btn:active{ transform:scale(.94); }
+.icon-btn svg{ width:18px; height:18px; stroke:#111827; stroke-width:2; fill:none; }
+.icon-btn.fav.active svg{ fill:var(--heart); stroke:var(--heart); }
+.icon-btn.map svg{ stroke:var(--brand); }
+
+/* ===== 可點整卡（避免遮擋） ===== */
+.clickable{ cursor:pointer; }
+
+
+/* ===== 城市頁：快速篩選列 ===== */
+.city-qf{
+  position:sticky; top:0; z-index:15;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:8px 16px; background:var(--bg); border-bottom:1px solid var(--border);
+}
+.chips-row{
+  display:flex; align-items:center; gap:8px; overflow:auto; -webkit-overflow-scrolling:touch;
+}
+.qchip{
+  height:28px; padding:0 12px; border-radius:999px; font-size:12px; font-weight:700;
+  border:1px solid var(--border); background:var(--surface); color:var(--text);
+  white-space:nowrap; cursor:pointer; transition:all .15s ease;
+}
+.qchip.active{ background:var(--brand); color:#fff; border-color:transparent; }
+.qchip:active{ transform:scale(.96); }
+
+.btn.icon{
+  display:flex; align-items:center; gap:6px; height:28px; padding:0 10px; border-radius:999px;
+  border:1px solid var(--border); background:var(--surface); color:var(--text);
+}
+
+/* ===== 底部抽屜（Bottom Sheet） ===== */
+.sheet-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.35); z-index: 45; opacity:0; transition:opacity .2s ease;
+}
+.sheet-backdrop.show{ opacity:1; }
+.sheet{
+  position:fixed; left:0; right:0; bottom:0; height:70vh; max-height:75vh; z-index: 50;
+  background:var(--surface); border-top-left-radius:16px; border-top-right-radius:16px;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.25);
+  transform: translateY(100%); transition: transform .25s ease;
+  display:flex; flex-direction:column;
+}
+.sheet.open{ transform: translateY(0%); }
+.sheet-handle{
+  width:48px; height:5px; border-radius:999px; background:#cbd5e1; margin:10px auto;
+}
+.sheet-body{ padding:8px 16px 80px; overflow:auto; }
+.sheet-actions{
+  position:absolute; left:0; right:0; bottom:0; padding:10px 16px; display:flex; gap:10px;
+  border-top:1px solid var(--border); background:var(--surface);
+}
+.sheet-actions .btn{ flex:1; height:42px; border-radius:12px; }
+.sheet-actions .btn.brand{ background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#fff; border:none; }
+
+/* 群組標題與選項 */
+.g-title{ font-size:12px; color:var(--muted); margin:10px 2px 6px; font-weight:800; letter-spacing:.3px; }
+.opt-grid{ display:flex; flex-wrap:wrap; gap:8px; }
+.opt{ padding:8px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:13px; cursor:pointer; }
+.opt.active{ background:color-mix(in oklab, var(--brand) 16%, transparent); border-color:var(--brand); color:var(--brand); }
+.opt.radio .opt{} /* 占位：需要可客製 */
+
+/* ==== Bottom Sheet（手機詳情） ==== */
+.hl-sheet-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:70; opacity:0; transition:opacity .2s; }
+.hl-sheet-backdrop.show{ opacity:1; }
+.hl-sheet{
+  position:fixed; left:0; right:0; bottom:0; height:60vh; max-height:88vh;
+  background:var(--surface); border-top-left-radius:16px; border-top-right-radius:16px;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.25);
+  transform: translateY(100%); transition: transform .28s ease;
+  z-index: 80; display:flex; flex-direction:column;
+}
+.hl-sheet.open{ transform: translateY(0%); }
+.hl-handle{ width:56px; height:6px; border-radius:999px; background:#cbd5e1; margin:10px auto; }
+.hl-sheet-body{ padding:8px 16px 24px; overflow:auto; }
+
+/* 內容區塊 */
+.hl-media-16x9{ width:100%; aspect-ratio:16/9; background:#e5e7eb; background-size:cover; background-position:center; border-radius:12px; }
+.theme-dark .hl-media-16x9{ background:#1f2937; }
+.hl-title-row{ display:flex; align-items:center; justify-content:space-between; margin-top:10px; gap:12px; }
+.hl-title{ font-size:20px; font-weight:900; }
+.hl-rating{ font-weight:800; color:#111; }
+.theme-dark .hl-rating{ color:#e5e7eb; }
+.hl-actions{ display:flex; align-items:center; gap:12px; margin:10px 0; }
+.hl-action{ display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 10px; border-radius:12px; border:1px solid var(--border); background:var(--surface); }
+.hl-contact{ display:flex; flex-direction:column; gap:6px; margin:8px 0 4px; }
+.hl-contact-item{ color:var(--text); text-decoration:none; }
+.hl-section{ margin-top:16px; }
+.hl-openstate{ font-weight:800; }
+.hl-desc{ color:var(--text); opacity:.9; line-height:1.6; }
+
+/* 走馬燈 */
+.hl-gallery{ display:flex; gap:8px; overflow:auto; -webkit-overflow-scrolling:touch; }
+.hl-gallery .ph{ width:180px; aspect-ratio:4/3; background:#e5e7eb; border-radius:12px; background-size:cover; background-position:center; }
+.theme-dark .hl-gallery .ph{ background:#1f2937; }
+
+/* 附近推薦（小卡） */
+.hl-nearby{ display:flex; gap:10px; overflow:auto; }
+.hl-near{ min-width:180px; border:1px solid var(--border); border-radius:12px; box-shadow:var(--card-shadow); background:var(--surface); }
+.hl-near .ph{ width:100%; aspect-ratio:4/3; border-top-left-radius:12px; border-top-right-radius:12px; background-size:cover; background-position:center; }
+.hl-near .info{ padding:8px 10px; }
+.hl-near .t{ font-weight:800; font-size:14px; }
+
+/* ==== 桌面詳情頁 ==== */
+.hl-detail-grid{ display:grid; grid-template-columns: 1.7fr 1fr; gap:16px; padding:12px 16px 80px; }
+.hl-banner{ width:100%; aspect-ratio:16/9; background:#e5e7eb; border-radius:12px; background-size:cover; background-position:center; }
+.theme-dark .hl-banner{ background:#1f2937; }
+.hl-block{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; margin-top:12px; box-shadow:var(--card-shadow); }
+@media (max-width: 900px){
+  #detailPage{ display:none !important; } /* 手機只用 Sheet */
+}
+
+/* 放大/縮小按鈕 */
+.hl-expand-btn{
+  border:none; background:none; cursor:pointer;
+  font-size:18px; line-height:1;
+  padding:4px 6px; border-radius:6px;
+  color:var(--text);
+}
+.hl-expand-btn:hover{ background:rgba(0,0,0,.06); }
+.theme-dark .hl-expand-btn:hover{ background:rgba(255,255,255,.08); }
+
+/* Sheet 全屏模式 */
+.hl-sheet.full{
+  height:100vh !important;
+  max-height:100vh !important;
+  border-radius:0;
+}
+
+/* 浮動的放大/縮小按鈕 */
+.hl-expand-btn{
+  position:absolute; top:12px; right:12px;
+  width:36px; height:36px; border:none;
+  border-radius:50%; background:var(--surface);
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+  font-size:18px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:5;
+}
+.hl-expand-btn:hover{ background:var(--brand); color:#fff; }
+
+.cards.list-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  padding:16px;
+}
+.card-mag .media{ aspect-ratio: 4 / 3; background-size:cover; background-position:center; border-radius:12px; }
+
+.segmented{
+  display:flex; gap:0;
+  border:1px solid var(--divider, #E0E0E0);
+  border-radius:10px; overflow:hidden;
+  background:var(--card-bg, #fff);
+}
+.seg-btn{
+  flex:1; padding:10px 12px; border:0; background:transparent;
+  color:var(--text-main,#000); font-weight:700; cursor:pointer;
+}
+.seg-btn + .seg-btn{ border-left:1px solid var(--divider,#E0E0E0); }
+.seg-btn.active{ background:var(--chip-bg, #e6f2ea); color:var(--chip-text,#000); }
+
+[data-theme="dark"] .segmented{
+  border-color:#333333; background:#1E1E1E;
+}
+[data-theme="dark"] .seg-btn{ color:#ffffff; }
+[data-theme="dark"] .seg-btn + .seg-btn{ border-left:1px solid #333333; }
+
+/* ===== 設定頁寬度優化 ===== */
+.page { padding: 12px 16px; }  /* 行動端邊距 */
+.page .page-body { margin-top: 12px; }
+
+/* 內層容器：行動端 100%，大螢幕置中不超過 720px */
+.settings-inner {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* field 滿寬排列 */
+.field { margin-bottom: 14px; }
+.field .btn.wide,
+.field select,
+.field input,
+.segmented { width: 100%; }
+
+/* Segmented 看起來更像切換條 */
+.segmented{
+  display:flex;
+  border:1px solid var(--divider, #E0E0E0);
+  border-radius: 10px;
+  overflow:hidden;
+  background: var(--card-bg, #fff);
+}
+.seg-btn{
+  flex:1; padding:10px 12px; border:0;
+  background:transparent; color:var(--text-main,#000);
+  font-weight:700; cursor:pointer;
+}
+.seg-btn + .seg-btn{ border-left:1px solid var(--divider,#E0E0E0); }
+.seg-btn.active{ background:var(--chip-bg, #e6f2ea); color:var(--chip-text,#000); }
+
+/* ===== 主題變數：只在 .theme-scope 作用，不影響整個 body ===== */
+.theme-scope{
+  --bg-color: #ffffff;
+  --text-main: #000000;
+  --text-sub: #666666;
+  --card-bg: #ffffff;
+  --divider: #E0E0E0;
+  --border-color: #E6E6E6;
+  --card-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  --chip-bg: #E6F2EA;    /* 你品牌主色的淡色版 */
+  --chip-text: #073B2B;
+  --icon-fav: #E53935;
+}
+
+/* 深色：僅 .theme-scope[data-theme="dark"] 會生效 */
+.theme-scope[data-theme="dark"]{
+  --bg-color: #121212;        /* or #1E1E1E */
+  --text-main: #FFFFFF;
+  --text-sub: #AAAAAA;
+  --card-bg: #1E1E1E;
+  --divider: #333333;
+  --border-color: #333333;
+  --card-shadow: none;         /* 深色少陰影，靠邊框分層 */
+  --chip-bg: #0F3D2F;          /* 主色深色版 */
+  --chip-text: #FFFFFF;
+  --icon-fav: #E53935;         /* 不變 */
+}
+
+/* 讓 appRoot 使用變數 */
+.hl-app{
+  background: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* 卡片、元件繫結到變數（若你此前沒綁） */
+.card, .card-mag, .card-dir{
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+.card .sub, .card-mag .sub, .card-dir .sub { color: var(--text-sub); }
+
+.divider, .field + .field { border-top: 1px solid var(--divider); }
+
+[data-theme="dark"] select,
+.theme-scope[data-theme="dark"] select,
+.theme-scope[data-theme="dark"] option {
+  background: #1E1E1E;
+  color: #FFFFFF;
+  border-color: #333333;
+}
+
+/* 你的導航 / 收藏按鈕若用 .icon-btn */
+.icon-btn.fav.active svg path{ fill: var(--icon-fav); }
+
+html[data-theme="dark"],
+body[data-theme="dark"] {
+  background: #121212;   /* 深色底 */
+  color: #FFFFFF;        /* 主文字 */
+}
+
+.page,
+.member-panel,
+.hl-sheet {
+  background: var(--bg-color); /* 用變數，會變成 #121212/#1E1E1E */
+}
+
+/* ===============================
+   Heriland Dark Mode – Full Sweep
+   直接覆蓋全部主要版塊與元件
+   =============================== */
+
+/* 變數（淺色） */
+:root{
+  --bg: #FFFFFF;
+  --bg-elev: #FFFFFF;         /* 卡片、面板 */
+  --bg-alt: #F6F7F8;          /* 區段底色、toolbar */
+  --text: #000000;
+  --text-sub: #666666;
+  --divider: #E0E0E0;
+  --border: #E6E6E6;
+  --shadow: 0 2px 6px rgba(0,0,0,.06);
+  --chip-bg: #E6F2EA;         /* 主色淡色 */
+  --chip-text: #073B2B;
+  --brand: #0F7A5F;           /* 森林綠 */
+  --fav: #E53935;
+}
+
+/* 變數（深色） */
+:root[data-theme="dark"]{
+  --bg: #121212;              /* 整體背景 */
+  --bg-elev: #1E1E1E;         /* 卡片、面板、表單底 */
+  --bg-alt: #171717;          /* 次要底色/toolbar */
+  --text: #FFFFFF;
+  --text-sub: #AAAAAA;
+  --divider: #333333;
+  --border: #333333;
+  --shadow: none;             /* 深色少陰影，靠邊框 */
+  --chip-bg: #0F3D2F;         /* 主色深版 */
+  --chip-text: #FFFFFF;
+}
+
+/* ==== 全域底與文字 ==== */
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ==== 主要容器/區塊 ==== */
+header, .topbar, .page, .list-wrap, .cities, .toolbar, .filters,
+.member-panel, .hl-sheet, .sheet, .modal, .auth-card,
+#homeCats, #homeCities, #homeList, #cityPage, #settingsPage {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 頁面 bar / 卡片群組底（有提升感） */
+.page-bar, .group-title, .field, .card, .card-mag, .card-dir,
+.segmented, .auth-card, .member-panel .panel,
+.box, .chip-row {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 12px;
+}
+
+/* 標題、次要文字、連結 */
+h1,h2,h3,h4 { color: var(--text); }
+.muted, .sub, .desc, small, .hint { color: var(--text-sub); }
+a { color: var(--brand); }
+
+/* ==== 商家卡片（首頁大圖）==== */
+.card-mag .media {            /* 只顯示圖，不蓋色 */
+  background-color: #000;     /* 圖片未載入時的底色 */
+}
+.card-mag .meta {             /* 圖下白/黑底資訊區 */
+  background: var(--bg-elev);
+  color: var(--text);
+  border-top: 1px solid var(--border);
+}
+.card-mag .title { color: var(--text); }
+.card-mag .sub   { color: var(--text-sub); }
+
+.badge { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
+.badge.hot { background: #FFEEE8; color: #C62828; border-color: #FFCCBC; }
+:root[data-theme="dark"] .badge.hot { background: #3A1F1A; color: #FF8A65; border-color:#5A332C; }
+
+/* ==== 城市頁卡片（單欄目錄） ==== */
+.card-dir { display:flex; background: var(--bg-elev); }
+.card-dir .content .title{ color: var(--text); }
+.card-dir .content .sub  { color: var(--text-sub); }
+.card-dir .thumb{ background-color:#000; } /* 圖片底色 */
+.card-dir .actions .icon-btn{ background: transparent; border:1px solid var(--border); }
+.card-dir .actions .icon-btn:hover{ background: var(--bg-alt); }
+
+/* ==== Chips / 標籤 ==== */
+.chip{
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.filter-chips .chip.active{ background: var(--brand); color:#fff; }
+
+/* ==== 表單、選單、按鈕 ==== */
+input, select, textarea {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+:root[data-theme="dark"] select, :root[data-theme="dark"] option{
+  background: var(--bg-elev);
+  color: var(--text);
+}
+.btn { background: var(--bg-elev); color: var(--text); border:1px solid var(--border); }
+.btn.primary { background: var(--brand); color:#fff; border-color: var(--brand); }
+.btn.ghost { background: transparent; }
+.btn:hover{ filter: brightness(1.05); }
+
+/* Segmented */
+.segmented { background: var(--bg-elev); border-color: var(--border); }
+.seg-btn { color: var(--text); }
+.seg-btn + .seg-btn{ border-left:1px solid var(--divider); }
+.seg-btn.active{ background: var(--chip-bg); color: var(--chip-text); }
+
+/* 工具列 / 篩選列 */
+.toolbar{ background: var(--bg-alt); border:1px solid var(--border); }
+.filters{ background: var(--bg-elev); border:1px solid var(--border); }
+
+/* 會員面板 / 底部抽屜 */
+.member-panel, .hl-sheet, .modal, .sheet{
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* 分隔線 */
+.divider, .hr, .field + .field { border-top:1px solid var(--divider); }
+
+/* 收藏顏色 */
+.icon-btn.fav.active, .icon-fav.active { color: var(--fav); }
+.icon-btn svg path { transition: fill .2s, stroke .2s; }
+
+/* 讓所有標題列、提示區等都吃變數 */
+.sec-title, .tip, .notice { color: var(--text-sub); }
+
+/* ============ A) 設定頁視覺修正 ============ */
+/* 頂部 page-bar、群組標題、field 容器 */
+.page-bar,
+.group-title,
+.field {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.group-title { border: 0; background: transparent; color: var(--text-sub); }
+
+/* 寬按鈕、ghost 狀態在深色的對比 */
+.btn.wide { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
+.btn.ghost { background: transparent; color: var(--text); border: 1px dashed var(--border); }
+.btn.primary { background: var(--brand); color:#fff; border-color: var(--brand); }
+.btn:hover { filter: brightness(1.05); }
+
+/* Segmented 的外框與內部分隔線 */
+.segmented { background: var(--bg-elev); border: 1px solid var(--border); }
+.seg-btn + .seg-btn { border-left: 1px solid var(--divider); }
+.seg-btn.active { background: var(--chip-bg); color: var(--chip-text); }
+
+/* 下拉在深色時 */
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] option {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* ============ B) 詳情頁右上角浮動按鈕（白色圓） ============ */
+/* 你的 class 可能是 .fab / .floating / .detail-actions，三選一就會吃到 */
+.fab, .floating, .detail-actions .fab {
+  background: var(--bg-elev) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+/* ============ C) 首頁分類大圖卡片 ============ */
+/* 1) 圖片沒載入時不要出現淺藍：給穩定的暗底 */
+.cat-card .media,
+.card-mag .media,
+.card-dir .thumb {
+  background-color: #2a2a2a; /* 可靠深色底 */
+}
+
+/* 2) 讓卡片上的「吃/喝/玩/樂」文字在深色也清楚 */
+.cat-card .media .label,
+.cat-card .title {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+/* 3) 大圖卡片加上微漸層覆蓋，提升可讀性（不影響原圖） */
+.card-mag .media::after,
+.cat-card .media::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,.35) 100%);
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+/* 4) 卡片下方資訊區塊用變數底色（避免亮白） */
+.card-mag .meta {
+  background: var(--bg-elev);
+  color: var(--text);
+  border-top: 1px solid var(--border);
+}
+.card-mag .title { color: var(--text); }
+.card-mag .sub   { color: var(--text-sub); }
+
+/* 5) 熱點/最新徽章在深色對比 */
+.badge { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
+.badge.hot { background:#FFEEE8; color:#C62828; border-color:#FFCCBC; }
+:root[data-theme="dark"] .badge.hot { background:#3A1F1A; color:#FF8A65; border-color:#5A332C; }
+
+/* ============ D) 城市圓頭像太白 ============ */
+.city-row .city .avatar,
+.cities .city .avatar {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+}
+.cities .name { color: var(--text-sub); }
+
+/* ============ E) 卡片/列表統一基底與文字 ============ */
+.card, .card-mag, .card-dir, .list-wrap, .filters, .toolbar {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.card .sub, .card-dir .sub { color: var(--text-sub); }
+
+/* 工具列／篩選條底色 */
+.toolbar { background: var(--bg-alt); }
+.filters { background: var(--bg-elev); }
+
+/* 收藏顏色 */
+.icon-btn.fav.active, .icon-fav.active { color: var(--fav); }
+
+/* ========== 1. 篩選區塊邊框消除 (深色) ========== */
+:root[data-theme="dark"] #activeFilters,
+:root[data-theme="dark"] .filters,
+:root[data-theme="dark"] .toolbar {
+  background: var(--bg-elev);
+  border: none;         /* 移除邊框 */
+  color: var(--text);
+}
+
+/* ========== 2. 會員中心 (panel) ========== */
+.member-panel, #memberPanel {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.member-panel .btn {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border); /* 改實線 */
+}
+:root[data-theme="dark"] .member-panel .btn {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border); /* 虛線 → 改實線 */
+}
+
+/* ========== 3. 頂部區塊 & 設定頁卡片 ========== */
+/* 頂部 Heriland bar */
+header, .topbar, .page-bar {
+  background: var(--bg-elev);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+/* 設定頁卡片/field 白底修正 */
+#settingsPage .field,
+#settingsPage .btn,
+#settingsPage select {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+#settingsPage label {
+  color: var(--text); /* 修正白字消失 */
+}
+
+/* 設定的「返回箭頭」 */
+#settingsPage .back-btn {
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+
+:root{
+  --brand:#0F7A5F;
+  --vip-grad-from:#121212;
+  --vip-grad-to:#1E1E1E;
+  --vip-glass: rgba(255,255,255,.08);
+  --vip-stroke: rgba(255,255,255,.18);
+  /* 你已有的全站變數：--bg, --bg-elev, --text, --text-sub, --border, --divider ... */
+}
+
+/* ===== VIP Drawer ===== */
+.vip-drawer{
+  position: fixed; inset: 0 0 0 auto; width:100vw; height:100vh;
+  transform: translateX(100%);
+  transition: transform .38s cubic-bezier(.22,.61,.36,1);
+  z-index: 9999; color:#fff; border:none; overscroll-behavior: contain;
+  background: radial-gradient(1200px 800px at 100% 0%, rgba(15,122,95,.18), transparent 50%),
+              linear-gradient(135deg, var(--vip-grad-from), var(--vip-grad-to));
+}
+.vip-drawer.open{ transform: translateX(0); }
+.vip-drawer.dragging{ transition:none; }
+.vip-drawer[aria-hidden="true"]{ pointer-events:none; }
+
+/* ===== 玻璃霧化把手（小巧高級版） ===== */
+.vip-handle{
+  /* 尺寸更小、更精緻 */
+  width: 44px;
+  height: 64px;
+  padding: 0;
+  border: none;                 /* ← 取消框線 */
+  border-radius: 16px;          /* 圓角但不誇張 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 玻璃霧化：無動畫、無邊框，只用柔和光影 */
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.22),         /* 外陰影：浮起感 */
+    inset 0 1px 0 rgba(255,255,255,0.22);/* 內側高光：玻璃邊緣感 */
+
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.vip-handle:focus { outline: none; }
+.vip-handle:focus-visible{
+  /* 聚焦時微亮，但不是明顯框線 */
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 0 0 3px rgba(255,255,255,0.18);
+}
+
+.vip-handle .arrow{
+  font-size: 22px;              /* 箭頭縮小 */
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.55));
+  pointer-events: none;
+}
+
+/* 右側入口（面板外、永遠可見） */
+.vip-handle.open-trigger{
+  position: fixed;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100000;
+  border-radius: 16px 0 0 16px;
+}
+
+/* 左側收回（面板內） */
+.vip-handle.close-trigger{
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100001;
+  border-radius: 0 16px 16px 0;
+}
+
+/* 小小的 “VIP” 標籤（可留可去，不要就刪 HTML 那個 <span class="label">） */
+.vip-handle .label{
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  opacity: .85;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  pointer-events: none;
+}
+
+/* 淺色主題也維持高級感（玻璃白、深字） */
+html[data-theme="light"] .vip-handle{
+  background: rgba(255,255,255,0.75);
+  color: #111;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+html[data-theme="light"] .vip-handle:focus-visible{
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 0 0 3px rgba(0,0,0,0.08);
+}
+
+/* 移除先前的呼吸動畫（保證無動畫） */
+html:not(.vip-open) .vip-handle.open-trigger{ animation: none !important; }
+
+/* 內層 */
+.vip-wrap{ position:relative; height:100%; padding:20px 20px 32px; display:flex; flex-direction:column; gap:18px; }
+.vip-close{ position:absolute; top:16px; right:16px; width:40px; height:40px; border-radius:999px;
+  border:1px solid var(--vip-stroke); background:rgba(255,255,255,.08); backdrop-filter: blur(10px); color:#fff; }
+
+/* 玻璃卡片 */
+.glass{ background: var(--vip-glass); border:1px solid var(--vip-stroke);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.35); }
+
+/* 會員卡 */
+.vip-card{ padding:18px; min-height:160px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; }
+.vip-card::after{ content:""; position:absolute; inset:auto -20% -30% -20%; height:110px;
+  background: radial-gradient(300px 120px at 80% 50%, rgba(15,122,95,.45), transparent 60%); pointer-events:none; }
+.vip-card__row{ display:flex; justify-content:space-between; align-items:center; }
+.vip-brand{ font-weight:800; letter-spacing:.5px; font-size:20px; }
+.vip-tier{ padding:4px 10px; border-radius:999px; border:1px solid var(--vip-stroke); }
+.vip-id{ opacity:.8; font-size:12px; }
+.vip-points{ display:flex; align-items:baseline; gap:8px; }
+.vip-points .num{ font-size:36px; font-weight:800; }
+.vip-points .lbl{ opacity:.85; }
+.vip-meta{ display:flex; gap:14px; opacity:.8; font-size:12px; }
+
+/* 入口 */
+.vip-actions{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:4px; }
+.vip-act{ display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:16px 10px; text-decoration:none; color:#fff; border-radius:14px; min-height:92px; }
+.vip-act .i{ font-size:22px; margin-bottom:6px; }
+.vip-act span{ font-weight:600; }
+
+/* 進場動畫 */
+@keyframes fadeUp { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+.fade-up{ animation: fadeUp .42s ease-out both; }
+.delay-1{animation-delay:.05s}.delay-2{animation-delay:.10s}.delay-3{animation-delay:.15s}
+.delay-4{animation-delay:.20s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.30s}
+
+/* 淺色也維持 VIP 深色質感 */
+html[data-theme="light"] .vip-drawer{
+  background: radial-gradient(1200px 800px at 100% 0%, rgba(15,122,95,.14), transparent 50%),
+              linear-gradient(135deg,#101010,#1b1b1b);
+}
+
+/* ===== Auth Bottom Sheet ===== */
+.hl-sheet{position:fixed;left:0;right:0;bottom:0;transform:translateY(100%);
+  transition:transform .32s ease; z-index:10000; background:var(--bg-elev); color:var(--text);
+  border-top:1px solid var(--border); box-shadow:0 -12px 30px rgba(0,0,0,.25); border-radius:16px 16px 0 0;}
+.hl-sheet.open{transform:translateY(0);}
+.hl-sheet .sheet-body{padding:16px 16px 24px;}
+.hl-sheet .sheet-title{margin:2px 0 10px; font-size:18px; color:var(--text);}
+.hl-sheet .sheet-close{position:absolute; right:12px; top:10px; width:36px; height:36px; border-radius:999px;
+  border:1px solid var(--border); background:var(--bg-elev); color:var(--text);}
+.field{display:flex; flex-direction:column; gap:6px; margin:12px 0;}
+.field .label{font-size:12px; color:var(--text-sub);}
+.field input{height:44px; border-radius:10px; border:1px solid var(--border); background:var(--bg-elev); color:var(--text); padding:0 12px;}
+.btn.wide{width:100%; height:44px; border-radius:12px; border:1px solid var(--border); background:var(--bg-elev); color:var(--text);}
+.btn.primary{background:var(--brand); color:#fff; border-color:var(--brand);}
+.or-line{display:flex; align-items:center; gap:12px; margin:14px 0;}
+.or-line::before,.or-line::after{content:""; flex:1; height:1px; background:var(--divider);}
+.or-line span{color:var(--text-sub); font-size:12px;}
+.socials{display:flex; flex-direction:column; gap:10px;}
+.hint{color:var(--text-sub); font-size:12px; margin-top:10px;}
+
+/* VIP 把手：更靠內、更亮、更有存在感 */
+.vip-handle{
+  right: -2px;                 /* 從 -12px 改為 -2px，幾乎完全露出 */
+  width: 56px; height: 88px;   /* 放大 */
+  border: 1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  box-shadow:
+    0 8px 26px rgba(0,0,0,.45),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.vip-handle .arrow{
+  font-size: 26px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.6));
+}
+
+/* 把手呼吸動畫（吸引點擊）*/
+@keyframes vipPulse {
+  0% { transform: translateY(-50%) scale(1); }
+  50%{ transform: translateY(-50%) scale(1.05); }
+  100%{ transform: translateY(-50%) scale(1); }
+}
+.vip-drawer[aria-hidden="true"] .vip-handle{
+  animation: vipPulse 1.8s ease-in-out infinite;
+}
+
+.vip-collapse{
+  margin-top: 4px;
+  width: 100%; height: 48px;
+  border-radius: 14px;
+  font-weight: 700; letter-spacing:.2px;
+  color:#fff;
+}
+
+/* 浮動入口按鈕（右下角） */
+.vip-fab{
+  position: fixed; right: 16px; bottom: 18px; z-index: 10001;
+  width: 56px; height: 56px; border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: radial-gradient(80px 80px at 70% 20%, rgba(255,255,255,.25), transparent 55%),
+              linear-gradient(135deg, #0F7A5F, #36A38A);
+  color:#fff; box-shadow: 0 10px 28px rgba(0,0,0,.28);
+}
+.vip-fab:active{ transform: translateY(1px) scale(.98); }
+.vip-fab-ico{ font-size: 22px; line-height: 56px; display:inline-block; }
+
+/* 深色模式下更立體 */
+html[data-theme="dark"] .vip-fab{
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 0 12px 32px rgba(0,0,0,.45);
+}
+
+/* 讓關閉鈕更明顯，並在旁邊顯示「關閉」標籤 */
+.vip-close{
+  width: 44px; height: 44px; font-size: 18px; color:#fff;
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.35);
+  background: rgba(0,0,0,.35); backdrop-filter: blur(10px);
+  box-shadow: 0 8px 26px rgba(0,0,0,.45);
+}
+.vip-close::after{
+  content: "關閉"; position: absolute; right: 52px; top: 50%; transform: translateY(-50%);
+  padding: 6px 10px; font-weight: 700; letter-spacing: .2px;
+  color:#fff; border-radius: 999px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(10px);
+}
+/* 深色/淺色皆清楚 */
+html[data-theme="light"] .vip-close,
+html[data-theme="light"] .vip-close::after{
+  background: rgba(0,0,0,.45);
+}
+
+.vip-handle{
+  right: -2px; width: 56px; height: 88px;
+  border: 1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  color:#fff; box-shadow: 0 8px 26px rgba(0,0,0,.45);
+}
+.vip-handle .arrow{ font-size: 26px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+@keyframes vipPulse { 0%{transform:translateY(-50%) scale(1)} 50%{transform:translateY(-50%) scale(1.05)} 100%{transform:translateY(-50%) scale(1)} }
+.vip-drawer[aria-hidden="true"] .vip-handle{ animation: vipPulse 1.8s ease-in-out infinite; }
+
+/* ===== 兩側把手（左右互斥） ===== */
+.vip-handle{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:56px; height:88px; z-index:10000;
+  border-radius:20px; border:1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  color:#fff; box-shadow:0 8px 26px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.vip-handle .arrow{ font-size:26px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); line-height:88px; display:inline-block; width:100%; text-align:center; }
+
+.vip-handle.side-right{ right:-2px; border-radius:20px 0 0 20px; }
+.vip-handle.side-left { left:-2px;  border-radius:0 20px 20px 0; }
+
+@keyframes vipPulse { 0%{transform:translateY(-50%) scale(1)} 50%{transform:translateY(-50%) scale(1.05)} 100%{transform:translateY(-50%) scale(1)} }
+/* 關閉時讓右把手呼吸吸引注意 */
+.vip-drawer[aria-hidden="true"] .vip-handle.side-right{ animation: vipPulse 1.8s ease-in-out infinite; }
+
+/* 淺色模式下也清楚 */
+html[data-theme="light"] .vip-handle{
+  border-color: rgba(0,0,0,.18);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(0,0,0,.12), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.85));
+  color:#111;
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+
+/* 面板預設關閉在右邊 */
+#memberPanel{
+  position: fixed; inset: 0; z-index: 9999;
+  transform: translateX(100%); transition: transform .28s ease;
+  background: linear-gradient(135deg,#121212,#1E1E1E);
+  color: #fff;
+}
+#memberPanel.open{ transform: translateX(0); }
+
+/* 兩側把手 */
+.vip-handle{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:56px; height:88px; z-index:10000;
+  border-radius:20px; border:1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  color:#fff; box-shadow:0 8px 26px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.vip-handle .arrow{ font-size:26px; line-height:88px; width:100%; display:inline-block; text-align:center; }
+.vip-handle.side-right{ right:-2px; border-radius:20px 0 0 20px; }
+.vip-handle.side-left { left:-2px;  border-radius:0 20px 20px 0; }
+
+/* 關閉狀態時讓右把手有呼吸吸引點擊 */
+@keyframes vipPulse {0%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.05)}100%{transform:translateY(-50%) scale(1)}}
+.vip-drawer[aria-hidden="true"] .vip-handle.side-right{ animation: vipPulse 1.8s ease-in-out infinite; }
+
+/* ===== 固定入口把手（關閉時永遠可見） ===== */
+.vip-handle{
+  display:flex; align-items:center; justify-content:center;
+  width:56px; height:88px; border-radius:20px;
+  border:1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  color:#fff;
+  box-shadow:0 8px 26px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+.vip-handle .arrow{ font-size:26px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+.vip-handle .label{
+  position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+  font-size:12px; font-weight:700; letter-spacing:.2px;
+  color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+
+/* 右側固定入口（永遠可見） */
+.vip-handle.open-trigger{
+  position: fixed; right: -2px; top: 50%; transform: translateY(-50%);
+  z-index: 10001; border-radius:20px 0 0 20px;
+}
+
+/* 面板內左側關閉把手 */
+.vip-handle.close-trigger{
+  position: absolute; left: -2px; top: 50%; transform: translateY(-50%);
+  z-index: 10001; border-radius:0 20px 20px 0;
+}
+
+/* 呼吸動畫讓入口更醒目（面板關閉時） */
+@keyframes vipPulse { 0%{transform:translateY(-50%) scale(1)} 50%{transform:translateY(-50%) scale(1.05)} 100%{transform:translateY(-50%) scale(1)} }
+html:not(.vip-open) .vip-handle.open-trigger{ animation: vipPulse 1.8s ease-in-out infinite; }
+
+/* 淺色主題也清楚 */
+html[data-theme="light"] .vip-handle{
+  border-color: rgba(0,0,0,.18);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(0,0,0,.12), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.85));
+  color:#111; box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+
+/* 面板與把手的層級與可視性 */
+#memberPanel{ position:fixed; inset:0; z-index: 99990; transform:translateX(100%); transition:transform .28s ease; }
+#memberPanel.open{ transform:translateX(0); }
+
+/* 右側入口把手（永遠可見），放在頁面最上層 */
+.vip-handle.open-trigger{
+  position: fixed; right:-2px; top:50%; transform:translateY(-50%);
+  z-index: 100000;            /* ← 比 panel 更高 */
+}
+
+/* 左側收回把手（在面板裡） */
+.vip-handle.close-trigger{
+  position:absolute; left:-2px; top:50%; transform:translateY(-50%); z-index:100001;
+}
+
+/* 基本視覺（略） */
+.vip-handle{
+  display:flex; align-items:center; justify-content:center;
+  width:56px; height:88px; border-radius:20px;
+  border:1px solid rgba(255,255,255,.35);
+  background:
+    radial-gradient(18px 18px at 50% 18%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  color:#fff; box-shadow:0 8px 26px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.vip-handle .arrow{ font-size:26px; line-height:88px; width:100%; text-align:center; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+.vip-handle .label{ position:absolute; bottom:6px; left:50%; transform:translateX(-50%); font-size:12px; font-weight:700; letter-spacing:.2px; text-shadow:0 1px 2px rgba(0,0,0,.6); }
+
+/* 面板關閉時讓入口把手做呼吸動畫以吸引注意 */
+@keyframes vipPulse {0%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.06)}100%{transform:translateY(-50%) scale(1)}}
+html:not(.vip-open) .vip-handle.open-trigger{ animation: vipPulse 1.8s ease-in-out infinite; }
+
+.vip-handle .vip-ico{
+  width: 18px; height: 18px;    /* 小巧 */
+  fill: currentColor;           /* 跟隨文字色 */
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.55));
+  pointer-events: none;
+}
+html[data-theme="light"] .vip-handle .vip-ico{
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
+}
+
+/* 右下角停靠，不擋主要內容；使用安全區距離 */
+:root{
+  --safe-right: max(12px, env(safe-area-inset-right));
+  --safe-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+.vip-handle.open-trigger{
+  position: fixed;
+  right: var(--safe-right);
+  bottom: var(--safe-bottom);
+  top: auto; left: auto; transform: none;
+  width: 44px; height: 44px; border-radius: 14px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: none; outline: none;
+  display:grid; place-items:center;
+  color: var(--color-secondary, #D4AF37);   /* 香檳金箭頭 */
+  box-shadow: 0 8px 22px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.22);
+  z-index: 1000;
+}
+
+/* 開啟後，面板內的關閉把手維持左側內縮，不變 */
+.vip-handle.close-trigger{ /* 你現有的規則可保留 */ }
+
+/* 開啟商家詳情（Bottom Sheet）時，自動隱藏入口把手 */
+.sheet-open .vip-handle.open-trigger{
+  opacity: 0; pointer-events: none; transition: opacity .15s ease;
+}
+
+/* 用 SVG 圖示的大小 */
+.vip-handle .vip-ico{ width:18px; height:18px; fill: currentColor; }
+
+/* 深/淺主題的對比最佳化 */
+html[data-theme="light"] .vip-handle.open-trigger{
+  background: rgba(255,255,255,0.75);
+  color: var(--color-secondary, #D4AF37);
+}

@@ -1,0 +1,1251 @@
+/* ===== 品牌色 ===== */
+:root {
+  --brand: #1B3A2E;         /* 深森林綠 */
+  --gold:  #D4AF37;         /* 香檳金   */
+  --bg-d1: #121212;         /* 深灰底1  */
+  --bg-d2: #1E1E1E;         /* 深灰底2  */
+  --txt:   #ffffff;
+  --txt-2: #AAAAAA;
+  --ring:  rgba(255,255,255,.75);
+}
+
+/* ===== 抽屜外殼（JS 會加 .open）===== */
+.vip-shell {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;                   /* 預設不可點 */
+  z-index: 60;
+}
+
+/* 背景暗化 + 霧 */
+.vip-shell::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.0);
+  backdrop-filter: none;
+  transition: background .28s ease, backdrop-filter .28s ease;
+}
+
+.vip-shell.open { pointer-events: auto; }
+.vip-shell.open::before {
+  background: rgba(0,0,0,.3);
+  backdrop-filter: blur(18px);
+}
+
+/* ===== 右側抽屜本體 ===== */
+.vip-panel {
+  position: absolute;
+  top: 0; right: 0; height: 100vh; width: min(92vw, 480px);
+  transform: translateX(100%);
+  display: flex; flex-direction: column;
+  padding: 20px 20px 28px;
+  border-left: 1px solid var(--ring);
+  box-shadow: -8px 0 24px rgba(0,0,0,.35);
+
+  /* 深灰漸層＋毛玻璃 */
+  background: linear-gradient(160deg, var(--bg-d1), var(--bg-d2));
+  background-clip: padding-box;
+  color: var(--txt);
+  transition: transform .34s cubic-bezier(.22,.7,.18,1.02);
+}
+
+.vip-shell.open .vip-panel { transform: translateX(0); 
+}
+
+/* 內容容器，避免內容貼邊 */
+.vip-content {
+  margin-top: 8px;
+  overflow: auto;
+  -webkit-overflow-scrolling: auto;
+}
+
+/* ===== 膠囊按鈕（入口）===== */
+.vip-handle {
+  position: fixed;
+  top: 50%;
+  right: -28px;                      /* 只露一半 */
+  transform: translateY(-50%);
+  height: 48px; padding: 0 14px 0 12px;
+  border-radius: 24px;
+  display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer; z-index: 61;
+
+  /* 毛玻璃膠囊 */
+  background: rgba(255,255,255,.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--ring);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  color: #fff;
+
+  transition: right .34s cubic-bezier(.22,.7,.18,1.02),
+              transform .34s cubic-bezier(.22,.7,.18,1.02),
+              border-color .2s ease, box-shadow .2s ease, color .2s ease;
+}
+
+.vip-handle .icon svg { width: 28px; height: 28px; color: #fff; }
+.vip-handle .txt  { font: 600 12px/1 "Noto Sans", system-ui, -apple-system, sans-serif; letter-spacing:.3px; }
+
+/* Hover → 金色 */
+.vip-handle:hover .icon svg,
+.vip-handle:active .icon svg { color: var(--gold); }
+.vip-handle:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(0,0,0,.26); }
+
+/* 抽屜開啟時，膠囊「吸附」到抽屜邊，與抽屜一體 */
+.vip-shell.open .vip-handle {
+  position: absolute;
+  right: calc(100% - 20px);           /* 貼到抽屜左緣，仍露一點 */
+  top: var(--vip-handle-top, 88px);
+  transform: none;
+  border-color: var(--gold);
+}
+
+/* ===== 會員卡 ===== */
+.vip-card {
+  position: relative;
+  margin: 10px 2px 18px;
+  padding: 18px 18px 16px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #2A2A2A, #1E1E1E);
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--txt);
+  overflow: hidden;
+}
+
+/* 卡片內的柔光 */
+.vip-card::after{
+  content:"";
+  position:absolute; inset: 0;
+  background: radial-gradient(120px 120px at 85% 80%, rgba(27,58,46,.45), transparent 60%),
+              radial-gradient(160px 160px at 60% 0%, rgba(212,175,55,.20), transparent 70%);
+  pointer-events:none;
+}
+
+/* 會員卡內容 */
+.vip-card__brand{ font: 700 20px/1.3 "Noto Sans", system-ui, sans-serif; letter-spacing:.4px; }
+.vip-card__no    { margin-top: 6px; color: var(--txt-2); font: 500 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.vip-card__points{ margin: 14px 0 6px; font: 800 32px/1 "Noto Sans", system-ui, sans-serif; letter-spacing:.5px; }
+.vip-card__points small{ font: 600 12px/1.2 "Noto Sans"; color: var(--txt-2); margin-left: 6px; }
+
+.vip-card__meta{ display:flex; align-items:center; gap:10px; }
+
+/* 等級膠囊 */
+.pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  height: 22px; padding: 0 10px; border-radius: 999px;
+  font: 700 12px/1 "Noto Sans"; letter-spacing:.5px;
+  border:1px solid rgba(255,255,255,.3); color:#fff;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(3px);
+}
+.pill.gold{
+  color:#111; border-color: #F5E6B5;
+  background: linear-gradient(180deg,#F8E6A8,#D4AF37);
+  text-shadow: 0 0 0 transparent;
+}
+.vip-exp{ color:var(--txt-2); font: 600 12px/1.2 "Noto Sans"; }
+
+/* ===== 2×3 功能格 ===== */
+.vip-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 12px;
+  padding: 4px 2px 12px;
+}
+
+.vip-tile{
+  height: 78px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  border-radius:16px; color:#fff;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(6px);
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
+}
+
+.vip-tile .i{ font-size: 20px; line-height: 1; }
+.vip-tile .t{ font: 600 12px/1.1 "Noto Sans"; color: #EEE; }
+
+/* 點擊/hover 亮起：品牌綠或金色微光暈 */
+.vip-tile:hover, .vip-tile:active{
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(27,58,46,.26), rgba(212,175,55,.22));
+  border-color: rgba(212,175,55,.6);
+  box-shadow: 0 6px 20px rgba(0,0,0,.26), 0 0 0 1px rgba(212,175,55,.35) inset;
+}
+
+/* ===== 無障礙小優化 ===== */
+@media (prefers-reduced-motion: reduce){
+  .vip-panel, .vip-handle, .vip-shell::before, .vip-tile{ transition: none !important; }
+}
+
+/* ===== HOTFIX: keep VIP animation working regardless of earlier CSS ===== */
+
+/* 基本層級確保在最上面 */
+#vipShell, .vip-shell { z-index: 9999 !important; }
+#vipPanel, .vip-panel { z-index: 10000 !important; }
+#vipHandle, .vip-handle { z-index: 10001 !important; }
+
+/* 初始：抽屜在右側外面；開啟：滑入 */
+#vipPanel, .vip-panel {
+  position: fixed !important;
+  top: 0; right: 0; height: 100vh;
+  width: min(92vw, 480px);
+  transform: translateX(100%) !important;
+  will-change: transform;
+  transition: transform .34s cubic-bezier(.22,.7,.18,1.02) !important;
+}
+#vipShell.open #vipPanel,
+.vip-shell.open .vip-panel {
+  transform: translateX(0) !important;
+}
+
+/* 膠囊：預設只露一半；開啟時吸附到抽屜左緣 */
+#vipHandle, .vip-handle {
+  position: fixed !important;
+  top: 50% !important;
+  right: -28px !important;            /* 只露一半 */
+  transform: translateY(-50%) !important;
+  transition:
+    right .34s cubic-bezier(.22,.7,.18,1.02),
+    transform .34s cubic-bezier(.22,.7,.18,1.02) !important;
+  pointer-events: auto !important;    /* 確保可點擊 */
+}
+#vipShell.open #vipHandle,
+.vip-shell.open .vip-handle {
+  right: calc(100% - 20px) !important; /* 吸附到抽屜左緣 */
+  transform: none !important;
+}
+
+/* 背景霧化層（可選） */
+#vipShell::before,
+.vip-shell::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,0) !important;
+  backdrop-filter: none !important;
+  transition: background .28s ease, backdrop-filter .28s ease !important;
+  pointer-events: none !important;
+}
+#vipShell.open::before,
+.vip-shell.open::before {
+  background: rgba(0,0,0,.3) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+/* 指標事件：外殼不要阻擋膠囊點擊 */
+#vipShell, .vip-shell { pointer-events: none !important; }
+#vipShell.open, .vip-shell.open { pointer-events: auto !important; }
+#vipHandle, .vip-handle { pointer-events: auto !important; }
+
+#vipPanel.vip-panel{
+ width: 85%;
+}
+
+#vipPanel.vip-backdrop{
+  opacity: 1;
+  pointer-events: none;          /* 開啟後可點擊關閉 */
+}
+
+/* 隱藏時不要攔截事件 */
+.vip-backdrop { pointer-events: none; }
+.vip-backdrop.show { pointer-events: auto; }
+
+
+
+/* ===== 基礎色票 ===== */
+:root{
+  --hl-bg-d1: #121212;
+  --hl-bg-d2: #1E1E1E;
+  --hl-white: #FFFFFF;
+  --hl-text: #EDEDED;
+  --hl-text-dim: #B8B8B8;
+  --hl-gold: #D4AF37;
+  --hl-green: #1B3A2E;
+  --hl-border: rgba(255,255,255,.16);
+}
+
+/* 背景與內距 */
+.vip-content{
+  padding: 20px 18px 28px;
+  color: var(--hl-text);
+  background: linear-gradient(180deg, var(--hl-bg-d1), var(--hl-bg-d2));
+}
+
+/* ---------- A) 會員卡 ---------- */
+.vip-card{
+  position: relative;
+  border-radius: 18px;
+  padding: 20px;
+  color: var(--hl-white);
+  border: 1px solid rgba(212,175,55,.35); /* 金色細框 */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02)),
+    radial-gradient(120% 120% at 100% 0%, rgba(6,90,70,.35), transparent 60%),
+    linear-gradient(180deg, #2A2A2A, #1E1E1E);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  margin-bottom: 18px;
+}
+.vip-card__brand{
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .4px;
+}
+.vip-card__meta{
+  margin-top: 6px;
+  display: flex; align-items: center; gap: 10px;
+  color: var(--hl-text-dim);
+  font-size: 12px;
+}
+.badge{
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 22px; padding: 0 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: .6px;
+}
+.badge--gold{
+  color: #1b1b1b;
+  background: linear-gradient(180deg,#E8D27A,#C7A22A);
+  border: 1px solid rgba(0,0,0,.2);
+}
+.vip-card__points{
+  display: flex; align-items: baseline; gap: 10px;
+  margin-top: 14px;
+}
+.vip-card__points-num{ font-size: 32px; font-weight: 800; line-height: 1; }
+.vip-card__points-label{ color: var(--hl-text-dim); }
+.vip-card__footer{
+  margin-top: 12px;
+  display: flex; justify-content: space-between; gap: 10px;
+  font-size: 12px; color: var(--hl-text-dim);
+}
+
+/* ---------- B) 功能模組 2x3 ---------- */
+.vip-actions{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 6px 0 18px;
+}
+@media (min-width: 420px){
+  .vip-actions{ grid-template-columns: repeat(3, 1fr); }
+}
+.vip-tile{
+  border: 1px solid var(--hl-border);
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 14px 12px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  color: var(--hl-text);
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .15s ease;
+}
+.vip-tile:active{ transform: scale(.98); }
+.vip-tile:hover{
+  border-color: rgba(212,175,37,.55);
+  box-shadow: 0 6px 18px rgba(212,175,55,.18);
+  background: linear-gradient(180deg, rgba(212,175,55,.18), rgba(255,255,255,.06));
+}
+.tile-icon{
+  width: 24px; height: 24px; display: inline-flex;
+  color: var(--hl-white);
+}
+.tile-icon svg{ width: 24px; height: 24px; fill: currentColor; }
+.tile-title{ font-size: 14px; font-weight: 600; }
+
+/* ---------- C) 專屬推薦 Banner ---------- */
+.vip-banner{
+  margin-top: 4px;
+}
+.vip-banner__inner{
+  border: 1px dashed rgba(212,175,55,.55);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--hl-text);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(4px);
+}
+
+/* 讓頂部保有一點拉桿留白 */
+.vip-hd{ height: 8px; }
+
+/* —— 色票（沿用你之前的，可合併） —— */
+:root{
+  --hl-bg-d1:#121212; --hl-bg-d2:#1E1E1E;
+  --hl-white:#fff; --hl-text:#EDEDED; --hl-dim:#B8B8B8;
+  --hl-gold:#D4AF37; --hl-green:#1B3A2E; --hl-border:rgba(255,255,255,.16);
+}
+
+/* 內容容器 */
+.vip-content{
+  padding:20px 18px 28px;
+  color:var(--hl-text);
+  background:linear-gradient(180deg,var(--hl-bg-d1),var(--hl-bg-d2));
+}
+
+/* 會員卡（與先前一致，微調） */
+.vip-card{
+  position:relative; border-radius:18px; padding:20px; margin-bottom:16px;
+  color:var(--hl-white);
+  border:1px solid rgba(212,175,55,.35);
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02)),
+    radial-gradient(120% 120% at 100% 0%, rgba(6,90,70,.35), transparent 60%),
+    linear-gradient(180deg,#2A2A2A,#1E1E1E);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+.vip-card__brand{ font-size:18px; font-weight:700; letter-spacing:.4px; }
+.vip-card__meta{ margin-top:6px; display:flex; gap:10px; font-size:12px; color:var(--hl-dim); }
+.badge{ display:inline-flex; align-items:center; height:22px; padding:0 10px; border-radius:999px; font-size:11px; font-weight:700; }
+.badge--gold{ color:#1b1b1b; background:linear-gradient(180deg,#E8D27A,#C7A22A); border:1px solid rgba(0,0,0,.2); }
+.vip-card__points{ display:flex; gap:10px; align-items:baseline; margin-top:12px; }
+.vip-card__points-num{ font-size:32px; font-weight:800; line-height:1; }
+.vip-card__points-label{ color:var(--hl-dim); }
+.vip-card__footer{ margin-top:10px; display:flex; justify-content:space-between; font-size:12px; color:var(--hl-dim); }
+
+/* 卡片提示（捲到輪播） */
+.vip-card__hint{
+  margin-top:12px; width:100%;
+  display:flex; justify-content:center; align-items:center; gap:6px;
+  height:36px; border-radius:999px;
+  background:rgba(255,255,255,.08); color:var(--hl-text);
+  border:1px dashed rgba(212,175,55,.6);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+.vip-card__hint:hover{ background:rgba(212,175,55,.16); }
+
+/* 功能模組（維持 2×3） */
+.vip-actions{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; margin:6px 0 18px;
+}
+@media(min-width:420px){ .vip-actions{ grid-template-columns:repeat(3,1fr); } }
+.vip-tile{
+  border:1px solid var(--hl-border);
+  background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  border-radius:16px; padding:14px 12px; display:flex; flex-direction:column; gap:10px;
+  color:var(--hl-text); transition:.2s ease;
+}
+.vip-tile:hover{
+  border-color:rgba(212,175,55,.55);
+  box-shadow:0 6px 18px rgba(212,175,55,.18);
+  background:linear-gradient(180deg,rgba(212,175,55,.18),rgba(255,255,255,.06));
+}
+.tile-icon{ width:24px; height:24px; color:#fff; }
+.tile-icon svg{ width:100%; height:100%; fill:currentColor; }
+.tile-title{ font-size:14px; font-weight:600; }
+
+/* —— C. Gold 專屬輪播 —— */
+.vip-perks{ position:relative; border-radius:16px; overflow:hidden; }
+.perks-track{
+  display:flex; width:100%; touch-action:pan-y;
+  transition:transform .5s ease; will-change:transform;
+}
+.perk-slide{
+  min-width:100%; height:220px; position:relative;
+  background-image:var(--bg); background-size:cover; background-position:center;
+}
+.perk-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.45));
+  display:flex; flex-direction:column; justify-content:flex-end; gap:6px;
+  padding:14px;
+  color:#fff;
+  backdrop-filter:blur(2px);
+}
+.perk-title{ font-size:18px; font-weight:800; }
+.perk-sub{ font-size:13px; color:#E6E6E6; }
+.perk-btn{
+  align-self:flex-end; margin-top:8px;
+  height:30px; padding:0 12px; border-radius:999px;
+  border:1px solid rgba(212,175,55,.7);
+  background:linear-gradient(180deg,rgba(212,175,55,.85),rgba(212,175,55,.65));
+  color:#1b1b1b; font-weight:700;
+}
+
+/* dots */
+.perks-dots{
+  display:flex; gap:8px; justify-content:center; padding:10px 0 0;
+}
+.dot{ width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.35); border:none; }
+.dot.is-active{ background:var(--hl-gold); box-shadow:0 0 0 4px rgba(212,175,55,.18); }
+
+/* 一屏佈局：面板本體不捲動，內容用 grid 塞滿視窗 */
+.vip-panel{
+  /* 你的既有樣式保留，補以下 */
+  overflow: hidden;                 /* ❗面板不允許滾動 */
+  display: flex; flex-direction: column;
+}
+
+.vip-content{
+  /* 取消原先的自動捲動 */
+  overflow: hidden;                 /* ❗內容不捲動 */
+  padding: 14px 14px 12px;          /* 壓縮邊距 */
+  display: grid;
+  grid-template-rows:
+    auto   /* 會員卡 */
+    auto   /* 提示按鈕 */
+    auto   /* 功能 2x3 */
+    1fr;   /* 輪播撐滿剩餘空間 */
+  gap: 10px;
+  min-height: calc(100dvh - 56px);  /* 扣掉面板上緣（如有標題列） */
+}
+
+/* --- A) 會員卡：縮小版 --- */
+.vip-card{
+  margin: 0;
+  padding: 14px;
+  border-radius: 14px;
+}
+.vip-card__brand{ font-size:16px; }
+.vip-card__meta{ font-size:11px; gap:8px; }
+.vip-card__points-num{ font-size:26px; }
+.vip-card__points-label{ font-size:12px; }
+.vip-card__footer{ font-size:11px; margin-top:8px; }
+.vip-card__hint{
+  height: 32px; margin-top:10px; font-size:12px;
+}
+
+/* --- B) 功能模組：卡片更精緻但更緊湊 --- */
+.vip-actions{
+  gap:10px;
+  margin: 0;
+}
+.vip-tile{
+  padding: 10px;
+  border-radius: 14px;
+}
+.tile-icon{ width:22px; height:22px; }
+.tile-title{ font-size:13px; }
+
+/* 讓 2×3 在窄螢幕仍然排好（320~360 寬也適用） */
+@media (max-width: 359px){
+  .vip-actions{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 360px){
+  .vip-actions{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --- C) Gold 輪播：吃掉剩餘高度，不捲動 --- */
+.vip-perks{
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  /* 高度隨 grid 的 1fr 自動伸展，為了排版穩定，給最小高度 */
+  min-height: 150px;
+}
+.perk-slide{ min-width:100%; height: 100%; }     /* 高度跟著容器吃滿 */
+.perk-overlay{
+  padding: 10px;
+}
+.perk-title{ font-size:16px; }
+.perk-sub{ font-size:12px; }
+.perk-btn{ height:28px; padding:0 10px; font-size:12px; }
+
+/* dots 與內距縮小 */
+.perks-dots{ padding: 8px 0 0; }
+.dot{ width:7px; height:7px; }
+
+/* 若你的面板頂部有 header（vip-hd），壓縮其高度 */
+.vip-hd{ height: 8px; }
+
+.vip-panel{ padding-bottom: max(env(safe-area-inset-bottom), 12px); }
+
+grid-template-rows:
+  minmax(0, auto)  /* 卡 */
+  minmax(0, auto)  /* 提示 */
+  minmax(0, auto)  /* 功能 */
+  1fr;             /* 輪播 */
+
+/* 讓輪播永遠看得到：給彈性但不會太小的高度 */
+.vip-perks{
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: clamp(160px, 28vh, 240px); /* ❗關鍵：避免被壓扁成 0 */
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* 讓 track 可以橫向滑動並吃滿高度 */
+.vip-perks .track{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transform: translateX(0);
+  transition: transform .5s ease;
+  will-change: transform;
+}
+
+/* 每張就是 100% 寬度的一頁 */
+.perk-slide{
+  flex: 0 0 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* 如果用 img，讓它鋪滿高度 */
+.perk-slide img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 文字遮罩與按鈕，維持你原本樣式即可 */
+.perk-overlay{ position:absolute; inset:auto 0 0 0; padding:12px; 
+  background: linear-gradient(transparent, rgba(0,0,0,.45)); color:#fff; }
+.perks-dots{ position:absolute; left:0; right:0; bottom:8px; display:flex; gap:6px; justify-content:center; }
+.dot{ width:7px; height:7px; border-radius:50%; background:#777; opacity:.7; }
+.dot.active{ background:#D4AF37; opacity:1; }
+
+/* 視圖切換 */
+.vip-view{ display:none; }
+.vip-view.show{ display:block; }
+
+/* 子頁頭 */
+.sub-hd{
+  display:flex; align-items:center; gap:10px;
+  margin:8px 0 14px;
+}
+.btn-back{
+	margin:15px;
+	width:60px;
+  border:1px solid black;
+  background:rgba(255,255,255,.08);
+  color:black; border-radius:10px; padding:6px 10px;
+}
+
+/* 會員卡（沿用你的風格，可微調） */
+.vip-card{
+  border-radius:16px; padding:16px;
+  background: linear-gradient(160deg,#2a2a2a,#1e1e1e);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  color:#fff; margin-bottom:14px;
+}
+.vip-tag.gold{
+  background: linear-gradient(180deg,#e7cf7a,#d4af37);
+  color:#1b3a2e; border-radius:999px; padding:4px 10px; font-weight:700;
+}
+
+/* 功能 2×3 */
+.vip-grid{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;
+}
+
+
+.feature-card{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; height:86px; border-radius:16px;
+  color:#fff; border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06); backdrop-filter: blur(6px);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.feature-card .ico{ font-size:20px; }
+.feature-card:active{ transform: scale(.98); box-shadow: 0 8px 22px rgba(0,0,0,.3); background: rgba(212,175,55,.16); }
+button .feature-card:hover{ background: rgba(212,175,55,.16); }
+
+/* 列表樣式（旅程） */
+.list-cards{ display:flex; flex-direction:column; gap:10px; }
+.trip-card{
+  border-radius:14px; padding:12px;
+  background: rgba(255,255,255,.06); backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,.18); color:#fff;
+}
+.trip-card .meta{ display:flex; gap:10px; font-size:12px; color:#bbb; }
+.status{ padding:2px 8px; border-radius:999px; font-size:12px; }
+.status.ok{ background: rgba(60,180,110,.18); color:#9BE3B1; border:1px solid rgba(155,227,177,.35); }
+.status.upcoming{ background: rgba(80,140,220,.18); color:#B6D2FF; border:1px solid rgba(182,210,255,.35); }
+.status.expired{ background: rgba(140,140,140,.18); color:#ccc; border:1px solid rgba(204,204,204,.35); }
+
+/* 商家卡片容器（收藏=單欄、足跡/推薦=雙欄） */
+.list-merchant{ display:grid; gap:10px; }
+.list-merchant.one-col{ grid-template-columns: 1fr; }
+.list-merchant.two-col{ grid-template-columns: 1fr 1fr; }
+
+/* 這裡放一個極簡商家卡 tile（你可替換為現有卡片樣式） */
+.m-tile{
+  border-radius:14px; overflow:hidden; background:#1e1e1e; border:1px solid #333;
+  color:#fff;
+}
+.m-tile .pic{ height:100px; background:#333; }
+.m-tile .body{ padding:8px 10px; }
+.m-tile .cap{ font-size:12px; color:#aaa; display:flex; gap:6px; align-items:center; }
+.m-tile .fav{ margin-left:auto; }
+
+/* 足跡篩選 */
+.filters-mini{ margin-left:auto; display:flex; gap:8px; }
+.chip.small{ font-size:12px; padding:4px 8px; border-radius:999px; background:#2a2a2a; color:#ddd; }
+
+/* 徽章牆 */
+.badge-wall{
+  display:grid; grid-template-columns: repeat(4,1fr); gap:10px;
+}
+.badge{
+  height:64px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.18); color:#fff;
+  background: rgba(255,255,255,.06);
+}
+.badge.locked{ filter: grayscale(1); opacity:.5; }
+
+/* 設定列表 */
+.setting-list{ display:flex; flex-direction:column; gap:8px; }
+.setting-list li{
+  list-style:none; display:flex; justify-content:space-between; align-items:center;
+  padding:12px; border-radius:10px; color:#fff;
+  background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+}
+.setting-list .link-row{ width:100%; text-align:left; color:#fff; background:transparent; height:30px;}
+
+/* 讓面板層能接收點擊，霧層不攔截 */
+.vip-panel{ position: relative; z-index: 20; pointer-events: auto; }
+.vip-scrim, .vip-overlay{ pointer-events: none; }
+
+/* 收藏卡片(簡版)，先能看能點；之後你可換成首頁那套樣式 */
+.m-card{
+  display:flex; gap:10px; border-radius:14px; overflow:hidden;
+  background: rgba(255,255,255,.06); backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,.18); color:#fff; padding:10px;
+}
+.m-card .img{ width:88px; height:70px; background:#333; border-radius:10px; }
+.m-card .info{ flex:1; display:flex; flex-direction:column; gap:6px; }
+.m-card .meta{ font-size:12px; color:#bbb; }
+.m-card .fav-remove{
+  margin-left:auto; align-self:flex-start;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08); color:#fff;
+  border-radius:10px; padding:6px 8px;
+}
+
+/* 確保內容可點，只有遮罩需要攔截 */
+.vip-panel { position: relative; z-index: 1000; }
+.vip-panel .vip-content { pointer-events: auto; }
+
+.vip-panel .vip-backdrop { /* 如果你有背景霧化的遮罩元素 */
+  pointer-events: none;   /* 不要阻擋點擊 */
+}
+
+/* 膠囊只在收合狀態時可點，展開後禁用膠囊以免卡住 */
+.vip-shell.open .vip-handle { pointer-events: none; }
+
+/* 卡片整體 */
+.vip-card {
+  background: linear-gradient(135deg,#2a2a2a 0%, #1e1e1e 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 16px 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25) inset, 0 2px 10px rgba(0,0,0,.25);
+  color: #fff;
+}
+
+/* 標題區 */
+.vip-card-title {
+  display:flex; align-items:center; gap:10px;
+  font: 700 20px/1.2 "Noto Sans", system-ui, -apple-system;
+  letter-spacing:.3px; margin:0;
+}
+.vip-card-sub {
+  margin:.35rem 0 0; color:#cfcfcf; font: 500 13px/1.4 "Noto Sans";
+}
+
+/* 等級膠囊 */
+.vip-tier{
+  font:700 12px/1 "Noto Sans";
+  padding:8px 12px; border-radius:999px;
+  background: linear-gradient(180deg,#E9D798 0%, #BF9E2C 100%);
+  color:#1B3A2E; border:1px solid rgba(255,255,255,.25);
+  text-shadow:0 1px 0 rgba(255,255,255,.35);
+}
+.vip-tier.silver{ background:linear-gradient(180deg,#DDDEE3,#B8BBC6); color:#1e1e1e;}
+.vip-tier.platinum{ background:linear-gradient(180deg,#F5F7FA,#BFCAD9); color:#111;}
+
+/* 內文列 */
+.vip-card-meta{ margin-top:12px; display:grid; gap:8px;}
+.vip-card-row{ display:flex; gap:8px; flex-wrap:wrap; }
+.meta-k{ color:#aaaaaa; font:600 12px/1 "Noto Sans"; }
+.meta-v{ color:#ffffff; font:600 13px/1 "Noto Sans"; }
+
+/* 優惠提醒條 */
+.vip-perk-hint{
+  margin-top:12px; width:100%;
+  display:flex; align-items:center; gap:8px; justify-content:center;
+  padding:10px 12px; border-radius:12px;
+  background: rgba(255,255,255,.06);
+  border:1px dashed rgba(212,175,55,.6);
+  color:#F6E7B2; font:600 13px/1 "Noto Sans";
+}
+.vip-perk-hint .gift{ font-size:16px; }
+.vip-perk-hint:hover{ background: rgba(255,255,255,.1); }
+
+.vip-card.guest {
+  text-align: center;
+  background: linear-gradient(135deg,#2a2a2a,#1e1e1e);
+  border: 1px dashed rgba(255,255,255,.2);
+  color: #ccc;
+}
+.vip-card.guest .vip-card-title {
+  font: 700 20px/1.2 "Noto Sans";
+  color: #fff;
+}
+.vip-card.guest .vip-card-sub {
+  margin-top: 8px;
+  font: 500 14px/1.4 "Noto Sans";
+  color: #aaa;
+}
+
+.vip-login-btn {
+  margin-top: 12px;
+  padding: 10px 20px;
+  border: 1px solid #d4af37;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  color: #d4af37;
+  font: 600 14px/1 "Noto Sans";
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.vip-login-btn:hover {
+  background: #d4af37;
+  color: #121212;
+}
+
+/* VIP 卡片（未登入） */
+.vip-panel .card.visa.no-login{
+  background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  backdrop-filter: blur(12px);
+}
+.vip-panel .card .brand{ font-weight:700; font-size:20px; letter-spacing:.5px; }
+.vip-panel .card .sub{ margin-top:10px; color:#cfcfcf; font-size:14px; }
+.vip-panel .btn.brand{
+  margin-top:14px; height:40px; padding:0 16px; border-radius:999px;
+  background: linear-gradient(135deg,#D4AF37,#f4e3a1);
+  color:#1B3A2E; font-weight:700; border:0;
+}
+
+/* 已登入卡片 */
+.vip-panel .card.visa{
+  background: linear-gradient(160deg, #2a2a2a 0%, #1e1e1e 100%);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 18px; padding: 18px; color:#fff;
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+.vip-panel .card .row.head{ display:flex; justify-content:space-between; align-items:center; }
+.vip-panel .pill{
+  background: linear-gradient(135deg,#D4AF37,#f2e3a1); color:#1B3A2E;
+  font-size:12px; font-weight:800; padding:6px 12px; border-radius:999px;
+  border: 1px solid rgba(0,0,0,.15);
+}
+.vip-panel .id{ opacity:.9; margin-top:6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.vip-panel .points{ font-size:32px; font-weight:800; margin:10px 0 6px; color:white; }
+.vip-panel .points small{ font-size:14px; font-weight:600; opacity:.85; margin-left:4px; }
+.vip-panel .meta{ display:flex; gap:12px; color:#cfcfcf; font-size:13px; }
+.vip-panel .perk-hint{
+  margin-top:12px; padding:10px 12px; border-radius:12px;
+  background: rgba(255,255,255,.06); border:1px dashed rgba(255,255,255,.18);
+}
+
+/* 2x3 功能鈕 */
+.vip-panel .grid.actions{
+  margin-top:14px; display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;
+}
+.vip-panel .glass.action{
+  height:72px; border-radius:16px; color:#EAEAEA; font-weight:600;
+  background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(8px);
+}
+.vip-panel .glass.action .i{ display:block; font-size:18px; margin-bottom:6px; }
+.vip-panel .glass.action:active{ transform: scale(.98); }
+.vip-panel .glass.action:hover{
+  background: linear-gradient(135deg, rgba(212,175,55,.35), rgba(27,58,46,.35));
+  border-color: rgba(212,175,55,.8);
+}
+
+/* 子頁預設關閉；開啟用 .show 切換 */
+.vip-view { display: none; }
+.vip-view.show { display: block; }
+
+/* 切到子頁時可以把「卡片 + 六宮格」藏起來 */
+.vip-home.hide { display:none; }
+
+:root{
+  --vip-bg-1:#121212;
+  --vip-bg-2:#1E1E1E;
+  --vip-card:#1e1e1e;
+  --vip-stroke:#333;
+  --vip-white:#fff;
+  --vip-muted:#aaaaaa;
+  --vip-gold:#D4AF37;
+  --vip-green:#1B3A2E;
+  --vip-blur:10px;
+  --vip-radius-lg:16px;
+  --vip-radius-md:12px;
+}
+
+/* ========== 卡片（會員卡） ========== */
+.vip-card{
+  background: linear-gradient(140deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) /* film */,
+              radial-gradient(180px 120px at 85% 10%, rgba(212,175,55,0.28), transparent 60%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 18px 16px;
+  color: var(--vip-white);
+  backdrop-filter: blur(calc(var(--vip-blur) * 1.2));
+  -webkit-backdrop-filter: blur(calc(var(--vip-blur) * 1.2));
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+.vip-card .meta-row{
+  display:flex; gap:8px; align-items:center;
+  color: var(--vip-muted); font-size:13px;
+}
+.vip-card .big-point{ font-size:34px; font-weight:800; letter-spacing:.5px; }
+.vip-tag{
+  padding:4px 10px; border-radius:999px; 
+  background: linear-gradient(180deg,#F3DFA0,#B98E20);
+  color:#2A2512; font-weight:700; font-size:12px;
+  border:1px solid rgba(0,0,0,.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+/* 提示膠囊 */
+.vip-perk{
+  margin-top:12px; padding:10px 12px; border-radius:12px;
+  border:1px dashed rgba(212,175,55,.6);
+  background: rgba(255,255,255,0.06);
+  color:#F6E9BF;
+}
+
+/* ========== 2×3 功能卡 ========== */
+.vip-actions{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:12px;
+}
+
+.feature-card{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:92px;
+  border-radius: var(--vip-radius-lg);
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  color: var(--vip-white);
+  backdrop-filter: blur(var(--vip-blur));
+  -webkit-backdrop-filter: blur(var(--vip-blur));
+  box-shadow: 0 6px 14px rgba(0,0,0,.28);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.feature-card .ico{ font-size:22px; line-height:1; margin-bottom:8px; }
+.feature-card .txt{ font-size:13px; color:#EAEAEA; }
+
+.feature-card:active{ transform: scale(.98); }
+.feature-card:hover{
+  border-color: rgba(212,175,55,.85);
+  background: linear-gradient(180deg, rgba(212,175,55,.20), rgba(255,255,255,.08));
+  box-shadow: 0 10px 24px rgba(212,175,55,.18);
+}
+
+/* 讓左側「豎排按鈕」風格一致（如果你保留那列）*/
+.vip-side .feature-card{
+  width:72px; min-height:72px; border-radius:14px;
+}
+
+/* ========== 輪播（單頁展示型） ========== */
+.vip-perks{
+  margin-top:16px;
+  border-radius: 18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(var(--vip-blur));
+  -webkit-backdrop-filter: blur(var(--vip-blur));
+}
+.vip-perks .slide{
+  position:relative; aspect-ratio: 16/9; /* 不會過高 */
+  display:flex; align-items:flex-end; padding:16px;
+  background-size:cover; background-position:center;
+}
+.vip-perks .slide::after{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 20%, rgba(0,0,0,.55) 90%);
+}
+.vip-perks .cap{
+  position:relative; z-index:1; color:#F5F5F5;
+}
+.vip-perks .cta{
+  margin-top:8px; display:inline-block;
+  padding:6px 12px; border-radius:999px;
+  background: linear-gradient(180deg,#F3DFA0,#B98E20); color:#2A2512; font-weight:700; font-size:12px;
+}
+
+/* ========== 版面邊距 & 對齊 ========== */
+.vip-content{
+  padding: 14px 14px 18px;
+}
+.vip-home{ max-width: 760px; margin: 0 auto; } /* 讓版心精緻不貼邊 */
+
+.vip-card { padding: 16px 14px; border-radius: 16px; background: rgba(255,255,255,0.06); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); }
+.vip-card-title { display:flex; align-items:center; gap:8px; font-weight:700; color:#fff; }
+.pill { padding:4px 10px; border-radius:999px; font-size:12px; color:#111; background: linear-gradient(180deg,#F6E7A8,#D4AF37); }
+.vip-sub { color:#ddd; margin:8px 0 12px; }
+.btn.vip-login { background: linear-gradient(180deg,#F6E7A8,#D4AF37); color:#111; border-radius:999px; padding:10px 16px; font-weight:700; }
+.vip-meta .row { display:flex; gap:8px; color:#ddd; margin:4px 0; }
+.vip-meta .label { color:#aaa; }
+.ml { margin-left:8px; }
+
+.vip-perk.btn-ghost { width:100%; margin:12px 0 16px; padding:10px 12px; border-radius:12px; border:1px dashed rgba(212,175,55,0.6); color:#f5e7b0; background: rgba(255,255,255,0.05); }
+.vip-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+.feature-card { display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 8px; border-radius:14px; color:#eee; background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); }
+.feature-card:active { outline: 0; transform: scale(.98); }
+.feature-card .ico { font-size:20px; line-height:1; }
+
+/* ===== VIP 卡片容器：共用 ===== */
+.vip-card {
+  position: relative;
+  max-width: 420px;   /* 手機寬度內的視覺比例 */
+  margin: 0 auto 20px;
+  padding: 14px;      /* 外層細框與內卡片之間的留白 */
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15); /* 外層細框 */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 10px 22px rgba(0,0,0,0.35);
+}
+
+/* 內層玻璃卡片（未登入狀態） */
+.vip-card-guest{
+  position: relative;
+  padding: 16px 18px 18px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, #1E1E1E, #171717);  /* 深灰漸層 */
+  border: 1px solid rgba(255,255,255,0.16);     /* 內層細邊 */
+  color: #fff;
+  overflow: hidden;
+}
+
+/* 右上角的柔光（截圖那個亮暈） */
+.vip-card-guest .card-sheen{
+  content:"";
+  position:absolute;
+  right:-12%;
+  top:-18%;
+  width: 65%;
+  height: 55%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(255,255,255,0.22), transparent 60%),
+    radial-gradient(closest-side, rgba(255,255,255,0.12), transparent 70%);
+  filter: blur(1px);
+  pointer-events:none;
+}
+
+/* 標題與提示文字 */
+.vip-card .brand{
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color:white;
+  letter-spacing: .2px;
+}
+.vip-card .hint{
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: #D6D6D6;
+}
+
+/* 金色膠囊按鈕（與截圖一致） */
+.btn.vip-gold{
+  display:inline-block;
+  min-width: 120px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background:
+    linear-gradient(180deg,#F7E7A8 0%, #E8C85A 45%, #D4AF37 100%);
+  color: #1B3A2E;
+  font-weight: 800;
+  letter-spacing: .5px;
+  box-shadow:
+    0 6px 16px rgba(212,175,55,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .12s ease;
+}
+.btn.vip-gold:active{
+  transform: translateY(1px);
+  box-shadow:
+    0 3px 10px rgba(212,175,55,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.55);
+}
+
+/* 狀態切換：只顯示未登入卡片 */
+.vip-card.guest .vip-card-guest{ display:block; }
+.vip-card.guest .vip-card-member{ display:none !important; }
+
+/* 若之後登入，切成 .authed（這裡先把 guest 藏起來） */
+.vip-card.authed .vip-card-guest{ display:none !important; }
+.vip-card.authed .vip-card-member{ display:block; }
+
+/* 讓面板永遠在 backdrop 之上，且 backdrop 隱藏時不吃點擊 */
+.vip-shell      { position: fixed; z-index: 1000; }
+.vip-panel      { position: relative; z-index: 1002; }
+.vip-backdrop   { z-index: 1001; pointer-events: none; }
+.vip-backdrop.show { pointer-events: point; }
+
+#vipLoginBtn{
+	color: #1B3A2E;
+}
+
+#vipPerkBtn{
+	color: white;
+	width:100%;
+}
+.vip-view { display: none; }
+.vip-view.show { display: block; }
+.vip-home.hide { display: none; } 
+.vip-grid { padding-top: 50px; }
+
+/* 首頁區塊被切走 */
+.vip-hide { display: none !important; }
+
+/* 子頁預設不顯示，顯示時加 .show */
+.vip-view { display: none; }
+.vip-view.show { display: block; }
+
+/* 若你的 section 本來有 hidden，也統一接管 */
+.vip-view[hidden] { display: none !important; }
+
+
+.hl-auth-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);background:rgba(0,0,0,.35);z-index:9999;}
+.hl-auth-backdrop[aria-hidden="false"]{display:flex;}
+.hl-auth-panel{width:min(92vw,420px);background:rgba(25,25,27,.86);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:20px 20px 16px;box-shadow:0 10px 40px rgba(0,0,0,.45);color:#f3f3f3;position:relative;}
+.hl-auth-close{position:absolute;right:14px;top:10px;background:transparent;border:none;color:#aaa;font-size:22px;cursor:pointer;}
+.hl-field{margin-bottom:12px;}
+.hl-field label{display:block;font-size:12px;color:#cfcfcf;margin-bottom:6px;}
+.hl-field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:#111;color:#fff;outline:none;}
+.hl-field input:focus{border-color:#bdbdbd;}
+.hl-err{margin:6px 2px 0;font-size:12px;color:#ff6b6b;min-height:14px;}
+.hl-btn-primary{border:none;border-radius:999px;padding:10px 16px;cursor:pointer;background:#ffd15a;color:#1a1a1a;font-weight:700;box-shadow:0 2px 10px rgba(255,209,90,.3);}
+.hl-btn-primary:hover{filter:brightness(1.05);}
+.hl-full{width:100%;}
+.hl-auth-links{text-align:center;margin-top:10px;}
+.hl-link{background:transparent;border:none;color:#9ad0ff;cursor:pointer;}
+.hl-sep{color:#666;margin:0 6px;}
+.hl-quick{display:flex;align-items:center;gap:8px;margin:12px 0 4px;flex-wrap:wrap;}
+.hl-quick-label{font-size:12px;color:#cfcfcf;margin-right:4px;}
+.hl-quick-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.12);background:#0f0f0f;color:#eee;padding:8px 10px;border-radius:999px;cursor:pointer;}
+.hl-quick-btn img{width:16px;height:16px;}
+.hl-toast{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;padding:8px 12px;border-radius:999px;font-size:12px;background:rgba(255,255,255,.08);color:#fff;opacity:0;transition:opacity .25s ease;}
+.hl-toast.show{opacity:1;}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;  /* 膠囊 */
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .25s ease, transform .25s ease;
+}
+
+.social-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.social-btn:hover {
+  background: rgba(255,255,255,0.4);
+  transform: translateY(-2px);
+}
+
+.social-btn.google { background: rgba(234, 67, 53, 0.5); }
+.social-btn.apple  { background: rgba(0,0,0,0.5); }
+.social-btn.facebook { background: rgba(24, 119, 242, 0.5); }
+
+
+/* 讓 dashboard 從上往下排，輪播不會被擠到底 */
+#vipDashboard.vip-view{
+  display:flex; flex-direction:column; gap:16px; justify-content:flex-start;
+}
+
+/* 轮播容器：16:9 比例、毛玻璃卡片感 */
+.vip-carousel{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;               /* 讓高度穩定，不會被擠下去 */
+  border-radius:20px;
+  overflow:hidden;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:0 10px 30px rgba(0,0,0,.25) inset, 0 8px 24px rgba(0,0,0,.25);
+  backdrop-filter:blur(8px);
+}
+
+/* 轨道與幻燈片 */
+.vip-carousel-track{
+  display:flex; height:100%; width:100%;
+  transition:transform .45s ease;
+}
+.vip-slide{
+  flex:0 0 100%; height:100%; position:relative; overflow:hidden;
+}
+.vip-slide img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transform:scale(1.02);
+}
+.vip-slide-caption{
+  position:absolute; left:12px; bottom:12px; right:12px;
+  background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35));
+  color:#fff; padding:10px 12px; border-radius:14px;
+  font-size:14px; line-height:1.4;
+}
+
+/* 控制鈕 */
+.vip-ctrl{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:34px; height:34px; border-radius:50%;
+  border:none; cursor:pointer; font-size:20px; line-height:34px;
+  background:rgba(0,0,0,.35); color:#fff;
+  display:grid; place-items:center;
+}
+.vip-ctrl:hover{ background:rgba(0,0,0,.5); }
+.vip-ctrl.prev{ left:8px; }
+.vip-ctrl.next{ right:8px; }
+
+/* 指示點 */
+.vip-dots{
+  position:absolute; left:0; right:0; bottom:8px;
+  display:flex; gap:6px; justify-content:center; align-items:center;
+}
+.vip-dots button{
+  width:8px; height:8px; border-radius:50%; border:none; cursor:pointer;
+  background:rgba(255,255,255,.4);
+}
+.vip-dots button[aria-current="true"]{ background:#fff; }

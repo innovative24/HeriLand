@@ -1,0 +1,24 @@
+.vip-view[hidden]{display:none;}
+.vip-view.show{display:block;}
+.view-enter{opacity:0;transform:translateX(40px);}
+.view-enter-active{opacity:1;transform:translateX(0);transition:transform .28s ease,opacity .28s ease;}
+.view-leave{opacity:1;transform:translateX(0);}
+.view-leave-active{opacity:0;transform:translateX(-40px);transition:transform .28s ease,opacity .28s ease;}
+.view-enter-back{opacity:0;transform:translateX(-40px);}
+.view-leave-back{opacity:1;transform:translateX(0);}
+.view-leave-back.view-leave-active{opacity:0;transform:translateX(40px);transition:transform .28s ease,opacity .28s ease;}
+
+/* 未登入时：所有功能按钮半透明＋锁头，但排除 設定 */
+#vipDashboard .vip-card.guest ~ .vip-grid .feature-card:not([data-target="settings"]) {
+  position: relative;
+  opacity: .6;
+}
+
+#vipDashboard .vip-card.guest ~ .vip-grid .feature-card:not([data-target="settings"])::after {
+  content: "🔒";
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  font-size: 14px;
+  opacity: .9;
+}

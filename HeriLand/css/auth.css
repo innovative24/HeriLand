@@ -1,0 +1,28 @@
+.hl-auth-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);background:rgba(0,0,0,.35);z-index:9999;}
+.hl-auth-backdrop[aria-hidden="false"]{display:flex;}
+.hl-auth-panel{position:relative;width:min(92vw,420px);background:rgba(25,25,27,.86);
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px 20px 16px;
+  box-shadow:0 10px 40px rgba(0,0,0,.45);color:#f3f3f3;}
+.hl-auth-close{position:absolute;right:14px;top:10px;background:transparent;border:none;color:#aaa;font-size:22px;cursor:pointer;}
+.hl-auth-view h3{margin:6px 0 12px;font-weight:700;}
+.hl-field{margin-bottom:12px;}
+.hl-field label{display:block;font-size:12px;color:#cfcfcf;margin-bottom:6px;}
+.hl-field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:#111;color:#fff;outline:none;}
+.hl-field input:focus{border-color:#bdbdbd;}
+.hl-err{margin:6px 2px 0;font-size:12px;color:#ff6b6b;min-height:14px;}
+.hl-btn-primary{border:none;border-radius:999px;padding:10px 16px;cursor:pointer;background:#ffd15a;color:#1a1a1a;font-weight:700;box-shadow:0 2px 10px rgba(255,209,90,.3);}
+.hl-btn-primary:hover{filter:brightness(1.05);}
+.hl-full{width:100%;}
+.hl-auth-links{text-align:center;margin-top:10px;}
+.hl-link{background:transparent;border:none;color:#9ad0ff;cursor:pointer;}
+.hl-sep{color:#666;margin:0 6px;}
+.hl-quick{display:flex;align-items:center;gap:8px;margin:12px 0 4px;flex-wrap:wrap;}
+.hl-quick-label{font-size:12px;color:#cfcfcf;margin-right:4px;}
+.hl-quick-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.12);background:#0f0f0f;color:#eee;padding:8px 10px;border-radius:999px;cursor:pointer;}
+.hl-quick-btn img{width:16px;height:16px;}
+.hl-toast{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;padding:8px 12px;border-radius:999px;font-size:12px;background:rgba(255,255,255,.08);color:#fff;opacity:0;transition:opacity .25s;}
+.hl-toast.show{opacity:1;}
+#hlAuthTitle{
+	color:white;
+}
