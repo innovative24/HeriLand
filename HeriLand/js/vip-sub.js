@@ -72,18 +72,22 @@
   }
 
   // 點六顆按鈕
-  document.addEventListener('click', (e)=>{
-    const btn = e.target.closest('.feature-card[data-target]');
-    if(!btn) return;
-    e.preventDefault();
-    const id = btn.getAttribute('data-target'); // e.g. "trips"
-    const next = $id(id);
-    if (!next) {
-      console.warn('[VIP] 找不到子頁 id =', id);
-      return;
-    }
-    showView(next, 'forward');
-  });
+  // 功能钮：允许其它处理器继续执行（比如你的内容加载器）
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.feature-card[data-target]');
+  if (!btn) return;
+
+  e.preventDefault(); // 避免 <a> 跳页；保留事件继续冒泡
+  const id = btn.getAttribute('data-target');
+  const next = document.getElementById(id);
+  if (!next) { console.warn('[router] view not found:', id); return; }
+
+  // 我们先做可见性切换（只保留一个视图）
+  showView(next, 'forward');
+
+  // ⭐ 主动发一个事件，给你的其它代码接力（加载数据/渲染）
+  next.dispatchEvent(new CustomEvent('hl:view:shown', {bubbles:true, detail:{id}}));
+}, true); // 仍然用捕获，保证先切换，但不阻断其它监听
 
   // 返回
   document.addEventListener('click', (e)=>{
