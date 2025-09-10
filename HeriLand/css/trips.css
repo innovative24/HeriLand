@@ -1,140 +1,149 @@
-    :root{
-      --brand: #16a34a; /* 綠 */
-      --brand-2: #b68c2c; /* 金 */
-      --bg: #0b1020;
-      --card: rgba(255,255,255,.1);
-      --stroke: rgba(255,255,255,.12);
-      --text: #e8f1ed;
-      --text-dim: #bcd0c8;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --glass-blur: 12px;
-      --fade: 200ms ease;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: radial-gradient(1200px 1200px at 20% 0%, #0f1a33 0%, var(--bg) 60%), linear-gradient(180deg, #0b1225 0%, #0a0f1f 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      padding: 32px 16px 48px;
-    }
-    .container{
-      max-width: 1100px; margin:0 auto;
-    }
-    header{display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px}
-    h1{font-size: clamp(20px, 4vw, 28px); margin:0; letter-spacing:.5px}
-    .tabs{display:flex; gap:8px; flex-wrap:wrap; border-bottom:1px solid var(--stroke); position:sticky; top:0; backdrop-filter: blur(8px); padding-top:8px; z-index:5}
-    .tab{
-      appearance:none; border:none; background:transparent; color:var(--text-dim); padding:12px 14px; cursor:pointer; position:relative; font-weight:600; letter-spacing:.3px; border-radius:10px 10px 0 0;
-    }
-    .tab[aria-selected="true"]{ color:var(--text) }
-    .tab[aria-selected="true"]::after{
-      content:""; position:absolute; left:10px; right:10px; bottom:-1px; height:3px; border-radius:3px; background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
-    }
+/* =========================
+   Mobile One-Page Baseline
+   垂直滾動 / 禁止水平
+   ========================= */
 
-    .panel{ display:none; animation: fadeIn var(--fade); }
-    .panel.active{ display:block }
-    @keyframes fadeIn { from{ opacity:0; transform: translateY(4px) } to{ opacity:1; transform:none } }
-
-    /* Glass cards */
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
-      border:1px solid var(--stroke); border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
-    }
-    .section{ margin-top:16px }
-
-    /* 想去的地方（卡片列表） */
-    .wish-controls{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px }
-    .input, .select, .textarea{ background: rgba(255,255,255,.1); border:1px solid var(--stroke); color:var(--text); border-radius:12px; padding:10px 12px; outline:none; min-width:0}
-    .input::placeholder, .textarea::placeholder{color:#93a29c}
-    .btn{ background: linear-gradient(90deg, var(--brand), var(--brand-2)); color:#08110e; font-weight:700; border:none; padding:10px 14px; border-radius:12px; cursor:pointer }
-    .btn.secondary{ background: rgba(255,255,255,.12); color: var(--text); border:1px solid var(--stroke) }
-
-    .wish-list{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px }
-    .place-card{ padding:14px; position:relative }
-    .drag-handle{ position:absolute; inset:auto 10px 10px auto; font-size:18px; opacity:.6; cursor:grab }
-    .badge{ display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#dce7e2; background:rgba(22,163,74,.18); border:1px dashed rgba(22,163,74,.45); padding:6px 8px; border-radius:999px }
-    .note{ font-size:13px; color:var(--text-dim); margin-top:8px }
-    .meta{ display:flex; align-items:center; justify-content:space-between; margin-top:10px; font-size:13px; color:#cfe0da }
-    .card-actions{ display:flex; gap:8px; margin-top:10px }
-
-    /* 旅行清單 */
-    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px }
-    .list{ padding:14px }
-    .list h4{ margin:0 0 10px; font-size:14px; letter-spacing:.5px; color:#dbe7e3 }
-    .item{ display:flex; align-items:center; gap:10px; padding:8px 6px; border-radius:12px; transition:.15s }
-    .item:hover{ background: rgba(255,255,255,.06) }
-    .item input[type="checkbox"]{ width:18px; height:18px }
-    .add-line{ display:flex; gap:8px; margin-top:8px }
-
-    .done-wrap{ margin-top:14px; padding-top:10px; border-top:1px dashed var(--stroke) }
-    .done-item{ font-size:13px; color:#a9bbb5; display:flex; align-items:center; gap:8px; padding:6px 2px }
-
-    /* 已完成旅程 */
-    .trips{ display:grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap:12px }
-    .trip-card{ padding:14px; display:grid; grid-template-columns:64px 1fr; gap:12px; align-items:center }
-    .thumb{ width:64px; height:64px; border-radius:12px; background: rgba(255,255,255,.14); display:grid; place-items:center; font-size:20px }
-    .trip-title{ margin:0; font-size:16px }
-    .trip-sub{ color:var(--text-dim); font-size:13px; margin-top:4px }
-    .trip-actions{ display:flex; gap:8px; margin-top:8px }
-
-    /* 分享 / 匯出 */
-    .backdrop{ position:fixed; inset:0; background: rgba(4,8,12,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display:none; z-index:50 }
-    .backdrop.show{ display:block; animation:fadeIn var(--fade) }
-    .sheet{ position:fixed; left:50%; transform: translateX(-50%); bottom:-420px; width:min(640px, 92vw); background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.1)); border:1px solid var(--stroke); border-radius: 18px 18px 0 0; box-shadow: var(--shadow); padding:16px; z-index:51; transition: bottom var(--fade); backdrop-filter: blur(var(--glass-blur)) }
-    .sheet.show{ bottom:0 }
-    .share-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:8px }
-    .share-btn{ display:grid; gap:6px; justify-items:center; padding:12px; border-radius:14px; border:1px solid var(--stroke); background: rgba(255,255,255,.08); cursor:pointer; text-decoration:none; color:var(--text) }
-    .share-btn span{ font-size:12px; color:#def0ea }
-
-    .helper{ color:#93a29c; font-size:13px; margin-top:6px }
-    .muted{ color:#9fb3ac }
-    .empty{ padding:18px; text-align:center; color:#a8bbb4 }
-    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0 }
-  
-.hl-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 16px;
-  border-bottom:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(10px);
-}
-.hl-header h1 {
-  font-size:17px;
-  font-weight:600;
-  margin:0;
-}
-.hl-header .back,
-.hl-header .home {
-  font-size:20px;
-  cursor:pointer;
-  background:none;
-  border:none;
-  color:var(--text);
-  min-width:40px; /* 點擊區域 >=40px */
-  text-align:center;
-}
-.hl-header .home {
-  font-size:15px;
-  font-weight:500;
-  color:var(--brand); /* 品牌色 */
-  text-decoration:none;
+/* 全域：只允許垂直手勢，避免水平滾動與彈回 */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow-x: hidden;            /* 禁用水平捲軸 */
+  overscroll-behavior-x: none;   /* 禁止水平邊緣彈回 */
+  touch-action: pan-y;           /* 僅允許上下滑 */
+  -webkit-text-size-adjust: 100%;
 }
 
-.hl-header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px)
-  }
-  .hl-header h1{font-size:17px;font-weight:600;margin:0}
-  .hl-header .back,.hl-header .home{min-width:40px;height:40px;display:grid;place-items:center;
-    color:#e8f1ed;text-decoration:none;font-size:20px}
-  .hl-header .home{font-size:15px;font-weight:500;color:#16a34a}
-  
-  #btnBack{
-	  font-size:30px;font-weight:20px;
-  }
-  
+/* 盒模型與媒體元素安全設定 */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas { max-width: 100%; height: auto; display: block; }
+
+/* 視圖容器：每個子頁（vipDashboard / trips / favorites…） */
+.vip-view {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;            /* 再保險一層 */
+  background: #0f1113;           /* 深色底，可依主題調整 */
+  color: #e9edf1;
+}
+
+/* 頂部標題列（固定於子頁最上） */
+.vip-view .sub-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, rgba(15,17,19,.85), rgba(15,17,19,.35));
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+}
+
+/* 內容區：僅垂直滾動、不可水平溢出 */
+.vip-view .content {
+  flex: 1 1 auto;
+  min-height: 0;                 /* 避免 sticky 佔滿 */
+  max-width: 100%;
+  overflow-x: hidden;            /* 禁用水平 */
+  overflow-y: auto;              /* 垂直滾動 */
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 主要 UI 控件（按鈕/輸入）基本規範，避免撐寬 */
+.input, .btn, .chip, .pill-input, .feature-card, .tab {
+  min-width: 0;                  /* 允許變窄，不撐破容器 */
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* Tabs 群組：禁止水平捲動，長文以省略/斷行處理 */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  overflow: hidden;              /* 不做橫向捲動 */
+}
+.tab {
+  white-space: nowrap;           /* 保持膠囊樣式 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* 清單 / 網格：使用 minmax(0,1fr) 防止子項撐寬 */
+.wish-list, .trips, .share-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 640px) {
+  .wish-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 卡片樣式（你的 .card / .trip-card / .place-card 可共用） */
+.card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  padding: 14px;
+  backdrop-filter: blur(8px);
+}
+
+/* 輪播：完全阻擋水平手勢，避免拖出容器 */
+.vip-carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;              /* 斷軌道寬度 */
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow: 0 10px 30px rgba(0,0,0,.25) inset, 0 8px 24px rgba(0,0,0,.25);
+  touch-action: pan-y;           /* 僅上下滑（禁左右拖） */
+}
+.vip-carousel-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;        /* 性能優化 */
+}
+.vip-slide { flex: 0 0 100%; height: 100%; }
+.vip-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* 拖曳把手：避免觸發瀏覽器的水平滑動手勢 */
+.drag-handle { touch-action: none; cursor: grab; }
+
+/* 底部分享面板與遮罩：同樣僅允許上下手勢 */
+.backdrop, .sheet { touch-action: pan-y; overflow-x: hidden; }
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 49;
+}
+.backdrop.show { opacity: 1; pointer-events: auto; }
+
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  transform: translateY(100%);
+  transition: transform .28s ease;
+  background: linear-gradient(180deg, rgba(22,24,27,.95), rgba(22,24,27,.98));
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px 16px 0 0;
+  padding: 16px;
+  z-index: 50;
+}
+.sheet.open { transform: translateY(0); }
+
+/* 會員區（Dashboard）與功能卡：也限制橫向 */
+#vipDashboard.vip-view { overflow-x: hidden; }
+.vip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.feature-card { max-width: 100%; }
+
+/* 絕對保險：任何元素不得超過視窗寬度 */
+body * { max-width: 100vw; }
