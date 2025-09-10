@@ -963,3 +963,102 @@ document.querySelector('.social-btn.facebook')?.addEventListener('click', ()=>{
 });
 
 
+/* ===== HL Router Hard-Mode (only-one-view) ===== */
+(function(){
+  const $$  = s => Array.from(document.querySelectorAll(s));
+  const $id = id => document.getElementById(id);
+
+  // --- 1) 硬重置：除了 keep 之外，全部隱藏 ---
+  function hardResetViews(keep){
+    const views = $$('.vip-view');
+    views.forEach(v => {
+      if (v === keep) {
+        v.classList.add('show');
+        v.removeAttribute('hidden');
+      } else {
+        v.classList.remove('show','view-enter','view-enter-active','view-leave','view-leave-active',
+                          'view-enter-back','view-leave-back');
+        v.setAttribute('hidden','');
+      }
+    });
+  }
+
+  // --- 2) 導航：帶動畫 + 前後硬重置 ---
+  let busy = false;
+  function showView(nextEl, direction='forward'){
+    if (!nextEl || busy) return;
+    busy = true;
+
+    // 導航前先清一次：避免上一輪殘留
+    hardResetViews(nextEl); // 先把 next 顯示，其他全部關
+    // 再找 current（此時應該只有 next 顯示，沒有 current 也 OK）
+    const current = null; // 已經 reset 過，當作沒有 current 可做動畫
+
+    // 做一次簡單入場動畫
+    const enter = direction==='back' ? 'view-enter-back' : 'view-enter';
+    nextEl.classList.add(enter);
+    requestAnimationFrame(()=>{
+      nextEl.classList.add('view-enter-active');
+      nextEl.classList.remove(enter);
+      setTimeout(()=>{
+        nextEl.classList.remove('view-enter-active');
+        // 導航後再保險清一次
+        hardResetViews(nextEl);
+        busy = false;
+        logVisible();
+      }, 320);
+    });
+  }
+  // 全域暴露，確保其它模組也能用
+  window.showView = showView;
+
+  // --- 3) 統一攔截點擊（捕獲階段 + 阻斷其他處理） ---
+  document.addEventListener('click', (e)=>{
+    // 返回
+    const back = e.target.closest('[data-back]');
+    if (back) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      const dash = $id('vipDashboard');
+      if (dash) showView(dash, 'back');
+      return;
+    }
+
+    // 功能鈕
+    const btn = e.target.closest('.feature-card[data-target]');
+    if (btn) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      const id = btn.getAttribute('data-target');
+      const next = $id(id);
+      if (!next) { console.warn('[router] view not found:', id); return; }
+      showView(next, 'forward');
+      return;
+    }
+  }, true); // ★ 捕獲 + 阻止，避免舊 handler 先/後處理
+
+  // --- 4) 啟動：只顯示 dashboard ---
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const dash = $id('vipDashboard');
+    if (dash) hardResetViews(dash);
+    logVisible();
+  });
+
+  // --- 5) 看看現在到底顯示了誰（除錯用，可留著） ---
+  function logVisible(){
+    const vis = $$('.vip-view').filter(v => !v.hasAttribute('hidden')).map(v=>v.id);
+    console.debug('[router] visible:', vis);
+  }
+
+  // --- 6) 防呆：如果外部腳本亂改 show/hidden，這個觀察器會自動糾正 ---
+  const mo = new MutationObserver(()=>{
+    // 若同時出現 2 個以上可見視圖，強制只留最後一個
+    const visibles = $$('.vip-view').filter(v => !v.hasAttribute('hidden'));
+    if (visibles.length > 1) {
+      const keep = visibles[visibles.length - 1];
+      console.warn('[router] multiple visible detected, force keep:', keep.id);
+      hardResetViews(keep);
+      logVisible();
+    }
+  });
+  mo.observe(document.body, { attributes:true, subtree:true, attributeFilter:['hidden','class'] });
+
+})();
