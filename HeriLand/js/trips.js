@@ -1,4 +1,4 @@
-<script>
+
 (function(){
   const trips = document.getElementById('trips');
   if(!trips) return;
@@ -86,4 +86,3 @@
     card[before ? 'before' : 'after'](dragEl);
   });
 })();
-</script>
