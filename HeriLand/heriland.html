@@ -335,112 +335,235 @@
  </section>
 		
 		<section id="trips" class="vip-view" hidden>
-			<header class="sub-header"><button data-back>返回</button><h3>我的旅程</h3></header>
-			<div class="content">
+  <!-- 頂部導覽：左上返回會員中心、右上回首頁 -->
+  <header class="sub-header">
+    <div class="left">
+      <button type="button" data-back aria-label="返回會員中心">← 返回</button>
+    </div>
+    <h3>我的旅程</h3>
+    <div class="right">
+      <button type="button" id="hlGoHome" aria-label="回首頁">HeriLand</button>
+    </div>
+  </header>
 
-    <!-- Tabs -->
-    <nav class="tabs" role="tablist" aria-label="我的旅程索引">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-wish" id="tab-wish">想去的地方</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-pack" id="tab-pack">旅行清單</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-done" id="tab-done">已完成旅程</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-share" id="tab-share">分享 / 匯出</button>
+  <div class="content">
+
+    <!-- A. 旅程封面卡：有旅程 / 無旅程 -->
+    <section id="tripHero" class="hero-card" aria-labelledby="tripHeroTitle">
+      <!-- 有旅程時顯示 -->
+      <div class="hero-body" id="tripHeroHasData" hidden>
+        <img class="hero-cover" id="tripHeroCover" alt="旅程封面圖" />
+        <div class="hero-info">
+          <h4 id="tripHeroTitle">古晉三日遊</h4>
+          <p id="tripHeroDates" class="muted">2025/10/01 – 2025/10/03</p>
+          <div class="hero-actions">
+            <button type="button" id="btnEditTrip" class="btn">編輯</button>
+            <button type="button" id="btnShareTrip" class="btn">分享</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 無旅程時顯示 -->
+      <div class="hero-empty" id="tripHeroEmpty">
+        <div class="hero-illustration" aria-hidden="true">🗺️</div>
+        <p>還沒有旅程，先新增一個吧！</p>
+        <button type="button" id="btnOpenCreate" class="btn gold">＋ 新增旅程</button>
+      </div>
+    </section>
+
+    <!-- B. Tabs 分頁 -->
+    <nav class="tabs" role="tablist" aria-label="我的旅程分頁">
+      <button class="tab" role="tab" id="tab-plan"   aria-controls="panel-plan"   aria-selected="true">規劃中</button>
+      <button class="tab" role="tab" id="tab-pack"   aria-controls="panel-pack"   aria-selected="false">行李清單</button>
+      <button class="tab" role="tab" id="tab-diary"  aria-controls="panel-diary"  aria-selected="false">旅程記錄</button>
+      <button class="tab" role="tab" id="tab-share"  aria-controls="panel-share"  aria-selected="false">分享</button>
     </nav>
 
-    <!-- Panels -->
-    <section id="panel-wish" class="panel active section" role="tabpanel" aria-labelledby="tab-wish">
-      <div class="wish-controls">
-        <input id="wishTitle" class="input" placeholder="新增商家 / 景點 (例如：瑪貢咖啡)" />
-        <input id="wishCity" class="input" placeholder="城市 (例如：Kuching)" style="max-width:160px" />
-        <input id="wishTag" class="input" placeholder="標籤 (咖啡 / 美食 / 景點)" style="max-width:160px" />
-        <input id="wishNote" class="input" placeholder="備註 (例：Day 2 下午)" style="flex:1" />
-        <button id="btnAddWish" class="btn">＋ 新增</button>
-        <button id="btnClearWish" class="btn secondary" title="清空列表">清空</button>
+    <!-- Panels：四個分頁 -->
+    <!-- 1) 規劃中 -->
+    <section id="panel-plan" class="panel section" role="tabpanel" aria-labelledby="tab-plan">
+      <!-- 控制列：新增卡片、分日排序、備註 -->
+      <div class="plan-controls">
+        <div class="plan-row">
+          <input class="input" id="planPlace" placeholder="新增商家／景點（例如：瑪貢咖啡）" />
+          <input class="input" id="planDay"   placeholder="Day 1 / Day 2…" style="max-width:120px" />
+          <input class="input" id="planNote"  placeholder="備註（例：下午 2:00 入場）" />
+          <button type="button" id="btnPlanAdd" class="btn">＋ 新增</button>
+        </div>
       </div>
-      <div class="wish-list" id="wishList"></div>
-      <p class="helper">提示：長按右下角「⋮⋮」可拖曳排序。</p>
+
+      <!-- 卡片列表：樣式同城市頁商家卡片 -->
+      <div class="plan-list" id="planList" aria-live="polite"></div>
+
+      <!-- 空狀態 -->
+      <p class="empty" id="planEmpty">尚未加入任何規劃</p>
     </section>
 
-    <section id="panel-pack" class="panel section" role="tabpanel" aria-labelledby="tab-pack">
-      <div class="grid" id="packGrid"></div>
+    <!-- 2) 行李清單 -->
+    <section id="panel-pack" class="panel section" role="tabpanel" aria-labelledby="tab-pack" hidden>
+      <!-- 預設清單 + 新增列 -->
+      <div class="pack-add">
+        <input class="input" id="packNewItem" placeholder="新增項目（例如：防曬乳）" />
+        <button type="button" id="btnPackAdd" class="btn">加入</button>
+      </div>
+
+      <div class="pack-columns">
+        <div class="pack-col">
+          <h4 class="col-title">待準備</h4>
+          <ul id="packTodo" class="pack-list" aria-label="待準備清單">
+            <!-- 預設項目（稍後由 JS 填） -->
+          </ul>
+        </div>
+        <div class="pack-col">
+          <h4 class="col-title">已準備好</h4>
+          <ul id="packDone" class="pack-list" aria-label="已準備清單"></ul>
+        </div>
+      </div>
     </section>
 
-    <section id="panel-done" class="panel section" role="tabpanel" aria-labelledby="tab-done">
-      <div class="trips" id="tripList"></div>
-      <div class="empty" id="tripEmpty" style="display:none">尚無完成旅程</div>
+    <!-- 3) 旅程記錄（時間軸） -->
+    <section id="panel-diary" class="panel section" role="tabpanel" aria-labelledby="tab-diary" hidden>
+      <div class="diary-controls">
+        <div class="plan-row">
+          <input class="input" id="diaryDay" placeholder="Day 1 / Day 2…" style="max-width:120px" />
+          <input class="input" id="diaryPlace" placeholder="商家／景點名稱" />
+          <input class="input" id="diaryNote" placeholder="紀錄（可加圖片，之後支援上傳）" />
+          <button type="button" id="btnDiaryAdd" class="btn">＋ 新增紀錄</button>
+        </div>
+      </div>
+
+      <!-- 時間軸 -->
+      <ol class="timeline" id="diaryTimeline" aria-live="polite">
+        <!-- 之後以 li.timeline-item 注入 -->
+      </ol>
+
+      <!-- 空狀態 -->
+      <p class="empty" id="diaryEmpty">尚無任何旅程記錄</p>
     </section>
 
-    <section id="panel-share" class="panel section" role="tabpanel" aria-labelledby="tab-share">
-      <div class="card" style="padding:16px">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+    <!-- 4) 分享 -->
+    <section id="panel-share" class="panel section" role="tabpanel" aria-labelledby="tab-share" hidden>
+      <div class="share-card card">
+        <div class="share-head">
           <div>
-            <div style="font-weight:700">分享或匯出你的旅程</div>
-            <div class="muted" style="font-size:13px">鏈接可分享給朋友查看你的行程（未來支援 PDF）</div>
+            <div class="title">分享你的旅程</div>
+            <div class="muted">可輸出旅程卡（圖片）或 PDF 行程表</div>
           </div>
-          <div style="display:flex; gap:8px">
-            <button class="btn" id="openSheet">打開分享面板</button>
-            <button class="btn secondary" id="copyLink">複製分享連結</button>
+          <div class="btns">
+            <button type="button" id="btnOpenShare" class="btn">打開分享面板</button>
+            <button type="button" id="btnCopyLink" class="btn secondary">複製分享連結</button>
           </div>
         </div>
       </div>
     </section>
-  </div>
 
-  <!-- Share sheet -->
-  <div class="backdrop" id="backdrop"></div>
-  <div class="sheet" id="sheet" aria-modal="true" role="dialog" aria-label="分享行程">
-    <div style="display:flex; align-items:center; justify-content:space-between">
-      <strong>分享 / 匯出</strong>
-      <button id="closeSheet" class="btn secondary" style="padding:6px 10px">關閉</button>
-    </div>
-    <div class="share-grid" style="margin-top:12px">
-      <a class="share-btn" data-channel="whatsapp" href="#">
-        <div>🟢</div><span>WhatsApp</span>
-      </a>
-      <a class="share-btn" data-channel="line" href="#">
-        <div>💬</div><span>LINE</span>
-      </a>
-      <a class="share-btn" data-channel="facebook" href="#">
-        <div>🔵</div><span>Facebook</span>
-      </a>
-      <a class="share-btn" data-channel="copy" href="#">
-        <div>🔗</div><span>複製連結</span>
-      </a>
-    </div>
-    <div class="helper">匯出 PDF：預留中（下版加入）</div>
-  </div>
+  </div><!-- /content -->
 
-  <template id="tpl-wish-card">
-    <div class="card place-card" draggable="true">
-      <div class="badge"><span class="tag">景點</span> <span class="city">Kuching</span></div>
-      <h3 style="margin:10px 0 0; font-size:18px" class="title">示例商家</h3>
-      <p class="note">備註：Day 2 下午</p>
-      <div class="meta">
-        <span class="muted">加入於 <span class="created">2025/09/08</span></span>
-        <span class="drag-handle" title="拖曳排序">⋮⋮</span>
+  <!-- C. 底部浮動「新增旅程」按鈕 -->
+  <button type="button" id="fabAddTrip" class="fab" aria-label="新增旅程">＋</button>
+
+  <!-- 新增/編輯旅程表單（底部彈窗／sheet） -->
+  <div id="createBackdrop" class="backdrop" hidden></div>
+  <div id="createSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="createTitle" hidden>
+    <div class="sheet-head">
+      <h4 id="createTitle">新增旅程</h4>
+      <button type="button" id="createClose" class="btn secondary" aria-label="關閉">關閉</button>
+    </div>
+
+    <form id="createForm" class="sheet-body">
+      <label class="field">
+        <span class="label">行程名稱</span>
+        <input class="input" id="tripName" placeholder="例如：古晉三日遊" />
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span class="label">開始日期</span>
+          <input class="input" id="tripStart" type="date" />
+        </label>
+        <label class="field">
+          <span class="label">結束日期</span>
+          <input class="input" id="tripEnd" type="date" />
+        </label>
       </div>
-      <div class="card-actions">
+      <label class="field">
+        <span class="label">封面圖</span>
+        <div class="cover-picker">
+          <button type="button" class="btn secondary" id="btnPickSystem">選擇系統圖片</button>
+          <input type="file" id="tripCoverUpload" accept="image/*" hidden />
+          <button type="button" class="btn secondary" id="btnPickUpload">上傳圖片</button>
+        </div>
+      </label>
+
+      <div class="sheet-actions">
+        <button type="button" id="createSubmit" class="btn gold">建立旅程</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 分享面板（底部彈出） -->
+  <div id="shareBackdrop" class="backdrop" hidden></div>
+  <div id="shareSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="shareTitle" hidden>
+    <div class="sheet-head">
+      <h4 id="shareTitle">分享 / 匯出</h4>
+      <button type="button" id="shareClose" class="btn secondary" aria-label="關閉">關閉</button>
+    </div>
+
+    <div class="sheet-body">
+      <div class="share-grid">
+        <a href="#" class="share-btn" data-channel="line" aria-label="LINE 分享">💬 LINE</a>
+        <a href="#" class="share-btn" data-channel="whatsapp" aria-label="WhatsApp 分享">🟢 WhatsApp</a>
+        <a href="#" class="share-btn" data-channel="facebook" aria-label="Facebook 分享">🔵 Facebook</a>
+        <a href="#" class="share-btn" data-channel="copy" aria-label="複製連結">🔗 複製連結</a>
+      </div>
+      <div class="share-extra">
+        <button type="button" id="btnExportImage" class="btn">生成旅程卡（圖片）</button>
+        <button type="button" id="btnExportPDF" class="btn secondary">匯出 PDF 行程表</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模板：之後 JS 會 clone 這些來生成卡片/項目 -->
+  <template id="tpl-plan-card">
+    <article class="card place-card" draggable="true">
+      <div class="badge"><span class="day">Day 1</span></div>
+      <h4 class="title">商家 / 景點名稱</h4>
+      <p class="note muted">備註文字</p>
+      <div class="meta">
+        <span class="created muted">加入於 2025/09/10</span>
+        <button class="drag-handle" title="拖曳排序" aria-label="拖曳排序">⋮⋮</button>
+      </div>
+      <div class="actions">
         <button class="btn secondary btn-edit">編輯</button>
         <button class="btn secondary btn-delete">刪除</button>
       </div>
-    </div>
+    </article>
   </template>
 
-  <template id="tpl-trip-card">
-    <div class="card trip-card">
-      <div class="thumb">🏞️</div>
-      <div>
-        <h3 class="trip-title">古晉三日遊</h3>
-        <div class="trip-sub">完成日期：<span class="date">2025/09/01</span></div>
-        <div class="trip-actions">
-          <button class="btn secondary btn-view">查看規劃</button>
-          <button class="btn secondary btn-copy">複製行程</button>
-        </div>
-      </div>
-    </div>
+  <template id="tpl-pack-item">
+    <li class="pack-item">
+      <label class="check">
+        <input type="checkbox" />
+        <span class="text">護照</span>
+      </label>
+      <button class="btn secondary btn-del" aria-label="刪除">刪除</button>
+    </li>
   </template>
-			
-			</div>
-		</section>
+
+  <template id="tpl-diary-item">
+    <li class="timeline-item">
+      <div class="dot" aria-hidden="true"></div>
+      <div class="card">
+        <div class="head">
+          <strong class="day">Day 1</strong>
+          <span class="time muted">14:00</span>
+        </div>
+        <div class="title">打卡：景點名稱</div>
+        <div class="note muted">補充描述…（之後可加圖片）</div>
+      </div>
+    </li>
+  </template>
+
+</section>
 
 		<section id="favorites" class="vip-view" hidden>
 			<header class="sub-header"><button data-back>返回</button><h3>收藏</h3></header>
@@ -598,3 +721,4 @@
 </div>
 </body>
 </html>
+
