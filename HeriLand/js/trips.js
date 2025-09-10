@@ -86,3 +86,90 @@
     card[before ? 'before' : 'after'](dragEl);
   });
 })();
+
+
+/* vip-gate-router.js  —  未登入攔截 + 切頁 + 登入後自動導回 */
+(function () {
+  'use strict';
+
+  const $$  = (s) => Array.from(document.querySelectorAll(s));
+  const $id = (id) => document.getElementById(id);
+
+  // 白名單：不需登入也可進的頁（你要再放行別的就加）
+  const WHITE = new Set(['settings']);
+
+  function isLoggedIn() {
+    const card = $id('vipCard');
+    const hasUser = !!localStorage.getItem('hl_currentUser');
+    return !!(card && card.classList.contains('member') && hasUser);
+  }
+
+  function showAuthLogin() {
+    $id('hlAuthModal')?.setAttribute('aria-hidden', 'false');
+  }
+
+  // 只顯示一個視圖（後備，若沒動畫函式就用這個）
+  function forceSingle(nextEl) {
+    $$('.vip-view').forEach(v => {
+      if (v === nextEl) { v.classList.add('show'); v.removeAttribute('hidden'); }
+      else { v.classList.remove('show'); v.setAttribute('hidden',''); }
+    });
+  }
+
+  // 切頁：優先用你在 vip.js 暴露的 window.showView；否則用後備
+  function showViewById(id, direction='forward') {
+    const el = $id(id);
+    if (!el) return;
+    if (typeof window.showView === 'function') window.showView(el, direction);
+    else forceSingle(el);
+    // 通知子頁做懶載入
+    el.dispatchEvent(new CustomEvent('hl:view:shown', { bubbles:true, detail:{ id } }));
+  }
+
+  // ➊ 功能鍵：未登入→彈窗；已登入→切頁
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.feature-card[data-target]');
+    if (!btn) return;
+
+    const id = btn.getAttribute('data-target');
+    const whitelisted = WHITE.has(id);
+
+    if (!whitelisted && !isLoggedIn()) {
+      e.preventDefault(); e.stopImmediatePropagation();   // 不讓其他 handler 先切頁
+      window._hlPendingTarget = id;                       // 登入後要導回的頁
+      showAuthLogin();
+      return;
+    }
+
+    e.preventDefault(); e.stopImmediatePropagation();
+    showViewById(id, 'forward');
+  }, true); // capture=true，確保最先處理
+
+  // ➋ 返回鍵
+  document.addEventListener('click', (e) => {
+    const back = e.target.closest('[data-back]');
+    if (!back) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    showViewById('vipDashboard', 'back');
+  }, true);
+
+  // ➌ 監看登入完成後自動導回（觀察 #vipCard 變成 member）
+  const card = $id('vipCard');
+  if (card) {
+    const tryGo = () => {
+      const target = window._hlPendingTarget;
+      if (target && isLoggedIn()) {
+        window._hlPendingTarget = null;
+        setTimeout(() => showViewById(target, 'forward'), 50);
+      }
+    };
+    new MutationObserver(tryGo).observe(card, { attributes:true, attributeFilter:['class'] });
+    document.addEventListener('hl:member:loginSuccess', tryGo);
+  }
+
+  // ➍ 初始化：只顯示 Dashboard
+  document.addEventListener('DOMContentLoaded', () => {
+    const dash = $id('vipDashboard');
+    if (dash) forceSingle(dash);
+  });
+})();
