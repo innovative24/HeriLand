@@ -1,17 +1,49 @@
+
+// —— 強化版視圖切換：永遠只顯示 1 個視圖，含動畫鎖 —— //
 (function(){
   const $$  = s => Array.from(document.querySelectorAll(s));
-  const $id = id => document.getElementById(id);
+  const byId = id => document.getElementById(id);
 
-  function showView(nextEl, direction='forward'){
+  let isTransitioning = false;
+
+  function forceSingleView(keepEl){
     const views = $$('.vip-view');
-    const current = views.find(v => v.classList.contains('show'));
-    if (current === nextEl) return;
+    views.forEach(v=>{
+      if (v === keepEl){
+        v.classList.add('show');
+        v.removeAttribute('hidden');
+      } else {
+        v.classList.remove('show','view-enter','view-enter-active','view-leave','view-leave-active',
+                           'view-enter-back','view-leave-back');
+        v.setAttribute('hidden','');
+      }
+    });
+  }
 
+  window.showView = function showView(nextEl, direction='forward'){
+    if (!nextEl) return;
+    if (isTransitioning) return; // 避免快速連點
+    isTransitioning = true;
+
+    const views = $$('.vip-view');
+
+    // 更穩的 current 推斷：找“非 next”且目前可見者
+    let current = views.find(v => v !== nextEl && v.classList.contains('show') && !v.hasAttribute('hidden'));
+    // 如果沒有標記 show，但實際未 hidden，也視為 current
+    if (!current) current = views.find(v => v !== nextEl && !v.hasAttribute('hidden'));
+
+    // 當前與目標相同就不切
+    if (current === nextEl){
+      isTransitioning = false;
+      return;
+    }
+
+    // 進場/退場 class
     const enter = direction==='back' ? 'view-enter-back' : 'view-enter';
     const leave = direction==='back' ? 'view-leave-back' : 'view-leave';
 
-    // 先確保顯示
-    nextEl.removeAttribute('hidden');        // ★ 移除 hidden 屬性
+    // 先確保目標可見
+    nextEl.removeAttribute('hidden');
     nextEl.classList.add('show', enter);
 
     requestAnimationFrame(()=>{
@@ -23,14 +55,20 @@
       }
 
       setTimeout(()=>{
+        // 動畫結束，強制維持單一顯示
         nextEl.classList.remove('view-enter-active');
-
-        if (current){
-          current.classList.remove(leave, 'view-leave-active', 'show');
-          current.setAttribute('hidden',''); // ★ 隱藏舊畫面
-        }
-      }, 300);
+        forceSingleView(nextEl);
+        isTransitioning = false;
+      }, 320); // 動畫時間稍微 > CSS transition
     });
+  };
+
+  // ——（可選）初始化：只顯示 dashboard —— //
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const dash = byId('vipDashboard');
+    if (dash) forceSingleView(dash);
+  });
+})();
   }
 
   // 點六顆按鈕
