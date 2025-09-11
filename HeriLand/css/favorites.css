@@ -193,3 +193,70 @@
 #favorites .fav-empty{
   grid-column: 1 / -1;   /* 佔滿整列 */
 }
+
+/* 收藏清單 → 固定三欄 */
+#favorites .fav-list{
+  display:grid;
+  gap:10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* 卡片：上圖下文，適合三欄 */
+#favorites .card.fav-card{
+  display:flex; flex-direction:column; align-items:stretch;
+  padding:8px; border-radius:14px;
+  background:var(--hl-card); border:1px solid var(--hl-border);
+  backdrop-filter:blur(6px);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+#favorites .card.fav-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+
+/* 縮圖放上面 */
+#favorites .fav-card .thumbnail{
+  width:100%; border-radius:12px; overflow:hidden; margin-bottom:6px;
+}
+#favorites .fav-card .thumb-img{
+  width:100%; aspect-ratio:1/1; object-fit:cover; display:block;
+}
+
+/* 中間資訊縮排 */
+#favorites .fav-card .info{
+  flex:1 1 auto;
+}
+#favorites .fav-card .title{
+  font-size:14px; font-weight:700; margin:0 0 4px;
+}
+#favorites .fav-card .meta{
+  display:flex; flex-wrap:wrap; gap:4px; margin-bottom:4px;
+}
+#favorites .chip{
+  font-size:11px; padding:4px 8px; border-radius:999px;
+}
+
+/* 電話字體小一點 */
+#favorites .fav-card .phone{ font-size:11px; color:var(--hl-muted); }
+
+/* ❤️ 放右上角浮動 */
+#favorites .fav-card .actions{
+  position:absolute; top:8px; right:8px;
+}
+#favorites .btn-fav{
+  width:28px; height:28px; font-size:16px;
+  background:rgba(0,0,0,.4); color:#fff;
+  border:none; border-radius:999px;
+}
+#favorites .btn-fav[aria-pressed="true"]{
+  color:var(--hl-like); background:rgba(255,90,118,.15);
+  animation:fav-pop .2s ease;
+}
+
+/* 確保卡片容器相對定位 */
+#favorites .fav-card{ position:relative; }
+
+/* 空狀態橫跨三欄 */
+#favorites .fav-empty{
+  grid-column:1 / -1;
+}
