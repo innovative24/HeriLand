@@ -143,3 +143,53 @@
 /* 僅垂直滑動保護（favorites 區域） */
 #favorites, #favorites *{ max-width:100%; box-sizing:border-box; }
 #favorites .content, #favorites .sub-header{ overflow-x:hidden; }
+
+/* --- 讓收藏清單改成並排卡片 --- */
+#favorites .fav-list{
+  display:grid;
+  gap:12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 手機兩欄 */
+}
+@media (min-width: 820px){
+  #favorites .fav-list{ grid-template-columns: repeat(3, minmax(0, 1fr)); } /* 平板三欄 */
+}
+
+/* 每張卡改成卡片式版型（上圖下文 or 左圖右文都可；這裡維持左圖右文但讓卡片縮得進格） */
+#favorites .card.fav-card{
+  grid-template-columns: 56px 1fr auto;  /* 縮小縮圖，塞進兩欄 */
+  padding:10px;
+}
+
+/* 縮圖更緊湊 */
+#favorites .fav-card .thumb-img{
+  width:56px; height:56px; border-radius:12px; object-fit:cover;
+}
+
+/* 標題/資訊緊湊些，避免換行過多 */
+#favorites .fav-card .title{ font-size:15px; margin-bottom:4px; }
+#favorites .fav-card .meta{ gap:6px; margin-bottom:4px; }
+#favorites .chip{ padding:5px 9px; font-size:11px; }
+
+/* 右側 ❤️ 按鈕收斂、對齊格線 */
+#favorites .btn-fav{ width:32px; height:32px; font-size:17px; }
+
+/* --- 排序/篩選列做成一行（小螢幕 2 欄、寬螢幕 3 欄） --- */
+#favorites .fav-controls{ padding:10px; margin-bottom:12px; }
+#favorites .control-row{
+  display:grid; gap:8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 560px){
+  #favorites .control-row{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* select 外觀更緊湊 */
+#favorites .select{
+  min-height:38px; padding:8px 34px 8px 12px;
+  font-size:14px;
+}
+
+/* 空狀態也縮在網格寬度裡，看起來跟卡片一致 */
+#favorites .fav-empty{
+  grid-column: 1 / -1;   /* 佔滿整列 */
+}
