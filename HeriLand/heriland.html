@@ -565,8 +565,9 @@
 
 </section>
 
-		<section id="favorites" class="vip-view" hidden>
-  <!-- 2) Header：左 ← 回會員中心；中 標題；右 回首頁 -->
+		<!-- 收藏子頁面 -->
+<section id="favorites" class="vip-view" hidden>
+  <!-- 2) Header：左 ← 回會員中心；右 HeriLand 回首頁 -->
   <header class="sub-header">
     <div class="left">
       <button type="button" data-back aria-label="返回會員中心">← 返回</button>
@@ -580,76 +581,83 @@
   <!-- 3) 內容區 -->
   <div class="content">
 
-    <!-- B. 排序 / 篩選（預留掛點，不含 JS） -->
+    <!-- B. 排序 / 篩選（不含邏輯，純結構） -->
     <section class="fav-controls" aria-label="排序與篩選">
-      <div class="control-row">
-        <div class="field">
-          <label for="favSort" class="label">排序</label>
-          <select id="favSort" class="select">
-            <option value="latest" selected>最新收藏</option>
+      <div class="row">
+        <label class="field">
+          <span class="label">排序</span>
+          <select id="favSort" class="input" aria-label="收藏排序">
+            <option value="latest" selected>最新收藏（預設）</option>
             <option value="city">按城市</option>
             <option value="category">按類別</option>
           </select>
-        </div>
-        <div class="field">
-          <label for="favCity" class="label">城市</label>
-          <select id="favCity" class="select">
+        </label>
+
+        <label class="field">
+          <span class="label">城市</span>
+          <select id="favCity" class="input" aria-label="城市篩選">
             <option value="">全部城市</option>
-            <!-- 之後用 JS 注入城市清單 -->
+            <!-- 之後以 JS 注入城市選項 -->
           </select>
-        </div>
-        <div class="field">
-          <label for="favCategory" class="label">類別</label>
-          <select id="favCategory" class="select">
+        </label>
+
+        <label class="field">
+          <span class="label">類別</span>
+          <select id="favCategory" class="input" aria-label="類別篩選">
             <option value="">全部類別</option>
             <option value="eat">吃</option>
             <option value="drink">喝</option>
             <option value="play">玩</option>
             <option value="fun">樂</option>
           </select>
-        </div>
+        </label>
       </div>
     </section>
 
-    <!-- A. 卡片列表（單欄） -->
-    <section class="fav-list" id="favList" aria-live="polite" aria-label="收藏清單">
-      <!-- 之後由 JS 以 template 注入 .fav-card -->
-    </section>
+    <!-- A. 卡片列表（單欄；樣式交給 CSS；點卡進詳情的邏輯留給 JS） -->
+    <section class="fav-list-wrap" aria-live="polite">
+      <ul id="favList" class="fav-list" role="list">
+        <!-- 之後由 JS 生成 <li>…</li>；下面提供模板 -->
+      </ul>
 
-    <!-- C. 空狀態 -->
-    <section class="fav-empty" id="favEmpty" hidden>
-      <div class="illustration" aria-hidden="true">🤍</div>
-      <h4>你還沒有收藏任何商家</h4>
-      <p class="muted">快去探索並點擊 ❤️ 收藏吧！</p>
-      <button type="button" id="favGoExplore" class="btn gold" aria-label="去探索">去探索</button>
+      <!-- C. 空狀態 -->
+      <div id="favEmpty" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🤍</div>
+        <h4>你還沒有收藏任何商家</h4>
+        <p class="muted">快去探索並點擊 ❤️ 收藏吧！</p>
+        <button type="button" id="favGoExplore" class="btn">去探索</button>
+      </div>
     </section>
 
   </div><!-- /content -->
 
-  <!-- 模板：收藏卡片（單欄，左圖 / 中資訊 / 右收藏） -->
-  <template id="tpl-fav-card">
-    <article class="card fav-card" data-id="">
-      <a class="thumbnail" href="#" aria-label="查看商家詳情">
-        <img class="thumb-img" src="" alt="商家圖片" />
-      </a>
-
-      <div class="info">
-        <h4 class="title">商家名稱</h4>
-        <div class="meta">
-          <span class="chip city">城市名</span>
-          <span class="chip tag">標籤</span>
+  <!-- 模板：收藏卡片（單欄毛玻璃卡） -->
+  <template id="tpl-fav-item">
+    <li class="fav-item" role="listitem">
+      <article class="card fav-card" data-merchant-id="">
+        <a class="fav-main" href="#" aria-label="查看商家詳情">
+          <div class="thumb">
+            <!-- 正方形圖（預設比例 1:1），若無圖可顯示 Logo 或字母 -->
+            <img src="" alt="" />
+          </div>
+          <div class="info">
+            <h4 class="name">商家名稱</h4>
+            <div class="meta">
+              <span class="chip city">城市名</span>
+              <span class="chip tag">標籤</span>
+            </div>
+            <div class="sub muted tel">電話：—</div>
+          </div>
+        </a>
+        <div class="actions">
+          <!-- 收藏 ❤️：aria-pressed 表示是否已收藏；之後 JS 切換 -->
+          <button type="button" class="fav-toggle" aria-label="切換收藏" aria-pressed="true" title="取消收藏">❤️</button>
         </div>
-        <div class="phone muted">電話：<a href="tel:" class="tel">000-000-000</a></div>
-      </div>
-
-      <div class="actions">
-        <!-- 已收藏：aria-pressed="true"，樣式為實心紅色；未收藏則 false（空心） -->
-        <button class="btn-fav" aria-pressed="true" aria-label="取消收藏">❤️</button>
-      </div>
-    </article>
+      </article>
+    </li>
   </template>
-
 </section>
+
 		
 		<section id="footprints" class="vip-view" hidden>
 			<header class="sub-header"><button data-back>返回</button><h3>足跡</h3></header>
@@ -798,5 +806,6 @@
 </div>
 </body>
 </html>
+
 
 
