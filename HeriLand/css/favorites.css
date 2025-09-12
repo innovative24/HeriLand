@@ -22,19 +22,20 @@
   background:var(--hl-bg); color:var(--hl-text);
   overflow-x:hidden;
 }
-#favorites .sub-header{
-  position:sticky; top:0; z-index:20;
+/* Header（沿用你的整體風格，稍作拋光） */
+#favorites.sub-header{
+  position: sticky; top:0; z-index: 20;
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:12px 16px;
-  background:linear-gradient(180deg, rgba(15,17,19,.85), rgba(15,17,19,.35));
-  border-bottom:1px solid var(--hl-border);
-  backdrop-filter:blur(8px);
+  background: linear-gradient(180deg, rgba(15,17,19,.92), rgba(15,17,19,.5));
+  border-bottom:1px solid var(--border);
+  backdrop-filter: blur(10px);
 }
-#favorites .sub-header h3{ margin:0; font-size:18px; letter-spacing:.3px; }
+#favorites .sub-header h3{ margin:0; font-size:18px; font-weight:900; letter-spacing:.2px; }
 #favorites .sub-header .left button,
 #favorites .sub-header .right button{
-  padding:6px 12px; border-radius:999px;
-  background:rgba(255,255,255,.08); border:1px solid var(--hl-border); color:var(--hl-text);
+  padding:8px 14px; border-radius:999px; border:1px solid var(--border);
+  background: rgba(255,255,255,.08); color: var(--text);
 }
 
 #favorites .content{
