@@ -667,8 +667,9 @@
 			
 			</div>
 		</section>
-		
-		<!-- 📌 A. 頁面入口：會員中心的【推薦】子頁面 -->
+    
+    <section id="badges" class="vip-view" hidden>
+			<!-- 📌 A. 頁面入口：會員中心的【推薦】子頁面 -->
 
   <!-- B. Header -->
   <header role="banner" aria-label="推薦頁面導覽列">
@@ -681,8 +682,9 @@
       <a id="btn-home" href="/" aria-label="回到首頁">HeriLand</a>
     </nav>
   </header>
-
-  <main id="recommend-root" role="main" aria-labelledby="page-title">
+			<div class="content">
+        
+        <main id="recommend-root" role="main" aria-labelledby="page-title">
 
     <!-- E. 空狀態（預設可先顯示；接上資料後由前端決定是否隱藏） -->
     <section id="empty-state" aria-live="polite">
@@ -903,6 +905,11 @@
       </div>
     </li>
   </template>
+        
+      </div>
+		</section>
+		
+		
 		
 		<section id="badges" class="vip-view" hidden>
 			<header class="sub-header"><button data-back>返回</button><h3>徽章</h3></header>
