@@ -80,7 +80,7 @@ select{ background: rgba(255,255,255,.08); border:1px solid var(--stroke); color
 }
 
 /* Header（沿用你的整體風格，稍作拋光） */
-#settings .sub-header{
+#footprints .sub-header{
   position: sticky; top:0; z-index: 20;
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:12px 16px;
@@ -88,9 +88,9 @@ select{ background: rgba(255,255,255,.08); border:1px solid var(--stroke); color
   border-bottom:1px solid var(--border);
   backdrop-filter: blur(10px);
 }
-#settings .sub-header h3{ margin:0; font-size:18px; font-weight:900; letter-spacing:.2px; }
-#settings .sub-header .left button,
-#settings .sub-header .right button{
+#footprints .sub-header h3{ margin:0; font-size:18px; font-weight:900; letter-spacing:.2px; }
+#footprints .sub-header .left button,
+#footprints .sub-header .right button{
   padding:8px 14px; border-radius:999px; border:1px solid var(--border);
   background: rgba(255,255,255,.08); color: var(--text);
 }
