@@ -663,7 +663,101 @@
 			<header class="sub-header"><button data-back>返回</button><h3>足跡</h3></header>
 			<div class="content">
 			
-			
+			<!-- 3) 內容區 -->
+  <div class="content">
+
+    <!-- B. 排序 / 篩選（純結構，之後用 JS 接邏輯） -->
+    <section class="fp-controls" aria-label="排序與篩選">
+      <div class="row">
+        <label class="field">
+          <span class="label">排序</span>
+          <select id="fpSort" class="input" aria-label="足跡排序">
+            <option value="latest" selected>最新瀏覽（預設）</option>
+            <option value="city">按城市</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="label">時間</span>
+          <select id="fpTime" class="input" aria-label="時間篩選">
+            <option value="7">最近 7 天</option>
+            <option value="30" selected>最近 30 天</option>
+            <option value="all">全部</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="label">城市</span>
+          <select id="fpCity" class="input" aria-label="城市篩選">
+            <option value="">全部城市</option>
+            <!-- 之後以 JS 注入城市選項 -->
+          </select>
+        </label>
+
+        <!-- 兩欄 / 三欄切換（相簿感） -->
+        <div class="field">
+          <span class="label">版面</span>
+          <div class="cols-switch" role="group" aria-label="欄數切換">
+            <button type="button" class="chip" id="fpCols2" aria-pressed="true">兩欄</button>
+            <button type="button" class="chip" id="fpCols3" aria-pressed="false">三欄</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- A. 卡片牆（兩欄/三欄） -->
+    <section class="fp-grid-wrap" aria-live="polite">
+      <ul id="fpGrid" class="fp-grid" role="list">
+        <!-- 之後由 JS 生成 <li>；以下提供模板 -->
+      </ul>
+
+      <!-- D. 空狀態 -->
+      <div id="fpEmpty" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🐾</div>
+        <h4>你還沒有任何足跡</h4>
+        <p class="muted">快去探索商家吧！</p>
+        <button type="button" id="fpGoExplore" class="btn">去探索</button>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- C. 清除紀錄：確認彈窗（不含邏輯） -->
+  <div id="fpConfirmBackdrop" class="backdrop" hidden></div>
+  <div id="fpConfirmSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="fpConfirmTitle" hidden>
+    <div class="sheet-head">
+      <h4 id="fpConfirmTitle">清除足跡</h4>
+      <button type="button" id="fpConfirmClose" class="btn secondary" aria-label="關閉">關閉</button>
+    </div>
+    <div class="sheet-body">
+      <p class="muted">確定要清除所有瀏覽足跡嗎？此動作無法復原。</p>
+      <div class="sheet-actions" style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" id="fpCancel" class="btn">取消</button>
+        <button type="button" id="fpConfirm" class="btn danger">確認清除</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卡片模板：1:1/4:3 圖片 + 商家資訊 -->
+  <template id="tpl-fp-item">
+    <li class="fp-item" role="listitem">
+      <article class="card fp-card" data-merchant-id="">
+        <a class="fp-main" href="#" aria-label="查看商家詳情">
+          <div class="thumb" data-ratio="1:1">
+            <!-- 若用 4:3，把 data-ratio="4:3"；無圖則可放 Logo/字母 -->
+            <img src="" alt="" />
+          </div>
+          <div class="info">
+            <h4 class="name">商家名稱</h4>
+            <div class="meta">
+              <span class="chip city">城市名</span>
+              <span class="chip tag">標籤</span>
+            </div>
+          </div>
+        </a>
+      </article>
+    </li>
+  </template>
 			
 			</div>
 		</section>
