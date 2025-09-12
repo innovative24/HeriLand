@@ -37,6 +37,22 @@
 #badges.vip-view{ background: var(--bg); color: var(--text); }
 #badges .content{ padding: 14px 16px 18px; }
 
+/* Header（沿用你的整體風格，稍作拋光） */
+#badges .sub-header{
+  position: sticky; top:0; z-index: 20;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 16px;
+  background: linear-gradient(180deg, rgba(15,17,19,.92), rgba(15,17,19,.5));
+  border-bottom:1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+#badges .sub-header h3{ margin:0; font-size:18px; font-weight:900; letter-spacing:.2px; }
+#badges .sub-header .left button,
+#badges .sub-header .right button{
+  padding:8px 14px; border-radius:999px; border:1px solid var(--border);
+  background: rgba(255,255,255,.08); color: var(--text);
+}
+
 /* 頂部 Tabs（簡約，保持一致風格） */
 #badges .badge-tabs{
   display:flex; gap:8px; flex-wrap:wrap; margin: 6px 0 12px;
