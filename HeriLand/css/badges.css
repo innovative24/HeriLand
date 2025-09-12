@@ -1,75 +1,250 @@
- :root{
-      --brand:#16a34a; /* 綠 */
-      --brand-2:#b68c2c; /* 金 */
-      --bg:#0b1020; --stroke:rgba(255,255,255,.12); --text:#e8f1ed; --text-dim:#bcd0c8; --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:16px; --glass:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;background: radial-gradient(1200px 1200px at 20% 0%, #0f1a33 0%, var(--bg) 60%), linear-gradient(180deg, #0b1225 0%, #0a0f1f 100%);color:var(--text);-webkit-font-smoothing:antialiased;padding:32px 16px 56px}
-    .container{max-width:1100px;margin:0 auto}
+/*************************
+ * Heriland – 徽章 (Badges)
+ * scope: #badges only
+ *************************/
 
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-    h1{font-size:clamp(20px,4vw,28px);margin:0}
-    .sub{color:var(--text-dim);font-size:13px;margin-top:4px}
+/* ===== Theme tokens ===== */
+#badges{
+  --bg: #0f1113;
+  --text: #e9edf1;
+  --sub: #c3cbd2;
+  --muted: #9fb0bd;
 
-    .actions{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#08110e;font-weight:700;border:none;padding:10px 14px;border-radius:12px;cursor:pointer}
-    .btn.secondary{background: rgba(255,255,255,.12); color: var(--text); border:1px solid var(--stroke)}
+  --glass: rgba(255,255,255,.06);
+  --glass-strong: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.14);
 
-    /* 最近獲得 */
-    .recent{margin:8px 0 14px;display:flex;gap:8px;flex-wrap:wrap}
-    .recent .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid var(--stroke)}
+  /* 金屬色 */
+  --gold-1: #f6c350; --gold-2: #ffd986; --gold-3: #9a6b1f;
+  --silver-1: #e5e8ec; --silver-2: #cfd6de; --silver-3: #8a949e;
+  --gray-1: rgba(255,255,255,.35); --gray-2: rgba(255,255,255,.15);
 
-    /* 4 欄網格 */
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    @media (max-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
-    @media (max-width:640px){ .grid{grid-template-columns:repeat(2,1fr)} }
+  /* 城市/體驗主題色（可依資料擴充） */
+  --kuching: #1e6b5b;     /* 古晉 森林綠 */
+  --sibu:    #2a7ea8;     /* 詩巫 湖水藍 */
+  --miri:    #3a6dde;     /* 美里 海天藍 */
+  --food:    #ff8a3d;     /* 美食 橘 */
+  --culture: #8c6ad6;     /* 文化 紫 */
+  --nature:  #3aa676;     /* 自然 綠 */
+  --milestone: #c9d1d9;   /* 里程碑 銀灰 */
+  --specialA: #ff7eb3;    /* 特殊 彩虹 */
+  --specialB: #65c7f7;
 
-    .badge{position:relative;background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;display:grid;place-items:center;gap:8px;cursor:pointer;transition:transform .12s ease}
-    .badge:hover{transform:translateY(-2px) scale(1.02)}
-    .icon{width:72px;height:72px;border-radius:16px;display:grid;place-items:center;font-size:34px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-    .badge[data-unlocked="false"] .icon{filter:grayscale(100%) opacity(.6)}
-    .title{margin:0;text-align:center;font-size:14px;line-height:1.2}
-    .meta{font-size:12px;color:var(--text-dim)}
-    .ribbon{position:absolute;right:8px;top:8px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid var(--stroke);font-size:11px}
-    .ribbon.lock{background:rgba(0,0,0,.2)}
-
-    /* Modal 成就卡 */
-    .backdrop{position:fixed;inset:0;background:rgba(4,8,12,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;z-index:40}
-    .backdrop.show{display:block}
-    .sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:-420px;width:min(640px, 92vw);background:var(--glass);border:1px solid var(--stroke);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:16px;z-index:41;transition:bottom .18s ease}
-    .sheet.show{bottom:0}
-    .sheet h3{margin:0 0 8px}
-    .row{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:center}
-    .sheet .icon{width:72px;height:72px;border-radius:16px;font-size:34px}
-    .kv{font-size:13px;color:var(--text-dim)}
-
-.hl-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 16px;
-  border-bottom:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(10px);
+  --badge-size: 88px;     /* 手機視覺尺寸；桌面會放大 */
 }
-.hl-header h1 {
-  font-size:17px;
-  font-weight:600;
-  margin:0;
+
+/* Page base */
+#badges.vip-view{ background: var(--bg); color: var(--text); }
+#badges .content{ padding: 14px 16px 18px; }
+
+/* 頂部 Tabs（簡約，保持一致風格） */
+#badges .badge-tabs{
+  display:flex; gap:8px; flex-wrap:wrap; margin: 6px 0 12px;
 }
-.hl-header .back,
-.hl-header .home {
-  font-size:20px;
-  cursor:pointer;
-  background:none;
-  border:none;
-  color:var(--text);
-  min-width:40px; /* 點擊區域 >=40px */
-  text-align:center;
+#badges .badge-tabs .tab{
+  padding: 8px 14px; border-radius: 999px;
+  background: var(--glass); border:1px solid var(--border); color:var(--text);
+  font-weight:700;
 }
-.hl-header .home {
-  font-size:15px;
-  font-weight:500;
-  color:var(--brand); /* 品牌色 */
-  text-decoration:none;
+#badges .badge-tabs .tab[aria-selected="true"]{
+  box-shadow: 0 0 0 3px rgba(246,195,80,.18);
+  border-color: var(--gold-1);
 }
+
+/* 面板抬頭 + 進度條 */
+#badges .panel-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; margin: 6px 0 10px;
+}
+#badges .panel-head h4{ margin:0; font-size:18px; font-weight:900; }
+#badges .panel-head .progress{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background: var(--glass); border:1px solid var(--border); color: var(--text);
+}
+
+/* ===== 4 欄徽章網格 ===== */
+#badges .badge-grid{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:14px;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+@media (min-width: 720px){
+  #badges{ --badge-size: 98px; }
+}
+@media (min-width: 1024px){
+  #badges{ --badge-size: 112px; }
+}
+
+/* ===== 徽章卡（圓形 + 金屬邊框 + 玻璃底） ===== */
+#badges .badge-item{ display:flex; justify-content:center; }
+#badges .badge-card{
+  width: calc(var(--badge-size) + 8px);
+  aspect-ratio: 1 / 1;
+  border: none; background: transparent; padding:0;
+  position:relative; cursor:pointer;
+  display:grid; place-items:center; gap:6px;
+  color: var(--text);
+  transition: transform .12s ease, filter .12s ease;
+  will-change: transform;
+}
+#badges .badge-card:active{ transform: scale(.96); }
+
+/* 金屬外圈（用 ::before 畫雙層金屬環） */
+#badges .badge-card::before{
+  content:""; position:absolute; inset:0;
+  border-radius:50%;
+  background:
+    conic-gradient(from 0deg,
+      rgba(255,255,255,.85), rgba(255,255,255,.35) 18%, rgba(0,0,0,.18) 32%,
+      rgba(255,255,255,.55) 48%, rgba(0,0,0,.22) 64%, rgba(255,255,255,.65) 82%, rgba(0,0,0,.18) 100%);
+  mask:
+    radial-gradient(circle at 50% 50%, transparent calc(50% - 10px), #000 calc(50% - 9px));
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+  opacity:.9;
+}
+
+/* 內圈玻璃台座（::after） */
+#badges .badge-card::after{
+  content:""; position:absolute; inset:8px;
+  border-radius:50%;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border: 1px solid var(--border);
+  box-shadow: inset 0 12px 28px rgba(0,0,0,.35), inset 0 -10px 20px rgba(255,255,255,.05);
+}
+
+/* 金邊/銀邊（依解鎖等級覆蓋外圈色澤） */
+#badges .badge-card[data-tier="gold"]::before{
+  background: conic-gradient(from 0deg, var(--gold-2), var(--gold-1) 22%, var(--gold-3) 38%, var(--gold-2) 58%, var(--gold-1) 78%, var(--gold-3) 100%);
+}
+#badges .badge-card[data-tier="silver"]::before{
+  background: conic-gradient(from 0deg, var(--silver-1), var(--silver-2) 25%, var(--silver-3) 50%, var(--silver-2) 75%, var(--silver-1) 100%);
+}
+
+/* 徽章圖示（圓內主視覺） */
+#badges .badge-icon{
+  position:relative; z-index:2;
+  width: var(--badge-size); height: var(--badge-size);
+  border-radius:50%;
+  display:grid; place-items:center; overflow:hidden;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(255,255,255,.18), rgba(255,255,255,.04) 50%, rgba(0,0,0,.22));
+}
+#badges .badge-icon img{
+  width:70%; height:70%; object-fit:contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+}
+
+/* 名稱 */
+#badges .badge-name{
+  position:absolute; bottom:-2px; left:50%; transform:translateX(-50%);
+  white-space:nowrap; font-size:12px; font-weight:700; color:var(--text);
+  background: rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.22);
+  padding: 3px 8px; border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+/* ===== 已解鎖 / 未解鎖 狀態 ===== */
+/* 允許兩種掛法：.badge-card[data-unlocked="false"] 或 :has(.badge-state[data-unlocked="false"]) */
+#badges .badge-card[data-unlocked="false"],
+#badges .badge-card:has(.badge-state[data-unlocked="false"]){
+  filter: grayscale(.9) brightness(.8);
+}
+#badges .badge-card[data-unlocked="false"] .lock,
+#badges .badge-card:has(.badge-state[data-unlocked="false"]) .lock{
+  position:absolute; z-index:3; top:8px; right:8px; font-size:16px; opacity:.9;
+}
+
+/* 解鎖日期（已解鎖時顯示，JS 可移除 hidden） */
+#badges .badge-state .date{
+  position:absolute; z-index:3; bottom:8px; right:8px;
+  background: rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.18);
+  padding: 2px 6px; border-radius: 8px; font-size:11px; color:#fff;
+}
+
+/* ===== 類型色系（圖像內緣暈光） ===== */
+/* 依資料在 .badge-card 上帶 data-category / data-theme */
+#badges .badge-card[data-category="city"][data-theme="kuching"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(30,107,91,.45), 0 0 24px rgba(30,107,91,.35);
+}
+#badges .badge-card[data-category="city"][data-theme="sibu"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(42,126,168,.45), 0 0 24px rgba(42,126,168,.35);
+}
+#badges .badge-card[data-category="city"][data-theme="miri"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(58,109,222,.45), 0 0 24px rgba(58,109,222,.35);
+}
+#badges .badge-card[data-category="exp"][data-theme="food"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(255,138,61,.45), 0 0 24px rgba(255,138,61,.35);
+}
+#badges .badge-card[data-category="exp"][data-theme="culture"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(140,106,214,.45), 0 0 24px rgba(140,106,214,.35);
+}
+#badges .badge-card[data-category="exp"][data-theme="nature"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(58,166,118,.45), 0 0 24px rgba(58,166,118,.35);
+}
+#badges .badge-card[data-category="milestone"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(201,209,217,.45), 0 0 24px rgba(201,209,217,.35);
+}
+#badges .badge-card[data-category="special"] .badge-icon{
+  box-shadow: inset 0 0 0 2px rgba(255,126,179,.45), 0 0 0 6px rgba(101,199,247,.25),
+              0 0 28px rgba(255,126,179,.28), inset 0 0 24px rgba(101,199,247,.22);
+}
+
+/* ===== 解鎖動畫（由灰 → 彩 + 星星閃爍） ===== */
+/* 將 .badge-card 加上 .unlocked-anim（或 data-unlocked 从 false → true 時同時加上這個 class） */
+#badges .badge-card.unlocked-anim{
+  animation: badge-pop .28s ease-out both;
+}
+@keyframes badge-pop{
+  0%{ transform: scale(.9); filter: grayscale(.9) brightness(.85); }
+  60%{ transform: scale(1.08); filter: none; }
+  100%{ transform: scale(1); }
+}
+/* 星星火花 */
+#badges .badge-card.unlocked-anim .badge-icon::after{
+  content:""; position:absolute; inset:-8%; border-radius:50%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.75) 0, rgba(255,255,255,.0) 24%),
+    radial-gradient(circle at 70% 20%, rgba(255,255,255,.85) 0, rgba(255,255,255,.0) 20%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,.65) 0, rgba(255,255,255,.0) 22%),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.75) 0, rgba(255,255,255,.0) 20%);
+  animation: twinkle .6s ease-out both;
+}
+@keyframes twinkle{
+  from{ opacity:0; transform: scale(.8) rotate(-8deg); }
+  60%{ opacity:1; transform: scale(1.06) rotate(6deg); }
+  to{ opacity:0; transform: scale(1) rotate(0deg); }
+}
+
+/* ===== 滾動微縮放（翻看收藏冊的感覺） ===== */
+#badges .badge-grid{ transform: translateZ(0); }
+#badges .badge-card{ transition: transform .16s ease, filter .16s ease, box-shadow .16s ease; }
+#badges .badge-card:hover{ transform: translateY(-2px) scale(1.02); } /* 桌面可感 */
+@media (max-width: 428px){
+  /* 行動裝置：不做 hover，保留點按回饋 */
+}
+
+/* 空狀態 */
+#badges .empty-state{
+  margin-top: 12px; text-align:center; padding: 24px 16px;
+  background: var(--glass); border:1px dashed var(--border); border-radius:16px; color: var(--sub);
+}
+#badges .empty-state .illus{ font-size: 44px; opacity:.8; }
+#badges .empty-state h4{ margin:6px 0 4px; font-weight:900; color:var(--text); }
+
+/* ===== 詳情彈窗（沿用全站 sheet，但稍微拋光） ===== */
+#badges .sheet{
+  background: linear-gradient(180deg, rgba(22,24,27,.95), rgba(22,24,27,.98));
+  border-top:1px solid var(--border);
+  border-radius:16px 16px 0 0;
+}
+#badges .sheet-hero{
+  display:grid; place-items:center;
+  background: radial-gradient(120% 170% at 50% -40%, rgba(255,255,255,.18), rgba(255,255,255,.02) 60%, rgba(0,0,0,.35));
+  border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:10px;
+}
+#badges #badgeHero{ width: 120px; height: 120px; object-fit:contain; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); }
+#badges .badge-meta .row{ display:flex; gap:10px; padding:6px 0; }
+#badges .badge-meta dt{ width:90px; color:var(--sub); }
+#badges .badge-meta dd{ margin:0; color:var(--text); }
+
+/* ===== 可讀性與安全 ===== */
+#badges, #badges *{ box-sizing:border-box; max-width:100%; }
+#badges img{ max-width:100%; height:auto; display:block; }
