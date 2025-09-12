@@ -668,10 +668,241 @@
 			</div>
 		</section>
 		
-		<section id="recommend" class="vip-view" hidden>
-			<header class="sub-header"><button data-back>返回</button><h3>推薦</h3></header>
-			<div class="content">…你的旅程內容…</div>
-		</section>
+		<!-- 📌 A. 頁面入口：會員中心的【推薦】子頁面 -->
+
+  <!-- B. Header -->
+  <header role="banner" aria-label="推薦頁面導覽列">
+    <nav aria-label="主要導覽">
+      <!-- 左上角：返回會員中心 -->
+      <a id="btn-back-member" href="member.html" aria-label="返回會員中心">←</a>
+      <!-- 中間：標題 -->
+      <h1 id="page-title">推薦</h1>
+      <!-- 右上角：回首頁 -->
+      <a id="btn-home" href="/" aria-label="回到首頁">HeriLand</a>
+    </nav>
+  </header>
+
+  <main id="recommend-root" role="main" aria-labelledby="page-title">
+
+    <!-- E. 空狀態（預設可先顯示；接上資料後由前端決定是否隱藏） -->
+    <section id="empty-state" aria-live="polite">
+      <div role="img" aria-label="星星與地圖插圖">✨🗺️</div>
+      <h2>還沒有可推薦的內容</h2>
+      <p>請先收藏或探索一些商家，我們才能為你推薦！</p>
+      <!-- 可放導引連結 -->
+      <p><a href="/explore.html" aria-label="前往探索頁">去探索</a></p>
+    </section>
+
+    <!-- C. 分段內容模組（有資料時顯示；每段 4–6 張卡） -->
+
+    <!-- C1. 為你推薦城市：來源=用戶收藏 / 足跡最多的城市 -->
+    <section id="sec-city-for-you" aria-labelledby="sec-city-for-you-title" hidden>
+      <header>
+        <h2 id="sec-city-for-you-title">為你推薦城市</h2>
+        <div class="chips" aria-label="推薦理由">
+          <span class="chip" data-chip="reason">因為你收藏了古晉夜市</span>
+        </div>
+      </header>
+      <ul class="card-list" aria-label="城市相關推薦清單">
+        <!-- 4–6 張卡片 -->
+        <li class="card" data-source="city-for-you" data-city-id="kuching">
+          <a class="card-link" href="/place/xyz.html" aria-label="查看商家／景點詳情">
+            <figure class="card-media" aria-label="圖片">
+              <img src="" alt="景點／商家圖片（占位）" />
+            </figure>
+            <div class="card-body">
+              <h3 class="card-title">古晉河濱公園</h3>
+              <p class="card-subtitle">景點・Kuching</p>
+              <p class="card-meta">⭐ 4.6・1.2k+ 評價</p>
+            </div>
+          </a>
+          <!-- D. 卡片互動 -->
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <li class="card" data-source="city-for-you" data-city-id="kuching">
+          <a class="card-link" href="/place/abc.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">砂拉越文化村</h3>
+              <p class="card-subtitle">景點・Kuching</p>
+              <p class="card-meta">⭐ 4.7・3.1k+ 評價</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <!-- …可再補 2–4 張 -->
+      </ul>
+    </section>
+
+    <!-- C2. 猜你會喜歡：來源=相似類型（例如收藏咖啡館 → 更多咖啡館） -->
+    <section id="sec-you-may-like" aria-labelledby="sec-you-may-like-title" hidden>
+      <header>
+        <h2 id="sec-you-may-like-title">猜你會喜歡</h2>
+        <div class="chips" aria-label="推薦理由">
+          <span class="chip" data-chip="similar">和你收藏的咖啡館相似</span>
+        </div>
+      </header>
+      <ul class="card-list" aria-label="相似類型推薦清單">
+        <li class="card" data-source="you-may-like" data-tag="cafe">
+          <a class="card-link" href="/place/cafe-001.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">木森咖啡</h3>
+              <p class="card-subtitle">咖啡館・Sibu</p>
+              <p class="card-meta">⭐ 4.5・680+ 評價</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <li class="card" data-source="you-may-like" data-tag="cafe">
+          <a class="card-link" href="/place/cafe-002.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">河岸手沖吧</h3>
+              <p class="card-subtitle">咖啡館・Kuching</p>
+              <p class="card-meta">⭐ 4.8・1.1k+ 評價</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <!-- …可再補 2–4 張 -->
+      </ul>
+    </section>
+
+    <!-- C3. 熱門體驗：來源=全體用戶熱門（排除該用戶已看過/互動過） -->
+    <section id="sec-trending" aria-labelledby="sec-trending-title" hidden>
+      <header>
+        <h2 id="sec-trending-title">熱門體驗</h2>
+        <div class="chips" aria-label="推薦理由">
+          <span class="chip" data-chip="trending">大家都在去</span>
+        </div>
+      </header>
+      <ul class="card-list" aria-label="熱門體驗清單">
+        <li class="card" data-source="trending" data-exp-id="exp-001">
+          <a class="card-link" href="/experience/exp-001.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">古晉夜市覓食之旅</h3>
+              <p class="card-subtitle">體驗・Kuching</p>
+              <p class="card-meta">🔥 近 24 小時 2.3k 人查看</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <li class="card" data-source="trending" data-exp-id="exp-002">
+          <a class="card-link" href="/experience/exp-002.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">姆魯國家公園一日洞穴探險</h3>
+              <p class="card-subtitle">體驗・Miri</p>
+              <p class="card-meta">🔥 本週熱門 TOP 10</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+
+        <!-- …可再補 2–4 張 -->
+      </ul>
+    </section>
+
+    <!-- C4. 旅人故事 / 靈感卡（可選）：公開行程縮圖卡 -->
+    <section id="sec-stories" aria-labelledby="sec-stories-title" hidden>
+      <header>
+        <h2 id="sec-stories-title">旅人故事</h2>
+      </header>
+      <ul class="card-list" aria-label="旅人故事清單">
+        <li class="card" data-source="stories" data-itinerary-id="it-001">
+          <a class="card-link" href="/share/it-001.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">三天兩夜｜古晉美食＋文化散步</h3>
+              <p class="card-subtitle">by @Traveler Mei</p>
+              <p class="card-meta">包含 8 個景點・2 家咖啡館</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-add" data-action="import" aria-label="匯入到我的旅程">➕ 匯入</button>
+            <a class="btn-share" href="/share/export.html" aria-label="前往分享／匯出模組">分享 / 匯出</a>
+          </div>
+        </li>
+        <!-- …可再補 3–5 張 -->
+      </ul>
+    </section>
+
+    <!-- C5. 活動 / 限時卡（可選）：支援倒數資訊 -->
+    <section id="sec-events" aria-labelledby="sec-events-title" hidden>
+      <header>
+        <h2 id="sec-events-title">活動・限時</h2>
+      </header>
+      <ul class="card-list" aria-label="活動清單">
+        <li class="card" data-source="events" data-event-id="evt-001">
+          <a class="card-link" href="/event/evt-001.html">
+            <figure class="card-media"><img src="" alt=""/></figure>
+            <div class="card-body">
+              <h3 class="card-title">古晉美食節 2025</h3>
+              <p class="card-subtitle">Kuching</p>
+              <p class="card-meta" data-countdown="2025-09-15T23:59:59+08:00">還剩 3 天</p>
+            </div>
+          </a>
+          <div class="card-actions" role="group" aria-label="卡片操作">
+            <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+            <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+            <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+          </div>
+        </li>
+        <!-- …可再補 3–5 張 -->
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- 模板區（供工程師用 JS 複製渲染） -->
+  <template id="tpl-card">
+    <li class="card">
+      <a class="card-link" href="#">
+        <figure class="card-media"><img src="" alt=""/></figure>
+        <div class="card-body">
+          <h3 class="card-title">標題</h3>
+          <p class="card-subtitle">副標</p>
+          <p class="card-meta">額外資訊</p>
+        </div>
+      </a>
+      <div class="card-actions" role="group" aria-label="卡片操作">
+        <button type="button" class="btn-fav" data-action="fav" aria-label="加入收藏">❤️</button>
+        <button type="button" class="btn-add" data-action="add" aria-label="加入我的旅程">➕</button>
+        <button type="button" class="btn-hide" data-action="hide" aria-label="不感興趣">🚫</button>
+      </div>
+    </li>
+  </template>
 		
 		<section id="badges" class="vip-view" hidden>
 			<header class="sub-header"><button data-back>返回</button><h3>徽章</h3></header>
