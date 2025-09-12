@@ -927,7 +927,117 @@
   </header>
 			<div class="content">
         
-        
+        <!-- （可選）分類 Tabs：城市 / 體驗 / 里程碑 / 特殊 -->
+    <nav class="badge-tabs" role="tablist" aria-label="徽章分類">
+      <button class="tab" role="tab" aria-selected="true"  aria-controls="panel-city"  id="tab-city">城市</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-exp"   id="tab-exp">體驗</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-mil"   id="tab-mil">里程碑</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-spec"  id="tab-spec">特殊</button>
+    </nav>
+
+    <!-- 展示網格（每個面板 4 欄；預設顯示城市） -->
+    <section id="panel-city" class="badge-panel" role="tabpanel" aria-labelledby="tab-city">
+      <header class="panel-head">
+        <h4>城市徽章</h4>
+        <div class="progress"><span id="cityUnlocked">0</span>/<span id="cityTotal">20</span></div>
+      </header>
+      <ul id="badgeGridCity" class="badge-grid" role="list" aria-live="polite">
+        <!-- JS 生成 4×N 徽章 -->
+      </ul>
+      <div id="badgeEmptyCity" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🌟</div>
+        <h4>你還沒有獲得任何徽章</h4>
+        <p class="muted">趕快去探索旅程解鎖吧！</p>
+      </div>
+    </section>
+
+    <section id="panel-exp" class="badge-panel" role="tabpanel" aria-labelledby="tab-exp" hidden>
+      <header class="panel-head">
+        <h4>體驗徽章</h4>
+        <div class="progress"><span id="expUnlocked">0</span>/<span id="expTotal">20</span></div>
+      </header>
+      <ul id="badgeGridExp" class="badge-grid" role="list" aria-live="polite"></ul>
+      <div id="badgeEmptyExp" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🌟</div>
+        <h4>你還沒有獲得任何徽章</h4>
+        <p class="muted">趕快去探索旅程解鎖吧！</p>
+      </div>
+    </section>
+
+    <section id="panel-mil" class="badge-panel" role="tabpanel" aria-labelledby="tab-mil" hidden>
+      <header class="panel-head">
+        <h4>里程碑徽章</h4>
+        <div class="progress"><span id="milUnlocked">0</span>/<span id="milTotal">20</span></div>
+      </header>
+      <ul id="badgeGridMil" class="badge-grid" role="list" aria-live="polite"></ul>
+      <div id="badgeEmptyMil" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🌟</div>
+        <h4>你還沒有獲得任何徽章</h4>
+        <p class="muted">趕快去探索旅程解鎖吧！</p>
+      </div>
+    </section>
+
+    <section id="panel-spec" class="badge-panel" role="tabpanel" aria-labelledby="tab-spec" hidden>
+      <header class="panel-head">
+        <h4>特殊徽章</h4>
+        <div class="progress"><span id="specUnlocked">0</span>/<span id="specTotal">20</span></div>
+      </header>
+      <ul id="badgeGridSpec" class="badge-grid" role="list" aria-live="polite"></ul>
+      <div id="badgeEmptySpec" class="empty-state" hidden>
+        <div class="illus" aria-hidden="true">🌟</div>
+        <h4>你還沒有獲得任何徽章</h4>
+        <p class="muted">趕快去探索旅程解鎖吧！</p>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- 徽章模板：4 欄卡（已解鎖 / 未解鎖） -->
+  <template id="tpl-badge-item">
+    <li class="badge-item" role="listitem">
+      <button class="badge-card" type="button" data-badge-id="" aria-haspopup="dialog" aria-controls="badgeSheet">
+        <div class="badge-icon" aria-hidden="true">
+          <!-- 圖示/插畫（可用 <img> 或 SVG） -->
+          <img src="" alt="" />
+        </div>
+        <div class="badge-name">徽章名稱</div>
+        <!-- 狀態：已解鎖/未解鎖（JS 以 data-unlocked 切換），未解鎖可顯示鎖 -->
+        <div class="badge-state" data-unlocked="false">
+          <span class="lock" aria-hidden="true">🔒</span>
+          <span class="date" hidden>2025/09/12</span>
+        </div>
+      </button>
+    </li>
+  </template>
+
+  <!-- 徽章詳情：底部彈窗（sheet） -->
+  <div id="badgeBackdrop" class="backdrop" hidden></div>
+  <div id="badgeSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="badgeTitle" hidden>
+    <div class="sheet-head">
+      <h4 id="badgeTitle">🐱 貓城守護者 · 古晉</h4>
+      <button type="button" id="badgeClose" class="btn secondary" aria-label="關閉">關閉</button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-hero">
+        <!-- 大圖示或插畫 -->
+        <img id="badgeHero" src="" alt="" />
+      </div>
+      <dl class="badge-meta">
+        <div class="row">
+          <dt>解鎖條件</dt>
+          <dd id="badgeRule">完成古晉任一商家足跡</dd>
+        </div>
+        <div class="row">
+          <dt>解鎖日期</dt>
+          <dd id="badgeDate">—</dd>
+        </div>
+      </dl>
+      <div class="sheet-actions" style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" id="badgeShare" class="btn">分享</button>
+        <!-- 可選：展示在會員卡/個人頁 -->
+        <button type="button" id="badgePin" class="btn">展示在會員中心</button>
+      </div>
+    </div>
         
       </div>
 		</section>
