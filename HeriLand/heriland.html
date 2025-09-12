@@ -660,7 +660,16 @@
 
 		
 		<section id="footprints" class="vip-view" hidden>
-			<header class="sub-header"><button data-back>返回</button><h3>足跡</h3></header>
+  <!-- 2) Header：左 ← 回會員中心；右 HeriLand 回首頁 -->
+  <header class="sub-header">
+    <div class="left">
+      <button type="button" data-back aria-label="返回會員中心">← 返回</button>
+    </div>
+    <h3>足跡</h3>
+    <div class="right">
+      <button type="button" id="hlGoHome" aria-label="回首頁">HeriLand</button>
+    </div>
+  </header>
 			<div class="content">
         <div class="content">
 
@@ -758,13 +767,17 @@
   </template>
 			
 		</div>
-		</section>
-    
-    <section id="recommend" class="vip-view" hidden>
-			<!-- 📌 A. 頁面入口：會員中心的【推薦】子頁面 -->
-
-  <!-- B. Header -->
-  <header class="sub-header"><button data-back>返回</button><h3>推薦</h3></header>
+		</<section id="recommend" class="vip-view" hidden>
+  <!-- 2) Header：左 ← 回會員中心；右 HeriLand 回首頁 -->
+  <header class="sub-header">
+    <div class="left">
+      <button type="button" data-back aria-label="返回會員中心">← 返回</button>
+    </div>
+    <h3>推薦</h3>
+    <div class="right">
+      <button type="button" id="hlGoHome" aria-label="回首頁">HeriLand</button>
+    </div>
+  </header>
 			<div class="content">
         
         <main id="recommend-root" role="main" aria-labelledby="page-title">
